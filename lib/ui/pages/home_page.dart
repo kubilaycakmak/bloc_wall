@@ -1,6 +1,7 @@
 import 'package:bloc_wall/data/repository/photo_repository.dart';
 import 'package:bloc_wall/ui/pages/widget/search_bar.dart';
 import 'package:bloc_wall/ui/photo/photo_bloc.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,7 +70,6 @@ class _HomePageState extends State<HomePage> {
         bloc: _photoBloc,
         builder: (context, state){
           if(state is PhotoIsNotList){
-            _photoBloc.add(FetchPhoto('popular','horizontal'));
           }
           if(state is PhotoIsLoading){
             return Center(child: CircularProgressIndicator(),);
@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                           _selected = 0;
                         });
                       },
-                      child: Icon(_selected == 0 ? Icons.home : CupertinoIcons.home, size: 35, color: _selected == 0 ? Colors.black : Colors.black54,),
+                      child: Icon(_selected == 0 ? EvaIcons.home : EvaIcons.homeOutline, size: 35, color: _selected == 0 ? Colors.black : Colors.black54,),
                     ),
                   ),
                   CircleAvatar(
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                           _selected = 1;
                         });
                       },
-                      child: Icon(_selected == 1 ? Icons.favorite : Icons.favorite_border, size: 35,color: _selected == 1 ? Colors.black : Colors.black54,),
+                      child: Icon(_selected == 1 ? EvaIcons.heart : EvaIcons.heartOutline, size: 35,color: _selected == 1 ? Colors.black : Colors.black54,),
                     ),
                   ),
                   CircleAvatar(
@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                           _selected = 2;
                         });
                       },
-                      child: Icon(_selected == 2 ? Icons.info : Icons.info_outline, size: 35,color: _selected == 2 ? Colors.black : Colors.black54,),
+                      child: Icon(_selected == 2 ? EvaIcons.info : EvaIcons.infoOutline, size: 35,color: _selected == 2 ? Colors.black : Colors.black54,),
                     ),
                   ),
                 ],
