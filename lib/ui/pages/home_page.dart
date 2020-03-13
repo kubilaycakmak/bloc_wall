@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bloc_wall/data/repository/photo_repository.dart';
 import 'package:bloc_wall/ui/pages/widget/search_bar.dart';
 import 'package:bloc_wall/ui/photo/photo_bloc.dart';
@@ -14,6 +16,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _photoBloc = kiwi.Container().resolve<PhotoBloc>();
+  AssetImage latest = AssetImage('assets/latest.jpg');
+  AssetImage popular = AssetImage('assets/popular.jpg');
+  AssetImage random = AssetImage('assets/random.jpg');
   int _selected = 0;
 
   @override
@@ -30,7 +35,9 @@ class _HomePageState extends State<HomePage> {
               physics: AlwaysScrollableScrollPhysics(),
               children: <Widget>[
                 buildPreferredSize(),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 _buildBlocBuilder(),
               ],
             ),
@@ -45,54 +52,79 @@ class _HomePageState extends State<HomePage> {
     return Container(
       height: 110,
       alignment: Alignment.topCenter,
-      decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 15,
-            offset: Offset(0, 10),
-          )]) ,
+      decoration: BoxDecoration(boxShadow: <BoxShadow>[
+        BoxShadow(
+          color: Colors.black.withOpacity(0.2),
+          blurRadius: 15,
+          offset: Offset(0, 10),
+        )
+      ]),
       child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 130,
-        child: SearchBar(),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(50),
-        ),
-      )),
+          width: MediaQuery.of(context).size.width,
+          height: 130,
+          child: SearchBar(),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(50),
+            ),
+          )),
     );
   }
 
   BlocBuilder<PhotoBloc, PhotoState> _buildBlocBuilder() {
     return BlocBuilder<PhotoBloc, PhotoState>(
-        bloc: _photoBloc,
-        builder: (context, state){
-          if(state is PhotoIsNotList){
-          }
-          if(state is PhotoIsLoading){
-            return Center(child: CircularProgressIndicator(),);
-          }
-          if(state is PhotoIsLoaded){
-            return ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 5,
-              itemBuilder: (context, index){
-                return Container(
-                    height: 200,
-                    child: Image.network(state.getPhoto.hits[index].previewURL, fit: BoxFit.cover,),
-                );
-              },
-            );
-          }
-          return Text('error');
-        },
-      );
+      bloc: _photoBloc,
+      builder: (context, state) {
+        if (state is PhotoIsNotList) {
+          return _buildBody();
+        }
+        if (state is PhotoIsLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is PhotoIsLoaded) {
+          return ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return Container(
+                height: 200,
+                child: Image.network(
+                  state.getPhoto.hits[index].previewURL,
+                  fit: BoxFit.cover,
+                ),
+              );
+            },
+          );
+        }
+        return Text('error');
+      },
+    );
   }
 
- Widget _buildNavBar() {
+  Widget _buildBody() {
+    return ListView(
+      shrinkWrap: true,
+      children: <Widget>[
+        Container(
+            height: 200,
+            child: PageView(
+              onPageChanged: (value) {},
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                _buildCard(latest, 'Latest'),
+                _buildCard(popular, 'Popular'),
+                _buildCard(random, 'Random'),
+              ],
+            ))
+      ],
+    );
+  }
+
+  Widget _buildNavBar() {
     return Container(
       alignment: Alignment.bottomCenter,
       child: Stack(
@@ -107,7 +139,7 @@ class _HomePageState extends State<HomePage> {
             child: FloatingActionButton.extended(
               elevation: 15,
               backgroundColor: Colors.white,
-              onPressed: null, 
+              onPressed: null,
               label: ButtonBar(
                 buttonPadding: EdgeInsets.symmetric(horizontal: 20),
                 children: <Widget>[
@@ -115,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                     backgroundColor: Colors.transparent,
                     minRadius: 20,
                     child: FlatButton(
-                      onPressed: (){
+                      onPressed: () {
                         setState(() {
                           _selected = 0;
                         });
@@ -127,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                     minRadius: 20,
                     backgroundColor: Colors.transparent,
                     child: FlatButton(
-                      onPressed: (){
+                      onPressed: () {
                         setState(() {
                           _selected = 1;
                         });
@@ -139,7 +171,7 @@ class _HomePageState extends State<HomePage> {
                     minRadius: 20,
                     backgroundColor: Colors.transparent,
                     child: FlatButton(
-                      onPressed: (){
+                      onPressed: () {
                         setState(() {
                           _selected = 2;
                         });
@@ -155,4 +187,36 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+Widget _buildCard(AssetImage image, String title) {
+  return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      child: InkWell(
+        onTap: () {
+          print('asd');
+        },
+        child: Card(
+          elevation: 10,
+          child: Stack(
+            children: <Widget>[
+              Image(
+                colorBlendMode: BlendMode.darken,
+                fit: BoxFit.fitWidth,
+                image: image,
+                alignment: Alignment.center,
+              ),
+              Center(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 50,
+                    color: Colors.white70,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ));
 }
