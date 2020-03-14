@@ -1,12 +1,19 @@
 import 'dart:ui';
 
+import 'package:bloc_wall/data/model/photo_all.dart';
 import 'package:bloc_wall/data/repository/photo_repository.dart';
+import 'package:bloc_wall/ui/pages/wallpaper_page.dart';
+import 'package:bloc_wall/ui/pages/widget/centered_message.dart';
+import 'package:bloc_wall/ui/pages/widget/custom_navbar.dart';
+import 'package:bloc_wall/ui/pages/widget/parallax_card.dart';
 import 'package:bloc_wall/ui/pages/widget/search_bar.dart';
 import 'package:bloc_wall/ui/photo/photo_bloc.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
 
 class HomePage extends StatefulWidget {
@@ -19,65 +26,42 @@ class _HomePageState extends State<HomePage> {
   AssetImage latest = AssetImage('assets/latest.jpg');
   AssetImage popular = AssetImage('assets/popular.jpg');
   AssetImage random = AssetImage('assets/random.jpg');
-  int _selected = 0;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _photoBloc.close();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final double iconSize = (MediaQuery.of(context).size.width + MediaQuery.of(context).size.height) / 40;
     return BlocProvider(
       create: (context) => PhotoBloc(PhotoRepository()),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
           children: <Widget>[
-            ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: false,
-              physics: AlwaysScrollableScrollPhysics(),
-              children: <Widget>[
-                buildPreferredSize(),
-                SizedBox(
-                  height: 20,
-                ),
-                _buildBlocBuilder(),
-              ],
-            ),
-            _buildNavBar(),
+            _buildBlocBuilder(),
+             SafeArea(
+               child: SearchBar()),
+            CustomNavbar(iconSize: iconSize,),
           ],
         ),
       ),
     );
   }
 
-  Widget buildPreferredSize() {
-    return Container(
-      height: 110,
-      alignment: Alignment.topCenter,
-      decoration: BoxDecoration(boxShadow: <BoxShadow>[
-        BoxShadow(
-          color: Colors.black.withOpacity(0.2),
-          blurRadius: 15,
-          offset: Offset(0, 10),
-        )
-      ]),
-      child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 130,
-          child: SearchBar(),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(50),
-            ),
-          )),
-    );
-  }
-
   BlocBuilder<PhotoBloc, PhotoState> _buildBlocBuilder() {
+    _photoBloc.add(FetchPhoto('', 'latest', 'vertical'));
     return BlocBuilder<PhotoBloc, PhotoState>(
       bloc: _photoBloc,
       builder: (context, state) {
         if (state is PhotoIsNotList) {
-          return _buildBody();
+          return CenteredMessage(
+            message: 'Error while fetching photos',
+            icon: EvaIcons.doneAll,
+          );
         }
         if (state is PhotoIsLoading) {
           return Center(
@@ -85,138 +69,169 @@ class _HomePageState extends State<HomePage> {
           );
         }
         if (state is PhotoIsLoaded) {
-          return ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return Container(
-                height: 200,
-                child: Image.network(
-                  state.getPhoto.hits[index].previewURL,
-                  fit: BoxFit.cover,
-                ),
-              );
-            },
-          );
+          return _buildListBody(state.getPhoto);
         }
         return Text('error');
       },
     );
   }
 
-  Widget _buildBody() {
-    return ListView(
-      shrinkWrap: true,
-      children: <Widget>[
-        Container(
-            height: 200,
-            child: PageView(
-              onPageChanged: (value) {},
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                _buildCard(latest, 'Latest'),
-                _buildCard(popular, 'Popular'),
-                _buildCard(random, 'Random'),
-              ],
-            ))
-      ],
-    );
+  ListView _listPhotoView(PhotoIsLoaded state) {
+    return ListView.builder(
+          shrinkWrap: true,
+          physics: AlwaysScrollableScrollPhysics(),
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            return Container(
+              height: 100,
+              child: Image.network(
+                state.getPhoto.hits[index].previewURL,
+                fit: BoxFit.cover,
+              ),
+            );
+          },
+        );
   }
 
-  Widget _buildNavBar() {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      child: Stack(
-        alignment: Alignment.center,
-        fit: StackFit.loose,
-        overflow: Overflow.clip,
+  Widget _buildListBody(PhotoAll photoAll){
+
+    final bannerA = <ParallaxCardItem>[
+      ParallaxCardItem(
+        title: 'Explore the latest photo album',
+        body: 'latest',
+        imagePath: photoAll.hits[0].webformatURL,
+      ),
+      ParallaxCardItem(
+        title: 'See what people likes',
+        body: 'popular',
+        imagePath: photoAll.hits[1].webformatURL,
+      ),
+      ParallaxCardItem(
+        title: 'Randomly',
+        body: 'random',
+        imagePath: photoAll.hits[2].webformatURL,
+      ),
+    ];
+
+    final bannerB = <ParallaxCardItem>[
+      ParallaxCardItem(
+        title: 'Tap to Explore',
+        body: 'Photo of the day',
+        imagePath: photoAll.hits[3].webformatURL,
+      ),
+    ];
+
+    final bannerC = <ParallaxCardItem>[
+      ParallaxCardItem(
+        title: 'Tap to Explore',
+        body: 'Editor Choice',
+        imagePath: photoAll.hits[4].webformatURL,
+      ),
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 150.0),
+      child: ListView(
+        physics: AlwaysScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(bottom: 20.0),
-            color: Colors.white.withOpacity(0.0),
-            height: 90,
-            child: FloatingActionButton.extended(
-              elevation: 15,
-              backgroundColor: Colors.white,
-              onPressed: null,
-              label: ButtonBar(
-                buttonPadding: EdgeInsets.symmetric(horizontal: 20),
+          _buildCarouselSlider(bannerA, 200, photoAll),
+          Text("\t\tToday's Fav! ", style: GoogleFonts.montserrat(
+            fontSize: 20
+          ),),
+          _buildBanner(bannerB, 300),
+          ButtonBar(
+            alignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Column(
                 children: <Widget>[
-                  CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    minRadius: 20,
-                    child: FlatButton(
-                      onPressed: () {
-                        setState(() {
-                          _selected = 0;
-                        });
-                      },
-                      child: Icon(_selected == 0 ? EvaIcons.home : EvaIcons.homeOutline, size: 35, color: _selected == 0 ? Colors.black : Colors.black54,),
-                    ),
-                  ),
-                  CircleAvatar(
-                    minRadius: 20,
-                    backgroundColor: Colors.transparent,
-                    child: FlatButton(
-                      onPressed: () {
-                        setState(() {
-                          _selected = 1;
-                        });
-                      },
-                      child: Icon(_selected == 1 ? EvaIcons.heart : EvaIcons.heartOutline, size: 35,color: _selected == 1 ? Colors.black : Colors.black54,),
-                    ),
-                  ),
-                  CircleAvatar(
-                    minRadius: 20,
-                    backgroundColor: Colors.transparent,
-                    child: FlatButton(
-                      onPressed: () {
-                        setState(() {
-                          _selected = 2;
-                        });
-                      },
-                      child: Icon(_selected == 2 ? EvaIcons.info : EvaIcons.infoOutline, size: 35,color: _selected == 2 ? Colors.black : Colors.black54,),
-                    ),
+                  Icon(EvaIcons.arrowDownOutline),
+                  FlatButton(
+                    onPressed: (){},
+                    child: Text('Editor Choice', style: GoogleFonts.montserrat(color: Colors.black),),
                   ),
                 ],
               ),
-            ),
+              Column(
+                children: <Widget>[
+                  Icon(EvaIcons.arrowDownOutline),
+                  FlatButton(
+                    onPressed: (){},
+                    child: Text('Developer Choice', style: GoogleFonts.montserrat(color: Colors.black),),
+                  ),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  Icon(EvaIcons.arrowDownOutline),
+                  FlatButton(
+                    onPressed: (){},
+                    child: Text('Your Chance', style: GoogleFonts.montserrat(color: Colors.black),),
+                  ),
+                ],
+              ),
+            ],
           ),
+          _buildBanner(bannerC, 250)
         ],
       ),
     );
   }
+
+  Widget _buildCarouselSlider(List<ParallaxCardItem> list, double height, PhotoAll photoAll) {
+    return CarouselSlider.builder(
+      scrollDirection: Axis.horizontal,
+      aspectRatio: 16 / 9,
+      itemCount: list.length,
+      itemBuilder: (context, index){
+        final item = list[index];
+        return GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) => WallpaperPage(
+                heroId: '$index',
+                imageUrl: photoAll.hits[index].largeImageURL,
+              )
+            ));
+          },
+          child: ParallaxCards(
+            item: item,
+            pageVisibility: PageVisibility(pagePosition: 0, visibleFraction: 0.8 ),
+          ),
+        );
+      },
+      height: 400.0,
+    );
+  }
 }
 
-Widget _buildCard(AssetImage image, String title) {
-  return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      child: InkWell(
-        onTap: () {
-          print('asd');
-        },
-        child: Card(
-          elevation: 10,
-          child: Stack(
-            children: <Widget>[
-              Image(
-                colorBlendMode: BlendMode.darken,
-                fit: BoxFit.fitWidth,
-                image: image,
-                alignment: Alignment.center,
-              ),
-              Center(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 50,
-                    color: Colors.white70,
-                  ),
+  Widget _buildBanner(List<ParallaxCardItem> list, double height) {
+    return Container(
+      height: height,
+      child: PageTransformer(
+        pageViewBuilder: (context, visibilityResolver){
+          return  PageView.builder(
+            physics: BouncingScrollPhysics(),
+            onPageChanged: (value) {},
+            scrollDirection: Axis.horizontal,
+            itemCount: list.length,
+            itemBuilder: (context, index){
+              final item = list[index];
+              final pageVisibility =
+                              visibilityResolver.resolvePageVisibility(index);
+              return GestureDetector(
+                onTap: (){
+                },
+                child: ParallaxCards(
+                  item: item,
+                  pageVisibility: pageVisibility,
                 ),
-              ),
-            ],
-          ),
-        ),
-      ));
-}
+              );
+            }
+          );
+        }
+      )
+    );
+  }

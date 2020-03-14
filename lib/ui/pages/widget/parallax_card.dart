@@ -4,13 +4,6 @@ import 'package:gradient_widgets/gradient_widgets.dart';
 
 class ParallaxCards extends StatelessWidget {
 
-  bool isThemeCurrentlyDark(BuildContext context) {
-    if (Theme.of(context).brightness == Brightness.dark) {
-      return true;
-    } else {
-      return false;
-    }
-  } 
   ParallaxCards({
     @required this.item,
     @required this.pageVisibility,
@@ -43,14 +36,14 @@ class ParallaxCards extends StatelessWidget {
     var categoryText = _applyTextEffects(
       translationFactor: 300.0,
       child: Padding(
-        padding: EdgeInsets.all(5.0),
+        padding: EdgeInsets.all(40.0),
         child: GradientText(
           item.body,
           shaderRect: Rect.fromLTWH(0.0, 0.0, 50.0, 50.0),
           gradient: isThemeCurrentlyDark(context)
-              ? Gradients.coldLinear
-              : Gradients.backToFuture,
-          style: TextStyle(color: Colors.white),
+              ? Gradients.coralCandyGradient
+              : Gradients.coralCandyGradient,
+          style: TextStyle(color: Colors.white, fontSize: 40),
           textAlign: TextAlign.center,
         ),
       ),
@@ -59,12 +52,12 @@ class ParallaxCards extends StatelessWidget {
     var titleText = _applyTextEffects(
       translationFactor: 200.0,
       child: Padding(
-        padding: EdgeInsets.all(5.0),
+        padding: EdgeInsets.all(0.0),
         child: GradientText(
           item.title,
           shaderRect: Rect.fromLTWH(0.0, 0.0, 50.0, 50.0),
           gradient: Gradients.haze,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 18),
           textAlign: TextAlign.center,
         ),
       ),
@@ -87,7 +80,7 @@ class ParallaxCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var image = Image.asset(
+    var image = Image.network(
       item.imagePath,
       fit: BoxFit.cover,
       alignment: FractionalOffset(
@@ -111,8 +104,8 @@ class ParallaxCards extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: 22.0,
-        horizontal: 8.0,
+        vertical: 10.0,
+        horizontal: 20.0,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
@@ -129,6 +122,13 @@ class ParallaxCards extends StatelessWidget {
       ),
     );
   }
+  bool isThemeCurrentlyDark(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      return true;
+    } else {
+      return false;
+    }
+  } 
 }
 
 class ParallaxCardItem {
@@ -142,24 +142,6 @@ class ParallaxCardItem {
   final String body;
   final String imagePath;
 }
-
-final parallaxCardItemsList = <ParallaxCardItem>[
-  ParallaxCardItem(
-    title: 'Blurryface',
-    body: 'Twenty One Pilots',
-    imagePath: 'assets/music/album8.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'Free Spirit',
-    body: 'Khalid',
-    imagePath: 'assets/music/album7.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'Overexposed',
-    body: 'Maroon 5',
-    imagePath: 'assets/music/album9.jpg',
-  ),
-];
 
 /// A function that builds a [PageView] lazily.
 typedef PageView PageViewBuilder(
