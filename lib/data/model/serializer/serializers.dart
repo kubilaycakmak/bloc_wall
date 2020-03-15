@@ -1,11 +1,11 @@
 library serializers;
 
-import 'package:bloc_wall/data/model/photo_hits.dart';
+import 'package:bloc_wall/data/model/photo/photo_hits.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
-import '../photo_all.dart';
+import '../photo/photo_all.dart';
 
 part 'serializers.g.dart';
 
@@ -13,5 +13,5 @@ part 'serializers.g.dart';
   PhotoAll,
   PhotoHits,
 ])
-final Serializers serializers = 
-  (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
+final Serializers serializers =
+    (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

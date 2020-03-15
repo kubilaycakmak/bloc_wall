@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:bloc_wall/data/model/photo_all.dart';
+import 'package:bloc_wall/data/model/photo/photo_all.dart';
 import 'package:bloc_wall/data/repository/photo_repository.dart';
 import 'package:bloc_wall/ui/pages/wallpaper_page.dart';
 import 'package:bloc_wall/ui/pages/widget/centered_message.dart';
@@ -35,7 +35,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final double iconSize = (MediaQuery.of(context).size.width + MediaQuery.of(context).size.height) / 40;
+    final double iconSize = (MediaQuery.of(context).size.width +
+            MediaQuery.of(context).size.height) /
+        40;
     return BlocProvider(
       create: (context) => PhotoBloc(PhotoRepository()),
       child: Scaffold(
@@ -43,9 +45,10 @@ class _HomePageState extends State<HomePage> {
         body: Stack(
           children: <Widget>[
             _buildBlocBuilder(),
-             SafeArea(
-               child: SearchBar()),
-            CustomNavbar(iconSize: iconSize,),
+            SafeArea(child: SearchBar()),
+            CustomNavbar(
+              iconSize: iconSize,
+            ),
           ],
         ),
       ),
@@ -78,23 +81,22 @@ class _HomePageState extends State<HomePage> {
 
   ListView _listPhotoView(PhotoIsLoaded state) {
     return ListView.builder(
-          shrinkWrap: true,
-          physics: AlwaysScrollableScrollPhysics(),
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return Container(
-              height: 100,
-              child: Image.network(
-                state.getPhoto.hits[index].previewURL,
-                fit: BoxFit.cover,
-              ),
-            );
-          },
+      shrinkWrap: true,
+      physics: AlwaysScrollableScrollPhysics(),
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return Container(
+          height: 100,
+          child: Image.network(
+            state.getPhoto.hits[index].previewURL,
+            fit: BoxFit.cover,
+          ),
         );
+      },
+    );
   }
 
-  Widget _buildListBody(PhotoAll photoAll){
-
+  Widget _buildListBody(PhotoAll photoAll) {
     final bannerA = <ParallaxCardItem>[
       ParallaxCardItem(
         title: 'Explore the latest photo album',
@@ -113,13 +115,13 @@ class _HomePageState extends State<HomePage> {
       ),
     ];
 
-    final bannerB = <ParallaxCardItem>[
-      ParallaxCardItem(
-        title: 'Tap to Explore',
-        body: 'Photo of the day',
-        imagePath: photoAll.hits[3].webformatURL,
-      ),
-    ];
+    // final bannerB = <ParallaxCardItem>[
+    //   ParallaxCardItem(
+    //     title: 'Tap to Explore',
+    //     body: 'Photo of the day',
+    //     imagePath: photoAll.hits[3].webformatURL,
+    //   ),
+    // ];
 
     final bannerC = <ParallaxCardItem>[
       ParallaxCardItem(
@@ -137,10 +139,6 @@ class _HomePageState extends State<HomePage> {
         shrinkWrap: true,
         children: <Widget>[
           _buildCarouselSlider(bannerA, 200, photoAll),
-          Text("\t\tToday's Fav! ", style: GoogleFonts.montserrat(
-            fontSize: 20
-          ),),
-          _buildBanner(bannerB, 300),
           ButtonBar(
             alignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -149,8 +147,11 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   Icon(EvaIcons.arrowDownOutline),
                   FlatButton(
-                    onPressed: (){},
-                    child: Text('Editor Choice', style: GoogleFonts.montserrat(color: Colors.black),),
+                    onPressed: () {},
+                    child: Text(
+                      'Editor Choice',
+                      style: GoogleFonts.montserrat(color: Colors.black),
+                    ),
                   ),
                 ],
               ),
@@ -158,8 +159,11 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   Icon(EvaIcons.arrowDownOutline),
                   FlatButton(
-                    onPressed: (){},
-                    child: Text('Developer Choice', style: GoogleFonts.montserrat(color: Colors.black),),
+                    onPressed: () {},
+                    child: Text(
+                      'Developer Choice',
+                      style: GoogleFonts.montserrat(color: Colors.black),
+                    ),
                   ),
                 ],
               ),
@@ -167,8 +171,11 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   Icon(EvaIcons.arrowDownOutline),
                   FlatButton(
-                    onPressed: (){},
-                    child: Text('Your Chance', style: GoogleFonts.montserrat(color: Colors.black),),
+                    onPressed: () {},
+                    child: Text(
+                      'Your Chance',
+                      style: GoogleFonts.montserrat(color: Colors.black),
+                    ),
                   ),
                 ],
               ),
@@ -180,25 +187,28 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildCarouselSlider(List<ParallaxCardItem> list, double height, PhotoAll photoAll) {
+  Widget _buildCarouselSlider(
+      List<ParallaxCardItem> list, double height, PhotoAll photoAll) {
     return CarouselSlider.builder(
       scrollDirection: Axis.horizontal,
       aspectRatio: 16 / 9,
       itemCount: list.length,
-      itemBuilder: (context, index){
+      itemBuilder: (context, index) {
         final item = list[index];
         return GestureDetector(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) => WallpaperPage(
-                heroId: '$index',
-                imageUrl: photoAll.hits[index].largeImageURL,
-              )
-            ));
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => WallpaperPage(
+                          heroId: '$index',
+                          imageUrl: photoAll.hits[index].largeImageURL,
+                        )));
           },
           child: ParallaxCards(
             item: item,
-            pageVisibility: PageVisibility(pagePosition: 0, visibleFraction: 0.8 ),
+            pageVisibility:
+                PageVisibility(pagePosition: 0, visibleFraction: 0.8),
           ),
         );
       },
@@ -207,31 +217,26 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-  Widget _buildBanner(List<ParallaxCardItem> list, double height) {
-    return Container(
+Widget _buildBanner(List<ParallaxCardItem> list, double height) {
+  return Container(
       height: height,
-      child: PageTransformer(
-        pageViewBuilder: (context, visibilityResolver){
-          return  PageView.builder(
+      child: PageTransformer(pageViewBuilder: (context, visibilityResolver) {
+        return PageView.builder(
             physics: BouncingScrollPhysics(),
             onPageChanged: (value) {},
             scrollDirection: Axis.horizontal,
             itemCount: list.length,
-            itemBuilder: (context, index){
+            itemBuilder: (context, index) {
               final item = list[index];
               final pageVisibility =
-                              visibilityResolver.resolvePageVisibility(index);
+                  visibilityResolver.resolvePageVisibility(index);
               return GestureDetector(
-                onTap: (){
-                },
+                onTap: () {},
                 child: ParallaxCards(
                   item: item,
                   pageVisibility: pageVisibility,
                 ),
               );
-            }
-          );
-        }
-      )
-    );
-  }
+            });
+      }));
+}
