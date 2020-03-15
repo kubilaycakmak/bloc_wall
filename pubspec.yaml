@@ -35,6 +35,8 @@ dependencies:
   kiwi: ^0.2.0
   google_fonts: ^0.3.9
   carousel_slider: ^1.4.1
+  flutter_staggered_grid_view: ^0.3.0
+  dio: ^3.0.9
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +70,33 @@ flutter:
     - assets/loading2.gif
     - assets/loading3.gif
     - assets/loading4.gif
+    - assets/latest.jpg
+    - assets/popular.jpg
+    - assets/random.jpg
+    - assets/animal.jpg
+    - assets/background.jpg
+    - assets/buildings.jpg
+    - assets/business.jpg
+    - assets/computer.jpg
+    - assets/education.jpg
+    - assets/factory.jpg
+    - assets/fashion.jpg
+    - assets/feel.jpg
+    - assets/food.jpg
+    - assets/health.jpg
+    - assets/logo.png
+    - assets/music.jpg
+    - assets/nature.jpg
+    - assets/people.jpg
+    - assets/places.jpg
+    - assets/regions.jpg
+    - assets/science.jpg
+    - assets/sports.jpg
+    - assets/transportation.jpg
+    - assets/travel.jpg
+    - assets/vector.png
+    - assets/photo.jpg
+    - assets/illustration.jpg
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

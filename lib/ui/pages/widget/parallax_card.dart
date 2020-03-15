@@ -39,11 +39,11 @@ class ParallaxCards extends StatelessWidget {
         padding: EdgeInsets.all(40.0),
         child: GradientText(
           item.body,
-          shaderRect: Rect.fromLTWH(0.0, 0.0, 50.0, 50.0),
+          shaderRect: Rect.fromLTWH(0.0, 0.0, 10.0, 10.0),
           gradient: isThemeCurrentlyDark(context)
-              ? Gradients.coralCandyGradient
+              ? MyColors.github
               : Gradients.coralCandyGradient,
-          style: TextStyle(color: Colors.white, fontSize: 40),
+          style: TextStyle(color: Colors.white, fontSize: 30),
           textAlign: TextAlign.center,
         ),
       ),
@@ -64,7 +64,7 @@ class ParallaxCards extends StatelessWidget {
     );
 
     return Positioned(
-      bottom: 50.0,
+      bottom: 30.0,
       left: 10.0,
       right: 10.0,
       child: Column(
@@ -80,7 +80,7 @@ class ParallaxCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var image = Image.network(
+    var image = Image.asset(
       item.imagePath,
       fit: BoxFit.cover,
       alignment: FractionalOffset(
@@ -105,7 +105,7 @@ class ParallaxCards extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: 10.0,
-        horizontal: 20.0,
+        horizontal: 8.0,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),

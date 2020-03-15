@@ -1,8 +1,8 @@
 import 'dart:ui';
-
 import 'package:bloc_wall/data/model/photo/photo_all.dart';
 import 'package:bloc_wall/data/repository/photo_repository.dart';
-import 'package:bloc_wall/ui/pages/wallpaper_page.dart';
+import 'package:bloc_wall/ui/pages/list_photo.page.dart';
+import 'package:bloc_wall/ui/pages/static_data/data_lists.dart';
 import 'package:bloc_wall/ui/pages/widget/centered_message.dart';
 import 'package:bloc_wall/ui/pages/widget/custom_navbar.dart';
 import 'package:bloc_wall/ui/pages/widget/parallax_card.dart';
@@ -23,18 +23,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _photoBloc = kiwi.Container().resolve<PhotoBloc>();
-  AssetImage latest = AssetImage('assets/latest.jpg');
-  AssetImage popular = AssetImage('assets/popular.jpg');
-  AssetImage random = AssetImage('assets/random.jpg');
 
   @override
   void dispose() {
     super.dispose();
     _photoBloc.close();
   }
+  @override
+  void initState() {
+    super.initState();
+    _photoBloc.add(FetchPhoto('photo', '', 'latest', 'vertical'));
+  }
 
   @override
   Widget build(BuildContext context) {
+    
     final double iconSize = (MediaQuery.of(context).size.width +
             MediaQuery.of(context).size.height) /
         40;
@@ -56,7 +59,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   BlocBuilder<PhotoBloc, PhotoState> _buildBlocBuilder() {
-    _photoBloc.add(FetchPhoto('', 'latest', 'vertical'));
     return BlocBuilder<PhotoBloc, PhotoState>(
       bloc: _photoBloc,
       builder: (context, state) {
@@ -97,39 +99,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildListBody(PhotoAll photoAll) {
-    final bannerA = <ParallaxCardItem>[
-      ParallaxCardItem(
-        title: 'Explore the latest photo album',
-        body: 'latest',
-        imagePath: photoAll.hits[0].webformatURL,
-      ),
-      ParallaxCardItem(
-        title: 'See what people likes',
-        body: 'popular',
-        imagePath: photoAll.hits[1].webformatURL,
-      ),
-      ParallaxCardItem(
-        title: 'Randomly',
-        body: 'random',
-        imagePath: photoAll.hits[2].webformatURL,
-      ),
-    ];
-
-    // final bannerB = <ParallaxCardItem>[
-    //   ParallaxCardItem(
-    //     title: 'Tap to Explore',
-    //     body: 'Photo of the day',
-    //     imagePath: photoAll.hits[3].webformatURL,
-    //   ),
-    // ];
-
-    final bannerC = <ParallaxCardItem>[
-      ParallaxCardItem(
-        title: 'Tap to Explore',
-        body: 'Editor Choice',
-        imagePath: photoAll.hits[4].webformatURL,
-      ),
-    ];
 
     return Padding(
       padding: const EdgeInsets.only(top: 150.0),
@@ -138,81 +107,101 @@ class _HomePageState extends State<HomePage> {
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         children: <Widget>[
+          _buildbuttonBar(photoOrVideoList),
           _buildCarouselSlider(bannerA, 200, photoAll),
-          ButtonBar(
-            alignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Icon(EvaIcons.arrowDownOutline),
-                  FlatButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Editor Choice',
-                      style: GoogleFonts.montserrat(color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Icon(EvaIcons.arrowDownOutline),
-                  FlatButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Developer Choice',
-                      style: GoogleFonts.montserrat(color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Icon(EvaIcons.arrowDownOutline),
-                  FlatButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Your Chance',
-                      style: GoogleFonts.montserrat(color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          _buildBanner(bannerC, 250)
+          Text('\t\t\t\t\t\tCategories', style: GoogleFonts.montserrat(fontSize: 15,),),
+          _buildParallaxCardSlider(bannerCategories),
+          _buildBanner(bannerPhoto, 250),
+          _buildBanner(bannerVector, 250),
+          _buildBanner(bannerIllistration, 250),
+          SizedBox(height: 50,)
         ],
+      ),
+    );
+  }
+
+  Padding _buildParallaxCardSlider(List<ParallaxCardItem> bannerA) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 0.0),
+      child: SizedBox.fromSize(
+        size: Size.fromHeight(70.0),
+        child: PageTransformer(
+          pageViewBuilder: (context, visibilityResolver) {
+            return PageView.builder(
+              controller: PageController(viewportFraction: 0.55),
+              itemCount: bannerA.length,
+              itemBuilder: (context, index) {
+                final item = bannerA[index];
+                final pageVisibility =
+                    visibilityResolver.resolvePageVisibility(index);
+                return ParallaxCards(
+                  item: item,
+                  pageVisibility: pageVisibility,
+                );
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildbuttonBar(List title) {
+    int _selected = 0;
+    return Container(
+      height: 30,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: title.length,
+        shrinkWrap: false,
+        itemBuilder: (context, index) {
+          return FlatButton(
+            splashColor: Colors.grey.shade100,
+            highlightColor: Colors.transparent,
+            onPressed: () {
+            },
+            child: Text(
+              title[index],
+              style: GoogleFonts.montserrat(color: Colors.black, fontSize: 15),
+            ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildCarouselSlider(
       List<ParallaxCardItem> list, double height, PhotoAll photoAll) {
-    return CarouselSlider.builder(
-      scrollDirection: Axis.horizontal,
-      aspectRatio: 16 / 9,
-      itemCount: list.length,
-      itemBuilder: (context, index) {
-        final item = list[index];
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => WallpaperPage(
-                          heroId: '$index',
-                          imageUrl: photoAll.hits[index].largeImageURL,
-                        )));
-          },
-          child: ParallaxCards(
-            item: item,
-            pageVisibility:
-                PageVisibility(pagePosition: 0, visibleFraction: 0.8),
-          ),
-        );
-      },
-      height: 400.0,
+    return Container(
+      height: 200,
+      child: CarouselSlider.builder(
+        autoPlay: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          final item = list[index];
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ListPhotoPage(
+                        category: '',
+                        imageType: 'photo',
+                        order: list[index].body,
+                        orientation: 'vertical',
+                        query: '',
+                          )));
+            },
+            child: ParallaxCards(
+              item: item,
+              pageVisibility:
+                  PageVisibility(pagePosition: 0, visibleFraction: 0.8),
+            ),
+          );
+        },
+        height: 400.0,
+      ),
     );
   }
 }

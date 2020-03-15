@@ -22,11 +22,11 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     if (event is FetchPhoto) {
       yield PhotoIsLoading();
       try {
-        PhotoAll photoAll = await _photoRepository.fetchHits(
+        PhotoAll photoAll = await _photoRepository.fetchPhotos(
+            imageType: event._imageType,
             query: event._query,
             order: event._order,
             orientation: event._orientation);
-
         yield PhotoIsLoaded(photoAll);
       } catch (_) {
         yield PhotoIsNotLoaded();
