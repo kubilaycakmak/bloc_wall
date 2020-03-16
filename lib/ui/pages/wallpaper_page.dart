@@ -39,10 +39,11 @@ class _WallpaperPageState extends State<WallpaperPage> {
               ),
               fullScreen == false
                   ? AnimatedContainer(
-                      padding: EdgeInsets.all(40.0),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20)),
-                      duration: Duration(seconds: 5),
+                      duration: Duration(seconds: 1),
                       child: _buildBottomBar(context))
                   : Container()
             ],
@@ -52,11 +53,11 @@ class _WallpaperPageState extends State<WallpaperPage> {
     );
   }
 
-  Stack _buildBottomBar(BuildContext context) {
+  Widget _buildBottomBar(BuildContext context) {
     return Stack(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(top: 28.0),
+          padding: const EdgeInsets.only(top: 25.0),
           child: new ClipRect(
             child: new BackdropFilter(
               filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
@@ -67,30 +68,19 @@ class _WallpaperPageState extends State<WallpaperPage> {
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Padding(
-                          padding:
-                              EdgeInsets.only(top: 10, left: 10, bottom: 3),
-                          child: Row(
-                            children: <Widget>[
-                              CircleAvatar(
-                                backgroundColor: Colors.black12,
-                                child: widget.photoHits.userImageURL != ''
-                                    ? Image.network(
-                                        widget.photoHits.userImageURL)
-                                    : Icon(EvaIcons.person),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text('@' + widget.photoHits.user,
-                                  style: GoogleFonts.montserrat(
-                                      color: Colors.white, fontSize: 18))
-                            ],
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Chip(
+                            avatar:
+                                Image.network(widget.photoHits.userImageURL),
+                            label: Text(widget.photoHits.user,
+                                style: GoogleFonts.montserrat()),
                           ),
                         ),
                         Wrap(
+                          alignment: WrapAlignment.start,
+                          crossAxisAlignment: WrapCrossAlignment.start,
                           children: <Widget>[
                             _buildPaddingClips(
                                 '', widget.photoHits.tags.toString()),
@@ -188,8 +178,10 @@ class _WallpaperPageState extends State<WallpaperPage> {
 
   Padding _buildPaddingClips(String title, String label) {
     return Padding(
-      padding: EdgeInsets.only(top: 0, left: 5),
+      padding: EdgeInsets.only(top: 0, left: 2, bottom: 0),
       child: Chip(
+        labelPadding: EdgeInsets.symmetric(horizontal: 2),
+        padding: EdgeInsets.symmetric(horizontal: 2),
         elevation: 1,
         label: Text(
           title + label,
