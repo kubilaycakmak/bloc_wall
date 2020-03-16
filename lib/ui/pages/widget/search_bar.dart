@@ -11,7 +11,7 @@ class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 135,
+      height: 125,
       alignment: Alignment.topCenter,
       decoration: BoxDecoration(boxShadow: <BoxShadow>[
         BoxShadow(
@@ -22,14 +22,14 @@ class SearchBar extends StatelessWidget {
       ]),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 135,
+        height: 125,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text("Let's search for the dream photo for your phone!", style: GoogleFonts.montserrat(
-                fontSize: 22
+                fontSize: 18
               ),),
               SizedBox(height: 10,),
               Container(

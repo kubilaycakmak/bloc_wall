@@ -23,70 +23,16 @@ class _WallpaperPageState extends State<WallpaperPage> {
   bool downloading = false;
   var progressString = "";
   String _setWallpaper = '';
+  bool fullScreen = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Hero(
-            tag: widget.heroId,
-            child: InkWell(
-              onTap: (){
-
-              },
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                child: FadeInImage(
-                  image: NetworkImage(widget.photoHits.largeImageURL),
-                  fit: BoxFit.cover,
-                  placeholder: AssetImage('assets/loading2.gif'),
-                  height: 100,
-                ),
-              ),
-            ),
-          ),
-         Container(
-           child: Align(
-              alignment: Alignment(0.0, 0.0),
-              child: Center(
-                child: downloading
-                ? Container(
-                    height: 120.0,
-                    width: 200.0,
-                    child: Card(
-                      color: Colors.white60,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          CircularProgressIndicator(),
-                          SizedBox(height: 20.0),
-                          Text(
-                            "Downloading File : $progressString",
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                : Text("")),
-              ),
-         ),
-          Positioned(
-            top: 48,
-            left: 28,
-            child: FloatingActionButton(
-              heroTag: 'close',
-              backgroundColor: Colors.white70,
-              mini: true,
-              child: Icon(EvaIcons.closeOutline, color: Colors.black, size: 30,),
-              onPressed: (){
-                Navigator.of(context).pop();
-              },
-              tooltip: 'Close'
-            ),
-          ),
-          Column(
+          _buildPhoto(),
+          _buildLoading(),
+          _buildPositionedButtons(16, 16, 'close', EvaIcons.close),
+          fullScreen == false ? Column(
               children: <Widget>[
                 Expanded(
                   child: Container(
@@ -99,132 +45,157 @@ class _WallpaperPageState extends State<WallpaperPage> {
                       child: new ClipRect(
                         child: new BackdropFilter(
                           filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                          child: new Container(
-                            height: 200.0,
-                            decoration: new BoxDecoration(
-                              color: Colors.grey.shade100.withOpacity(0.2)
-                            ),
+                          child: FittedBox(
                             child: new Container(
-                              width: MediaQuery.of(context).size.width,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 10, left: 10, bottom: 3),
-                                    child: Row(
-                                      children: <Widget>[
-                                        CircleAvatar(
-                                          child: Image.network(widget.photoHits.userImageURL),
-                                          ),
-                                          SizedBox(width: 5,),
-                                        Text('@' + widget.photoHits.user, style: GoogleFonts.montserrat(color: Colors.white, fontSize: 20))
-                                      ],
+                              decoration: new BoxDecoration(
+                                color: Colors.grey.shade100.withOpacity(0.2)
+                              ),
+                              child: new Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 10, left: 10, bottom: 3),
+                                      child: Row(
+                                        children: <Widget>[
+                                          CircleAvatar(
+                                            backgroundColor: Colors.black12,
+                                            child: widget.photoHits.userImageURL != '' ? Image.network(widget.photoHits.userImageURL) : Icon(EvaIcons.person),
+                                            ),
+                                            SizedBox(width: 5,),
+                                          Text('@' + widget.photoHits.user, style: GoogleFonts.montserrat(color: Colors.white, fontSize: 18))
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Wrap(
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 0, left: 10),
-                                        child: Chip(
-                                          elevation: 1,
-                                          label: Text(widget.photoHits.tags),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 0, left: 10),
-                                        child: Chip(
-                                          elevation: 1,
-                                          label: Text(widget.photoHits.imageWidth.toString() + ' x ' + widget.photoHits.imageHeight.toString()),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 0, left: 10),
-                                        child: Chip(
-                                          elevation: 1,
-                                          label: Text('comments: ' + widget.photoHits.comments.toString()),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 0, left: 10),
-                                        child: Chip(
-                                          elevation: 1,
-                                          label: Text(widget.photoHits.type),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 0, left: 10),
-                                        child: Chip(
-                                          elevation: 1,
-                                          label: Text('views: ' + widget.photoHits.views.toString()),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 0, left: 10),
-                                        child: Chip(
-                                          elevation: 1,
-                                          label: Text('likes: ' + widget.photoHits.likes.toString()),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 0, left: 10),
-                                        child: Chip(
-                                          elevation: 1,
-                                          label: Text('downloads: ' + widget.photoHits.downloads.toString()),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 0, left: 10),
-                                        child: Chip(
-                                          elevation: 1,
-                                          label: Text('favorites: ' + widget.photoHits.favorites.toString()),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                                    Wrap(
+                                      children: <Widget>[
+                                        _buildPaddingClips('', widget.photoHits.tags.toString()),
+                                        _buildPaddingClips('Resolution: ', '${widget.photoHits.imageWidth.toString()} x ${widget.photoHits.imageHeight.toString()}'),
+                                        _buildPaddingClips('Comments: ', widget.photoHits.comments.toString()),
+                                        _buildPaddingClips('Type: ', widget.photoHits.type.toString()),
+                                        _buildPaddingClips('Views: ', widget.photoHits.views.toString()),
+                                        _buildPaddingClips('Likes: ', widget.photoHits.likes.toString()),
+                                        _buildPaddingClips('Downsloads: ', widget.photoHits.downloads.toString()),
+                                        _buildPaddingClips('Favorites: ', widget.photoHits.favorites.toString()),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
-                      right: 16.0,
-                      top: 0.0,
-                      child: FloatingActionButton(
-                        backgroundColor: Colors.white70,
-                        heroTag: 'setWallpaper',
-                        tooltip: 'Set as Wallpaper',
-                        child: Icon(
-                          Icons.format_paint,
-                          color: Colors.black87,
-                        ),
-                        onPressed: () {
-                          setWallpaper();
-                        },
-                      ),
-                    ),
-                    Positioned(
-                      right: 86.0,
-                      top: 0.0,
-                      child: FloatingActionButton(
-                        backgroundColor: Colors.white70,
-                        heroTag: 'downloadWallpaper',
-                        tooltip: 'Set as Wallpaper',
-                        child: Icon(
-                          Icons.file_download,
-                          color: Colors.black87,
-                        ),
-                        onPressed: () {
-                          downloadImage();
-                        },
-                      ),
-                    )
+                    _buildPositionedButtons(16, 0, 'set', Icons.format_paint),
+                    _buildPositionedButtons(66, 0, 'down', Icons.file_download),
+                    _buildPositionedButtons(116, 0, 'setting', EvaIcons.settingsOutline)
                   ],
                 )
               ],
-            ),
+            ) : Container(),
         ],
+      ),
+    );
+  }
+
+  Hero _buildPhoto() {
+    return Hero(
+      tag: widget.heroId,
+      child: GestureDetector(
+        onTap: (){
+          setState(() {
+            if(fullScreen == false){
+              fullScreen = true;
+            }else{
+              fullScreen = false;
+            }
+            print(fullScreen);
+          });
+        },
+        onVerticalDragEnd: (val){
+          if(val.primaryVelocity != 0){
+            Navigator.of(context).pop();
+          }
+        },
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          child: FadeInImage(
+            image: NetworkImage(widget.photoHits.largeImageURL),
+            fit: BoxFit.cover,
+            placeholder: AssetImage('assets/loading2.gif'),
+            height: 100,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container _buildLoading() {
+    return Container(
+         child: Align(
+          alignment: Alignment(0.0, 0.0),
+          child: Center(
+            child: downloading
+            ? Container(
+                height: 120.0,
+                width: 200.0,
+                child: Card(
+                  color: Colors.white60,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircularProgressIndicator(),
+                      SizedBox(height: 20.0),
+                      Text(
+                        "Downloading File : $progressString",
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            : Text("")),
+          ),
+       );
+  }
+
+  Padding _buildPaddingClips(String title, String label) {
+    return Padding(
+      padding: EdgeInsets.only(top: 0, left: 5),
+      child: Chip(
+        elevation: 1,
+        label: Text(title + label, style: GoogleFonts.montserrat(fontSize: 13),),
+      ),
+    );
+  }
+
+  Positioned _buildPositionedButtons(double right, double top, String heroTag, IconData icon) {
+    return Positioned(
+      right: right,
+      top: top,
+      child: FloatingActionButton(
+        mini: true,
+        backgroundColor: Colors.white70,
+        heroTag: heroTag,
+        tooltip: heroTag,
+        child: Icon(
+          icon,
+          color: Colors.black87,
+        ),
+        onPressed: () {
+          if(heroTag == 'close'){
+            Navigator.of(context).pop();
+          }
+          if(heroTag == 'set'){
+          }
+          if(heroTag == 'down'){
+          }
+          if(heroTag == 'settings'){
+          }
+        },
       ),
     );
   }
