@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:bloc_wall/data/model/photo/photo_all.dart';
 import 'package:bloc_wall/data/repository/photo_repository.dart';
 import 'package:bloc_wall/ui/pages/wallpaper_page.dart';
-import 'package:bloc_wall/ui/pages/widget/album_cell.dart';
 import 'package:bloc_wall/ui/pages/widget/centered_message.dart';
 import 'package:bloc_wall/ui/pages/widget/custom_navbar.dart';
 import 'package:bloc_wall/ui/photo/photo_bloc.dart';
@@ -21,7 +20,14 @@ class ListPhotoPage extends StatefulWidget {
   final String orientation;
   final String category;
 
-  const ListPhotoPage({Key key, this.imageType, this.query, this.order, this.orientation, this.category}) : super(key: key);
+  const ListPhotoPage(
+      {Key key,
+      this.imageType,
+      this.query,
+      this.order,
+      this.orientation,
+      this.category})
+      : super(key: key);
 
   @override
   _ListPhotoPageState createState() => _ListPhotoPageState();
@@ -37,14 +43,16 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
     print(widget.query);
     print(widget.order);
     print(widget.orientation);
-    _photoBloc.add(FetchPhoto(widget.imageType, widget.query, widget.order, widget.orientation));
+    _photoBloc.add(FetchPhoto(
+        widget.imageType, widget.query, widget.order, widget.orientation));
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     super.dispose();
     _photoBloc.close();
   }
+
   @override
   Widget build(BuildContext context) {
     final double iconSize = (MediaQuery.of(context).size.width +
@@ -54,14 +62,21 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
       create: (context) => PhotoBloc(PhotoRepository()),
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: Colors.white,
-          title: Text(widget.order.toUpperCase(), style: GoogleFonts.montserrat(color:Colors.black, fontSize: 20),),
+          title: Text(
+            widget.order.toUpperCase(),
+            style: GoogleFonts.montserrat(color: Colors.black, fontSize: 20),
+          ),
           elevation: 0,
           leading: IconButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: Icon(EvaIcons.arrowBackOutline, color: Colors.black,),
+            icon: Icon(
+              EvaIcons.arrowBackOutline,
+              color: Colors.black,
+            ),
           ),
         ),
         backgroundColor: Colors.white,
@@ -76,7 +91,8 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
       ),
     );
   }
-    BlocBuilder<PhotoBloc, PhotoState> _buildBlocBuilder() {
+
+  BlocBuilder<PhotoBloc, PhotoState> _buildBlocBuilder() {
     return BlocBuilder<PhotoBloc, PhotoState>(
       bloc: _photoBloc,
       builder: (context, state) {
@@ -99,57 +115,57 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
     );
   }
 
-  Widget _buildGridViewList(PhotoAll photoAll){
+  Widget _buildGridViewList(PhotoAll photoAll) {
     return StaggeredGridView.countBuilder(
-      shrinkWrap: true,
-      crossAxisCount: 4,
-      mainAxisSpacing: 1,
-      itemCount: 50,
-      crossAxisSpacing: 1,
-      staggeredTileBuilder: (index) =>
-          StaggeredTile.count(2, index.isEven ? 2 : 3),
-      itemBuilder: (context, index){
-        return Stack(
-          children: <Widget>[
-            GridTile(
-              footer: Container(
-                height: 50,
-              ),
-              child: GestureDetector(
-                onTap: (){
-                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => WallpaperPage(heroId: photoAll.hits[index].id.toString(), photoHits: photoAll.hits[index],)));
-                },
-                child: Image.network(
-                  photoAll.hits[index].webformatURL,
-                  fit: BoxFit.cover,
+        shrinkWrap: true,
+        crossAxisCount: 4,
+        mainAxisSpacing: 1,
+        itemCount: 50,
+        crossAxisSpacing: 1,
+        staggeredTileBuilder: (index) =>
+            StaggeredTile.count(2, index.isEven ? 2 : 3),
+        itemBuilder: (context, index) {
+          return Stack(
+            children: <Widget>[
+              GridTile(
+                footer: Container(
+                  height: 50,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WallpaperPage(
+                                  heroId: photoAll.hits[index].id.toString(),
+                                  photoHits: photoAll.hits[index],
+                                )));
+                  },
+                  child: Image.network(
+                    photoAll.hits[index].webformatURL,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: new ClipRect(
-                child: new BackdropFilter(
-                  filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                  child: new Container(
-                    height: 40.0,
-                    decoration: new BoxDecoration(
-                      color: Colors.grey.shade100.withOpacity(0.2)
-                    ),
-                    child: new Center(
-                      child: new Text(
-                        photoAll.hits[index].user,
-                        style: GoogleFonts.montserrat(color: Colors.white)
+              Container(
+                alignment: Alignment.bottomCenter,
+                child: new ClipRect(
+                  child: new BackdropFilter(
+                    filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                    child: new Container(
+                      height: 40.0,
+                      decoration: new BoxDecoration(
+                          color: Colors.grey.shade100.withOpacity(0.2)),
+                      child: new Center(
+                        child: new Text(photoAll.hits[index].user,
+                            style: GoogleFonts.montserrat(color: Colors.white)),
                       ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
-        );
-      }
-    );
+              )
+            ],
+          );
+        });
   }
 }

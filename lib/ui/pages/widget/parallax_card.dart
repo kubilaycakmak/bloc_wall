@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 
 class ParallaxCards extends StatelessWidget {
-
   ParallaxCards({
     @required this.item,
     @required this.pageVisibility,
@@ -24,7 +23,7 @@ class ParallaxCards extends StatelessWidget {
         alignment: FractionalOffset.topLeft,
         transform: Matrix4.translationValues(
           xTranslation,
-          0.0,
+          10.0,
           0.0,
         ),
         child: child,
@@ -36,7 +35,7 @@ class ParallaxCards extends StatelessWidget {
     var categoryText = _applyTextEffects(
       translationFactor: 300.0,
       child: Padding(
-        padding: EdgeInsets.all(40.0),
+        padding: EdgeInsets.all(10.0),
         child: GradientText(
           item.body,
           shaderRect: Rect.fromLTWH(0.0, 0.0, 10.0, 10.0),
@@ -105,7 +104,7 @@ class ParallaxCards extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: 10.0,
-        horizontal: 8.0,
+        horizontal: 5.0,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
@@ -122,13 +121,14 @@ class ParallaxCards extends StatelessWidget {
       ),
     );
   }
+
   bool isThemeCurrentlyDark(BuildContext context) {
     if (Theme.of(context).brightness == Brightness.dark) {
       return true;
     } else {
       return false;
     }
-  } 
+  }
 }
 
 class ParallaxCardItem {

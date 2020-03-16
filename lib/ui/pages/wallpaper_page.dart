@@ -32,71 +32,96 @@ class _WallpaperPageState extends State<WallpaperPage> {
           _buildPhoto(),
           _buildLoading(),
           _buildPositionedButtons(16, 16, 'close', EvaIcons.close),
-          fullScreen == false ? Column(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                      ),
-                ),
-                Stack(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(top: 28.0),
-                      child: new ClipRect(
-                        child: new BackdropFilter(
-                          filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                          child: FittedBox(
-                            child: new Container(
-                              decoration: new BoxDecoration(
-                                color: Colors.grey.shade100.withOpacity(0.2)
-                              ),
-                              child: new Container(
-                                width: MediaQuery.of(context).size.width,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10, left: 10, bottom: 3),
-                                      child: Row(
-                                        children: <Widget>[
-                                          CircleAvatar(
-                                            backgroundColor: Colors.black12,
-                                            child: widget.photoHits.userImageURL != '' ? Image.network(widget.photoHits.userImageURL) : Icon(EvaIcons.person),
-                                            ),
-                                            SizedBox(width: 5,),
-                                          Text('@' + widget.photoHits.user, style: GoogleFonts.montserrat(color: Colors.white, fontSize: 18))
-                                        ],
-                                      ),
-                                    ),
-                                    Wrap(
-                                      children: <Widget>[
-                                        _buildPaddingClips('', widget.photoHits.tags.toString()),
-                                        _buildPaddingClips('Resolution: ', '${widget.photoHits.imageWidth.toString()} x ${widget.photoHits.imageHeight.toString()}'),
-                                        _buildPaddingClips('Comments: ', widget.photoHits.comments.toString()),
-                                        _buildPaddingClips('Type: ', widget.photoHits.type.toString()),
-                                        _buildPaddingClips('Views: ', widget.photoHits.views.toString()),
-                                        _buildPaddingClips('Likes: ', widget.photoHits.likes.toString()),
-                                        _buildPaddingClips('Downsloads: ', widget.photoHits.downloads.toString()),
-                                        _buildPaddingClips('Favorites: ', widget.photoHits.favorites.toString()),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    _buildPositionedButtons(16, 0, 'set', Icons.format_paint),
-                    _buildPositionedButtons(66, 0, 'down', Icons.file_download),
-                    _buildPositionedButtons(116, 0, 'setting', EvaIcons.settingsOutline)
-                  ],
-                )
-              ],
-            ) : Container(),
+          Column(
+            children: <Widget>[
+              Expanded(
+                child: Container(),
+              ),
+              fullScreen == false
+                  ? AnimatedContainer(
+                      padding: EdgeInsets.all(40.0),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20)),
+                      duration: Duration(seconds: 5),
+                      child: _buildBottomBar(context))
+                  : Container()
+            ],
+          )
         ],
       ),
+    );
+  }
+
+  Stack _buildBottomBar(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 28.0),
+          child: new ClipRect(
+            child: new BackdropFilter(
+              filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: FittedBox(
+                child: new Container(
+                  decoration: new BoxDecoration(
+                      color: Colors.grey.shade100.withOpacity(0.2)),
+                  child: new Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding:
+                              EdgeInsets.only(top: 10, left: 10, bottom: 3),
+                          child: Row(
+                            children: <Widget>[
+                              CircleAvatar(
+                                backgroundColor: Colors.black12,
+                                child: widget.photoHits.userImageURL != ''
+                                    ? Image.network(
+                                        widget.photoHits.userImageURL)
+                                    : Icon(EvaIcons.person),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('@' + widget.photoHits.user,
+                                  style: GoogleFonts.montserrat(
+                                      color: Colors.white, fontSize: 18))
+                            ],
+                          ),
+                        ),
+                        Wrap(
+                          children: <Widget>[
+                            _buildPaddingClips(
+                                '', widget.photoHits.tags.toString()),
+                            _buildPaddingClips('Resolution: ',
+                                '${widget.photoHits.imageWidth.toString()} x ${widget.photoHits.imageHeight.toString()}'),
+                            _buildPaddingClips('Comments: ',
+                                widget.photoHits.comments.toString()),
+                            _buildPaddingClips(
+                                'Type: ', widget.photoHits.type.toString()),
+                            _buildPaddingClips(
+                                'Views: ', widget.photoHits.views.toString()),
+                            _buildPaddingClips(
+                                'Likes: ', widget.photoHits.likes.toString()),
+                            _buildPaddingClips('Downsloads: ',
+                                widget.photoHits.downloads.toString()),
+                            _buildPaddingClips('Favorites: ',
+                                widget.photoHits.favorites.toString()),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        _buildPositionedButtons(16, 0, 'set', Icons.format_paint),
+        _buildPositionedButtons(66, 0, 'down', Icons.file_download),
+        _buildPositionedButtons(116, 0, 'setting', EvaIcons.settingsOutline)
+      ],
     );
   }
 
@@ -104,18 +129,18 @@ class _WallpaperPageState extends State<WallpaperPage> {
     return Hero(
       tag: widget.heroId,
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           setState(() {
-            if(fullScreen == false){
+            if (fullScreen == false) {
               fullScreen = true;
-            }else{
+            } else {
               fullScreen = false;
             }
             print(fullScreen);
           });
         },
-        onVerticalDragEnd: (val){
-          if(val.primaryVelocity != 0){
+        onVerticalDragEnd: (val) {
+          if (val.primaryVelocity != 0) {
             Navigator.of(context).pop();
           }
         },
@@ -125,8 +150,7 @@ class _WallpaperPageState extends State<WallpaperPage> {
           child: FadeInImage(
             image: NetworkImage(widget.photoHits.largeImageURL),
             fit: BoxFit.cover,
-            placeholder: AssetImage('assets/loading2.gif'),
-            height: 100,
+            placeholder: NetworkImage(widget.photoHits.webformatURL),
           ),
         ),
       ),
@@ -135,31 +159,31 @@ class _WallpaperPageState extends State<WallpaperPage> {
 
   Container _buildLoading() {
     return Container(
-         child: Align(
-          alignment: Alignment(0.0, 0.0),
-          child: Center(
+      child: Align(
+        alignment: Alignment(0.0, 0.0),
+        child: Center(
             child: downloading
-            ? Container(
-                height: 120.0,
-                width: 200.0,
-                child: Card(
-                  color: Colors.white60,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CircularProgressIndicator(),
-                      SizedBox(height: 20.0),
-                      Text(
-                        "Downloading File : $progressString",
-                        style: TextStyle(color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-              )
-            : Text("")),
-          ),
-       );
+                ? Container(
+                    height: 120.0,
+                    width: 200.0,
+                    child: Card(
+                      color: Colors.white60,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          CircularProgressIndicator(),
+                          SizedBox(height: 20.0),
+                          Text(
+                            "Downloading File : $progressString",
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                : Text("")),
+      ),
+    );
   }
 
   Padding _buildPaddingClips(String title, String label) {
@@ -167,12 +191,16 @@ class _WallpaperPageState extends State<WallpaperPage> {
       padding: EdgeInsets.only(top: 0, left: 5),
       child: Chip(
         elevation: 1,
-        label: Text(title + label, style: GoogleFonts.montserrat(fontSize: 13),),
+        label: Text(
+          title + label,
+          style: GoogleFonts.montserrat(fontSize: 13),
+        ),
       ),
     );
   }
 
-  Positioned _buildPositionedButtons(double right, double top, String heroTag, IconData icon) {
+  Positioned _buildPositionedButtons(
+      double right, double top, String heroTag, IconData icon) {
     return Positioned(
       right: right,
       top: top,
@@ -186,15 +214,12 @@ class _WallpaperPageState extends State<WallpaperPage> {
           color: Colors.black87,
         ),
         onPressed: () {
-          if(heroTag == 'close'){
+          if (heroTag == 'close') {
             Navigator.of(context).pop();
           }
-          if(heroTag == 'set'){
-          }
-          if(heroTag == 'down'){
-          }
-          if(heroTag == 'settings'){
-          }
+          if (heroTag == 'set') {}
+          if (heroTag == 'down') {}
+          if (heroTag == 'settings') {}
         },
       ),
     );
@@ -204,12 +229,11 @@ class _WallpaperPageState extends State<WallpaperPage> {
     Dio dio = Dio();
     try {
       var directory = await getExternalStorageDirectory();
-       print(directory);
+      print(directory);
 
       await dio.download(widget.photoHits.largeImageURL,
           "${directory.path}/${DateTime.now().toUtc().toIso8601String()}.jpg",
           onReceiveProgress: (rec, total) {
-
         setState(() {
           downloading = true;
           progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
@@ -225,14 +249,15 @@ class _WallpaperPageState extends State<WallpaperPage> {
     });
   }
 
-Future<Null> setWallpaper() async {
+  Future<Null> setWallpaper() async {
     Dio dio = Dio();
     try {
       var dir = await getTemporaryDirectory();
       print(dir);
 
-      await dio.download(widget.photoHits.largeImageURL, "${dir.path}/myimage.jpeg",
-          onReceiveProgress: (rec, total) {
+      await dio
+          .download(widget.photoHits.largeImageURL, "${dir.path}/myimage.jpeg",
+              onReceiveProgress: (rec, total) {
         setState(() {
           downloading = true;
           progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";

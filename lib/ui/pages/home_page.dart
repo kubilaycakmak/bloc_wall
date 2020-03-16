@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
     _photoBloc.close();
   }
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +38,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    
     final double iconSize = (MediaQuery.of(context).size.width +
             MediaQuery.of(context).size.height) /
         40;
@@ -99,7 +99,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildListBody(PhotoAll photoAll) {
-
     return Padding(
       padding: const EdgeInsets.only(top: 150.0),
       child: ListView(
@@ -108,43 +107,51 @@ class _HomePageState extends State<HomePage> {
         shrinkWrap: true,
         children: <Widget>[
           _buildbuttonBar(photoOrVideoList),
-          _buildCarouselSlider(bannerA, 200, photoAll),
-          Text('\t\t\t\t\t\tCategories', style: GoogleFonts.montserrat(fontSize: 15,),),
-          _buildParallaxCardSlider(bannerCategories),
+          _buildCarouselSlider(bannerA, 200, photoAll, 0.90),
+          Text(
+            '\t\t\t\t\t\tCategories',
+            style: GoogleFonts.montserrat(
+              fontSize: 15,
+            ),
+          ),
+          // _buildParallaxCardSlider(bannerCategories),
+          _buildCarouselSlider(bannerCategories, 200, photoAll, 0.45),
           _buildBanner(bannerPhoto, 250),
           _buildBanner(bannerVector, 250),
           _buildBanner(bannerIllistration, 250),
-          SizedBox(height: 50,)
+          SizedBox(
+            height: 50,
+          )
         ],
       ),
     );
   }
 
-  Padding _buildParallaxCardSlider(List<ParallaxCardItem> bannerA) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 0.0),
-      child: SizedBox.fromSize(
-        size: Size.fromHeight(70.0),
-        child: PageTransformer(
-          pageViewBuilder: (context, visibilityResolver) {
-            return PageView.builder(
-              controller: PageController(viewportFraction: 0.55),
-              itemCount: bannerA.length,
-              itemBuilder: (context, index) {
-                final item = bannerA[index];
-                final pageVisibility =
-                    visibilityResolver.resolvePageVisibility(index);
-                return ParallaxCards(
-                  item: item,
-                  pageVisibility: pageVisibility,
-                );
-              },
-            );
-          },
-        ),
-      ),
-    );
-  }
+  // Widget _buildParallaxCardSlider(List<ParallaxCardItem> bannerA) {
+  //   return Padding(
+  //     padding: EdgeInsets.only(bottom: 0.0, left: 0),
+  //     child: SizedBox.fromSize(
+  //       size: Size.fromHeight(70.0),
+  //       child: PageTransformer(
+  //         pageViewBuilder: (context, visibilityResolver) {
+  //           return PageView.builder(
+  //             controller: PageController(viewportFraction: 0.55),
+  //             itemCount: bannerA.length,
+  //             itemBuilder: (context, index) {
+  //               final item = bannerA[index];
+  //               final pageVisibility =
+  //                   visibilityResolver.resolvePageVisibility(index);
+  //               return ParallaxCards(
+  //                 item: item,
+  //                 pageVisibility: pageVisibility,
+  //               );
+  //             },
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildbuttonBar(List title) {
     int _selected = 0;
@@ -158,8 +165,7 @@ class _HomePageState extends State<HomePage> {
           return FlatButton(
             splashColor: Colors.grey.shade100,
             highlightColor: Colors.transparent,
-            onPressed: () {
-            },
+            onPressed: () {},
             child: Text(
               title[index],
               style: GoogleFonts.montserrat(color: Colors.black, fontSize: 15),
@@ -170,11 +176,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildCarouselSlider(
-      List<ParallaxCardItem> list, double height, PhotoAll photoAll) {
+  Widget _buildCarouselSlider(List<ParallaxCardItem> list, double height,
+      PhotoAll photoAll, double viewportFraction) {
     return Container(
-      height: 200,
+      height: height,
       child: CarouselSlider.builder(
+        initialPage: 0,
+        viewportFraction: viewportFraction,
         autoPlay: true,
         scrollDirection: Axis.horizontal,
         itemCount: list.length,
@@ -186,11 +194,11 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ListPhotoPage(
-                        category: '',
-                        imageType: 'photo',
-                        order: list[index].body,
-                        orientation: 'vertical',
-                        query: '',
+                            category: '',
+                            imageType: 'photo',
+                            order: list[index].body,
+                            orientation: 'vertical',
+                            query: '',
                           )));
             },
             child: ParallaxCards(
@@ -200,7 +208,6 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         },
-        height: 400.0,
       ),
     );
   }
