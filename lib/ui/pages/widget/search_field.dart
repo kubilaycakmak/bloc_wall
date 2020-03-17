@@ -2,6 +2,8 @@ import 'package:bloc_wall/ui/photo/photo_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
+import '../list_photo.page.dart';
+
 class SearchWidget extends StatefulWidget {
   const SearchWidget({
     Key key,
@@ -36,9 +38,18 @@ class _SearchWidgetState extends State<SearchWidget> {
           width: MediaQuery.of(context).size.width - 130,
           child: TextField(
             onSubmitted: (val){
-              BlocProvider.of<PhotoBloc>(context).fetchResultPage('latest', orientation, val, val, false, 'all');
-                // _photoBloc.add(FetchPhoto(
-                // 'false', val, 'all', val, 'latest', orientation));
+              print('val $val');
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ListPhotoPage(
+                            editorChoice: false,
+                            category: '',
+                            imageType: 'all',
+                            order: '',
+                            orientation: 'vertical',
+                            query: val,
+                          )));
             },
             focusNode: _focusNode,
             controller: _controller,

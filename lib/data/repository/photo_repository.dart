@@ -10,7 +10,7 @@ class PhotoRepository {
   String _lastSearchQuery;
 
   static const String _pixabayImageBaseURL =
-      'https://pixabay.com/api/?key=$API_KEY&safesearch=true';
+      'https://pixabay.com/api/?key=$API_KEY&safesearch=false';
   // static const String _pixabayVideoBaseURL =
   //     'https://pixabay.com/videos/?key=$API_KEY';
   void _cacheValues({String query}){

@@ -71,7 +71,7 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
-            widget.category == '' ? widget.order.toUpperCase() : widget.category.toUpperCase(),
+            widget.category == '' ? '${widget.order.toUpperCase()} ${widget.query.toUpperCase()}' : widget.category.toUpperCase(),
             style: GoogleFonts.montserrat(color: Colors.black, fontSize: 20),
           ),
           elevation: 0,
@@ -181,7 +181,7 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
     );
   }
   
-    bool _handleScrollNotification(ScrollNotification notification){
+  bool _handleScrollNotification(ScrollNotification notification){
     if(notification is ScrollEndNotification &&
     _scrollController.position.extentAfter == 0){
       print('object');

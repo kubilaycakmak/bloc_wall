@@ -67,7 +67,7 @@ class _WallpaperPageState extends State<WallpaperPage> {
                 child: FittedBox(
                   child: new Container(
                     decoration: new BoxDecoration(
-                      color: Colors.grey.shade100.withOpacity(0.2)),
+                      color: Colors.grey.shade900.withOpacity(0.2)),
                     child: new Container(
                       width: MediaQuery.of(context).size.width,
                       child: Column(

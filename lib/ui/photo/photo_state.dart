@@ -8,6 +8,7 @@ class PhotoState extends Equatable {
 }
 
 class PhotoIsNotList extends PhotoState{
+  
 }
 
 class PhotoIsLoading extends PhotoState{

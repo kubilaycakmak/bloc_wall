@@ -10,7 +10,7 @@ part 'photo_state.dart';
 
 class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
   PhotoRepository _photoRepository;
-  PhotoBloc(this._photoRepository);
+  PhotoBloc(this._photoRepository) : super();
   int counter = 15;
 
   @override
@@ -28,19 +28,20 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     PhotoEvent event,
   ) async* {
     if (event is FetchPhoto) {
-      yield PhotoIsLoading();
-      try {
-        PhotoAll photoAll = await _photoRepository.fetchPhotos(
-          editorChoice: event._editorChoice,
-            category: event._category,
-            imageType: event._imageType,
-            query: event._query,
-            order: event._order,
-            orientation: event._orientation);
-        yield PhotoIsLoaded(photoAll);
-      } catch (_) {
-        yield PhotoIsNotLoaded();
-      }
+      print('event query: ${event._query}');
+        yield PhotoIsLoading();
+        try {
+          PhotoAll photoAll = await _photoRepository.fetchPhotos(
+            editorChoice: event._editorChoice,
+              category: event._category,
+              imageType: event._imageType,
+              query: event._query,
+              order: event._order,
+              orientation: event._orientation);
+          yield PhotoIsLoaded(photoAll);
+        } catch (_) {
+          yield PhotoIsNotLoaded();
+        }
     }else if(event is FetchNextResultPage){
       try {
         counter += 25;
