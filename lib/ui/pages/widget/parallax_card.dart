@@ -133,11 +133,14 @@ class ParallaxCards extends StatelessWidget {
 
 class ParallaxCardItem {
   ParallaxCardItem({
+    this.imageType,
     this.title,
     this.body,
+    this.editCho,
     this.imagePath,
   });
-
+  final String imageType;
+  final bool editCho;
   final String title;
   final String body;
   final String imagePath;

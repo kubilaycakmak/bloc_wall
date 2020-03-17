@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class WallpaperPage extends StatefulWidget {
   final String heroId;
@@ -37,22 +38,17 @@ class _WallpaperPageState extends State<WallpaperPage> {
               Expanded(
                 child: Container(),
               ),
-              fullScreen == false
-                  ? AnimatedContainer(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20)),
-                      duration: Duration(seconds: 1),
-                      child: _buildBottomBar(context))
-                  : Container()
+              !fullScreen ? Container(
+                  padding:
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    child: _buildBottomBar(context)) : Container()
             ],
           )
         ],
       ),
     );
   }
-
+  double _dynamicHeight = 60;
   Widget _buildBottomBar(BuildContext context) {
     return Stack(
       children: <Widget>[
@@ -61,46 +57,48 @@ class _WallpaperPageState extends State<WallpaperPage> {
           child: new ClipRect(
             child: new BackdropFilter(
               filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: FittedBox(
-                child: new Container(
-                  decoration: new BoxDecoration(
-                      color: Colors.grey.shade100.withOpacity(0.2)),
+              child: GestureDetector(
+                onTap: (){
+                  setState(() {
+                    print('object');
+                    _dynamicHeight == 60 ? _dynamicHeight = 70 : _dynamicHeight = 60;
+                  });
+                },
+                child: FittedBox(
                   child: new Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Chip(
-                            avatar:
-                                Image.network(widget.photoHits.userImageURL),
-                            label: Text(widget.photoHits.user,
-                                style: GoogleFonts.montserrat()),
+                    decoration: new BoxDecoration(
+                      color: Colors.grey.shade100.withOpacity(0.2)),
+                    child: new Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        children: <Widget>[
+                          AnimatedContainer(
+                            padding: EdgeInsets.only(left: 10, top: 20),
+                            alignment: Alignment.topLeft,
+                            height: _dynamicHeight,
+                            duration: Duration(milliseconds: 500),
+                            child: Text('Photo by ${widget.photoHits.user}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9)),),
                           ),
-                        ),
-                        Wrap(
-                          alignment: WrapAlignment.start,
-                          crossAxisAlignment: WrapCrossAlignment.start,
-                          children: <Widget>[
-                            _buildPaddingClips(
-                                '', widget.photoHits.tags.toString()),
-                            _buildPaddingClips('Resolution: ',
-                                '${widget.photoHits.imageWidth.toString()} x ${widget.photoHits.imageHeight.toString()}'),
-                            _buildPaddingClips('Comments: ',
-                                widget.photoHits.comments.toString()),
-                            _buildPaddingClips(
-                                'Type: ', widget.photoHits.type.toString()),
-                            _buildPaddingClips(
-                                'Views: ', widget.photoHits.views.toString()),
-                            _buildPaddingClips(
-                                'Likes: ', widget.photoHits.likes.toString()),
-                            _buildPaddingClips('Downsloads: ',
-                                widget.photoHits.downloads.toString()),
-                            _buildPaddingClips('Favorites: ',
-                                widget.photoHits.favorites.toString()),
-                          ],
-                        )
-                      ],
+                          _dynamicHeight == 60 ? Container() : 
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            
+                            children: <Widget>[
+                              _buildBoardInfo(),
+                            ],
+                          )
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Chip(
+                          //     avatar:
+                          //         Image.network(widget.photoHits.userImageURL),
+                          //     label: Text(widget.photoHits.user,
+                          //         style: GoogleFonts.montserrat()),
+                          //   ),
+                          // ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -108,9 +106,9 @@ class _WallpaperPageState extends State<WallpaperPage> {
             ),
           ),
         ),
-        _buildPositionedButtons(16, 0, 'set', Icons.format_paint),
-        _buildPositionedButtons(66, 0, 'down', Icons.file_download),
-        _buildPositionedButtons(116, 0, 'setting', EvaIcons.settingsOutline)
+        _buildPositionedButtons(6, 25, 'set', Icons.format_paint),
+        _buildPositionedButtons(56, 25, 'down', Icons.file_download),
+        _buildPositionedButtons(106, 25, 'setting', EvaIcons.settingsOutline),
       ],
     );
   }
@@ -126,7 +124,6 @@ class _WallpaperPageState extends State<WallpaperPage> {
             } else {
               fullScreen = false;
             }
-            print(fullScreen);
           });
         },
         onVerticalDragEnd: (val) {
@@ -137,10 +134,10 @@ class _WallpaperPageState extends State<WallpaperPage> {
         child: Container(
           width: double.infinity,
           height: double.infinity,
-          child: FadeInImage(
-            image: NetworkImage(widget.photoHits.largeImageURL),
+          child: FadeInImage.memoryNetwork(
+            image: widget.photoHits.webformatURL,
             fit: BoxFit.cover,
-            placeholder: NetworkImage(widget.photoHits.webformatURL),
+            placeholder: kTransparentImage,
           ),
         ),
       ),
@@ -152,41 +149,68 @@ class _WallpaperPageState extends State<WallpaperPage> {
       child: Align(
         alignment: Alignment(0.0, 0.0),
         child: Center(
-            child: downloading
-                ? Container(
-                    height: 120.0,
-                    width: 200.0,
-                    child: Card(
-                      color: Colors.white60,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          CircularProgressIndicator(),
-                          SizedBox(height: 20.0),
-                          Text(
-                            "Downloading File : $progressString",
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
-                      ),
+          child: downloading
+              ? Container(
+                  height: 120.0,
+                  width: 200.0,
+                  child: Card(
+                    color: Colors.white60,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CircularProgressIndicator(),
+                        SizedBox(height: 20.0),
+                        Text(
+                          "Downloading File : $progressString",
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
                     ),
-                  )
-                : Text("")),
+                  ),
+                )
+              : Text("")),
       ),
     );
   }
 
-  Padding _buildPaddingClips(String title, String label) {
-    return Padding(
-      padding: EdgeInsets.only(top: 0, left: 2, bottom: 0),
-      child: Chip(
-        labelPadding: EdgeInsets.symmetric(horizontal: 2),
-        padding: EdgeInsets.symmetric(horizontal: 2),
-        elevation: 1,
-        label: Text(
-          title + label,
-          style: GoogleFonts.montserrat(fontSize: 13),
+  Widget _buildBoardInfo() {
+    return Container(
+      height: _dynamicHeight,
+      child: Table(
+        border: TableBorder(
+          verticalInside: BorderSide(
+            color: Colors.white60
+          )
         ),
+        children: [
+          TableRow(
+            decoration: BoxDecoration(
+              color: Colors.white10
+            ),
+            children: [
+              TableCell(child: Center(child: Text('Resolution : ${widget.photoHits.imageWidth} x ${widget.photoHits.imageHeight}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9)),),),),
+              TableCell(child: Center(child: Text('Size : ' + (widget.photoHits.imageSize/1000000).toString().substring(0,4) + ' mb', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9)))),),
+            ]
+          ),
+          TableRow(
+            decoration: BoxDecoration(
+              color: Colors.white24
+            ),
+            children: [
+              TableCell(child: Center(child: Text('Views : ${widget.photoHits.views}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9))),),),
+              TableCell(child: Center(child: Text('Downloads : ${widget.photoHits.downloads}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9))),),),
+            ]
+          ),
+          TableRow(
+            decoration: BoxDecoration(
+              color: Colors.white10
+            ),
+            children: [
+              TableCell(child: Center(child: Text('Favorites : ${widget.photoHits.favorites}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9))),),),
+              TableCell(child: Center(child: Text('Likes : ${widget.photoHits.likes}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9))),),),
+            ]
+          )
+        ],
       ),
     );
   }
@@ -198,7 +222,7 @@ class _WallpaperPageState extends State<WallpaperPage> {
       top: top,
       child: FloatingActionButton(
         mini: true,
-        backgroundColor: Colors.white70,
+        backgroundColor: Colors.grey.shade100.withOpacity(0.6),
         heroTag: heroTag,
         tooltip: heroTag,
         child: Icon(

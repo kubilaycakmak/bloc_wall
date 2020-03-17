@@ -54,6 +54,9 @@ class _$PhotoHitsSerializer implements StructuredSerializer<PhotoHits> {
       'imageHeight',
       serializers.serialize(object.imageHeight,
           specifiedType: const FullType(int)),
+      'imageSize',
+      serializers.serialize(object.imageSize,
+          specifiedType: const FullType(int)),
       'views',
       serializers.serialize(object.views, specifiedType: const FullType(int)),
       'downloads',
@@ -142,6 +145,10 @@ class _$PhotoHitsSerializer implements StructuredSerializer<PhotoHits> {
           result.imageHeight = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'imageSize':
+          result.imageSize = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
         case 'views':
           result.views = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
@@ -209,6 +216,8 @@ class _$PhotoHits extends PhotoHits {
   @override
   final int imageHeight;
   @override
+  final int imageSize;
+  @override
   final int views;
   @override
   final int downloads;
@@ -242,6 +251,7 @@ class _$PhotoHits extends PhotoHits {
       this.largeImageURL,
       this.imageWidth,
       this.imageHeight,
+      this.imageSize,
       this.views,
       this.downloads,
       this.favorites,
@@ -289,6 +299,9 @@ class _$PhotoHits extends PhotoHits {
     }
     if (imageHeight == null) {
       throw new BuiltValueNullFieldError('PhotoHits', 'imageHeight');
+    }
+    if (imageSize == null) {
+      throw new BuiltValueNullFieldError('PhotoHits', 'imageSize');
     }
     if (views == null) {
       throw new BuiltValueNullFieldError('PhotoHits', 'views');
@@ -340,6 +353,7 @@ class _$PhotoHits extends PhotoHits {
         largeImageURL == other.largeImageURL &&
         imageWidth == other.imageWidth &&
         imageHeight == other.imageHeight &&
+        imageSize == other.imageSize &&
         views == other.views &&
         downloads == other.downloads &&
         favorites == other.favorites &&
@@ -370,18 +384,18 @@ class _$PhotoHits extends PhotoHits {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc(0, id.hashCode), pageURL.hashCode),
-                                                                                type.hashCode),
-                                                                            tags.hashCode),
-                                                                        previewURL.hashCode),
-                                                                    previewWidth.hashCode),
-                                                                previewHeight.hashCode),
-                                                            webformatURL.hashCode),
-                                                        webformatWidth.hashCode),
-                                                    webformatHeight.hashCode),
-                                                largeImageURL.hashCode),
-                                            imageWidth.hashCode),
-                                        imageHeight.hashCode),
+                                                                            $jc($jc($jc($jc(0, id.hashCode), pageURL.hashCode), type.hashCode),
+                                                                                tags.hashCode),
+                                                                            previewURL.hashCode),
+                                                                        previewWidth.hashCode),
+                                                                    previewHeight.hashCode),
+                                                                webformatURL.hashCode),
+                                                            webformatWidth.hashCode),
+                                                        webformatHeight.hashCode),
+                                                    largeImageURL.hashCode),
+                                                imageWidth.hashCode),
+                                            imageHeight.hashCode),
+                                        imageSize.hashCode),
                                     views.hashCode),
                                 downloads.hashCode),
                             favorites.hashCode),
@@ -408,6 +422,7 @@ class _$PhotoHits extends PhotoHits {
           ..add('largeImageURL', largeImageURL)
           ..add('imageWidth', imageWidth)
           ..add('imageHeight', imageHeight)
+          ..add('imageSize', imageSize)
           ..add('views', views)
           ..add('downloads', downloads)
           ..add('favorites', favorites)
@@ -478,6 +493,10 @@ class PhotoHitsBuilder implements Builder<PhotoHits, PhotoHitsBuilder> {
   int get imageHeight => _$this._imageHeight;
   set imageHeight(int imageHeight) => _$this._imageHeight = imageHeight;
 
+  int _imageSize;
+  int get imageSize => _$this._imageSize;
+  set imageSize(int imageSize) => _$this._imageSize = imageSize;
+
   int _views;
   int get views => _$this._views;
   set views(int views) => _$this._views = views;
@@ -527,6 +546,7 @@ class PhotoHitsBuilder implements Builder<PhotoHits, PhotoHitsBuilder> {
       _largeImageURL = _$v.largeImageURL;
       _imageWidth = _$v.imageWidth;
       _imageHeight = _$v.imageHeight;
+      _imageSize = _$v.imageSize;
       _views = _$v.views;
       _downloads = _$v.downloads;
       _favorites = _$v.favorites;
@@ -570,6 +590,7 @@ class PhotoHitsBuilder implements Builder<PhotoHits, PhotoHitsBuilder> {
             largeImageURL: largeImageURL,
             imageWidth: imageWidth,
             imageHeight: imageHeight,
+            imageSize: imageSize,
             views: views,
             downloads: downloads,
             favorites: favorites,

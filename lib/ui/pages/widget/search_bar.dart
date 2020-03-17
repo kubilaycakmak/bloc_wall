@@ -1,7 +1,6 @@
 import 'package:bloc_wall/ui/pages/widget/search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:ui' as ui;
 
 class SearchBar extends StatelessWidget {
   const SearchBar({

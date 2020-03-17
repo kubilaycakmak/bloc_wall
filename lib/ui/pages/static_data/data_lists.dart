@@ -105,18 +105,21 @@ final bannerCategories = <ParallaxCardItem>[
 
 final bannerA = <ParallaxCardItem>[
   ParallaxCardItem(
-    title: 'Explore the latest photo album',
     body: 'latest',
+    title: '',
+    editCho: false,
     imagePath: 'assets/latest.jpg',
   ),
   ParallaxCardItem(
-    title: 'See what people likes',
     body: 'popular',
+    title: '',
+    editCho: false,
     imagePath: 'assets/popular.jpg',
   ),
   ParallaxCardItem(
-    title: 'Randomly',
-    body: 'random',
+    body: "Editor's Choice",
+    title: '',
+    editCho: true,
     imagePath: 'assets/random.jpg',
   ),
 ];
@@ -125,6 +128,7 @@ final bannerPhoto = <ParallaxCardItem>[
   ParallaxCardItem(
     title: 'Tap to Explore',
     body: 'Photo',
+    imageType: 'photo',
     imagePath: 'assets/photo.jpg',
   ),
 ];
@@ -132,6 +136,7 @@ final bannerVector = <ParallaxCardItem>[
   ParallaxCardItem(
     title: 'Tap to Explore',
     body: 'Vector',
+    imageType: 'vector',
     imagePath: 'assets/vector.png',
   ),
 ];
@@ -139,6 +144,7 @@ final bannerIllistration = <ParallaxCardItem>[
   ParallaxCardItem(
     title: 'Tap to Explore',
     body: 'Illustration',
+    imageType: 'illustration',
     imagePath: 'assets/illustration.jpg',
   ),
 ];

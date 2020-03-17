@@ -22,6 +22,7 @@ abstract class PhotoHits implements Built<PhotoHits, PhotoHitsBuilder> {
   String get largeImageURL;
   int get imageWidth;
   int get imageHeight;
+  int get imageSize;
   int get views;
   int get downloads;
   int get favorites;

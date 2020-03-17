@@ -1,4 +1,5 @@
-
+import 'package:bloc_wall/ui/photo/photo_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatefulWidget {
@@ -11,7 +12,6 @@ class SearchWidget extends StatefulWidget {
 }
 
 class _SearchWidgetState extends State<SearchWidget> {
-
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
   String orientation;
@@ -35,6 +35,11 @@ class _SearchWidgetState extends State<SearchWidget> {
           alignment: Alignment.center,
           width: MediaQuery.of(context).size.width - 130,
           child: TextField(
+            onSubmitted: (val){
+              BlocProvider.of<PhotoBloc>(context).fetchResultPage('latest', orientation, val, val, false, 'all');
+                // _photoBloc.add(FetchPhoto(
+                // 'false', val, 'all', val, 'latest', orientation));
+            },
             focusNode: _focusNode,
             controller: _controller,
             decoration: InputDecoration(

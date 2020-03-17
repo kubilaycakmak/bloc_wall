@@ -14,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
 
 class ListPhotoPage extends StatefulWidget {
+  final bool editorChoice;
   final String imageType;
   final String query;
   final String order;
@@ -22,6 +23,7 @@ class ListPhotoPage extends StatefulWidget {
 
   const ListPhotoPage(
       {Key key,
+      this.editorChoice,
       this.imageType,
       this.query,
       this.order,
@@ -35,16 +37,20 @@ class ListPhotoPage extends StatefulWidget {
 
 class _ListPhotoPageState extends State<ListPhotoPage> {
   final _photoBloc = kiwi.Container().resolve<PhotoBloc>();
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    print(widget.imageType);
-    print(widget.query);
-    print(widget.order);
-    print(widget.orientation);
+    print('edit choice ' + widget.editorChoice.toString());
+    print('category ' + widget.category);
+    print('imageType ' + widget.imageType);
+    print('query ' + widget.query);
+    print('order ' + widget.order);
+    print('orientation ' + widget.orientation);
+    print('----------');
     _photoBloc.add(FetchPhoto(
-        widget.imageType, widget.query, widget.order, widget.orientation));
+      widget.editorChoice, widget.category, widget.imageType, widget.query, widget.order, widget.orientation));
   }
 
   @override
@@ -65,7 +71,7 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
-            widget.order.toUpperCase(),
+            widget.category == '' ? widget.order.toUpperCase() : widget.category.toUpperCase(),
             style: GoogleFonts.montserrat(color: Colors.black, fontSize: 20),
           ),
           elevation: 0,
@@ -116,11 +122,14 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
   }
 
   Widget _buildGridViewList(PhotoAll photoAll) {
-    return StaggeredGridView.countBuilder(
+    return NotificationListener<ScrollNotification>(
+      onNotification: _handleScrollNotification,
+      child: StaggeredGridView.countBuilder(
+        controller: _scrollController,
         shrinkWrap: true,
         crossAxisCount: 4,
         mainAxisSpacing: 1,
-        itemCount: 50,
+        itemCount: photoAll.hits.length,
         crossAxisSpacing: 1,
         staggeredTileBuilder: (index) =>
             StaggeredTile.count(2, index.isEven ? 2 : 3),
@@ -136,14 +145,15 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => WallpaperPage(
-                                  heroId: photoAll.hits[index].id.toString(),
-                                  photoHits: photoAll.hits[index],
-                                )));
+                          builder: (context) => WallpaperPage(
+                                heroId: photoAll.hits[index].id.toString(),
+                                photoHits: photoAll.hits[index],
+                              )));
                   },
-                  child: Image.network(
-                    photoAll.hits[index].webformatURL,
+                  child: FadeInImage(
+                    image: NetworkImage(photoAll.hits[index].webformatURL),
                     fit: BoxFit.cover,
+                    placeholder: NetworkImage(photoAll.hits[index].previewURL),
                   ),
                 ),
               ),
@@ -166,6 +176,17 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
               )
             ],
           );
-        });
+        }
+      ),
+    );
+  }
+  
+    bool _handleScrollNotification(ScrollNotification notification){
+    if(notification is ScrollEndNotification &&
+    _scrollController.position.extentAfter == 0){
+      print('object');
+      _photoBloc.fetchNextResultPage(widget.order, widget.orientation, widget.query, widget.category, widget.editorChoice, widget.imageType);
+    }
+    return false;
   }
 }
