@@ -1,5 +1,6 @@
 import 'package:bloc_wall/data/injection_container.dart';
-import 'package:bloc_wall/ui/pages/home_page.dart';
+import 'package:bloc_wall/ui/pages/home_photo_page.dart';
+import 'package:bloc_wall/ui/pages/widget/custom_navbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,7 @@ void main() {
   statusBarBrightness: Brightness.dark,
   statusBarIconBrightness: Brightness.dark));
   runApp(MaterialApp(
-    home: HomePage(),
+    debugShowCheckedModeBanner: false,
+    home: CustomNavbar(),
   ));
 }

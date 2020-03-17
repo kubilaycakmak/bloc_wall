@@ -135,7 +135,7 @@ class _WallpaperPageState extends State<WallpaperPage> {
           width: double.infinity,
           height: double.infinity,
           child: FadeInImage.memoryNetwork(
-            image: widget.photoHits.webformatURL,
+            image: widget.photoHits.largeImageURL,
             fit: BoxFit.cover,
             placeholder: kTransparentImage,
           ),

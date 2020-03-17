@@ -1,5 +1,3 @@
-import 'package:bloc_wall/ui/photo/photo_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 import '../list_photo.page.dart';

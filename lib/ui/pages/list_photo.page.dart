@@ -89,9 +89,6 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
         body: Stack(
           children: <Widget>[
             _buildBlocBuilder(),
-            CustomNavbar(
-              iconSize: iconSize,
-            )
           ],
         ),
       ),
