@@ -23,8 +23,8 @@ class _$VideoAllSerializer implements StructuredSerializer<VideoAll> {
       'totalHits',
       serializers.serialize(object.totalHits,
           specifiedType: const FullType(int)),
-      'videoHits',
-      serializers.serialize(object.videoHits,
+      'hits',
+      serializers.serialize(object.hits,
           specifiedType:
               const FullType(BuiltList, const [const FullType(VideoHits)])),
     ];
@@ -51,8 +51,8 @@ class _$VideoAllSerializer implements StructuredSerializer<VideoAll> {
           result.totalHits = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
-        case 'videoHits':
-          result.videoHits.replace(serializers.deserialize(value,
+        case 'hits':
+          result.hits.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(VideoHits)]))
               as BuiltList<Object>);
@@ -70,20 +70,20 @@ class _$VideoAll extends VideoAll {
   @override
   final int totalHits;
   @override
-  final BuiltList<VideoHits> videoHits;
+  final BuiltList<VideoHits> hits;
 
   factory _$VideoAll([void Function(VideoAllBuilder) updates]) =>
       (new VideoAllBuilder()..update(updates)).build();
 
-  _$VideoAll._({this.total, this.totalHits, this.videoHits}) : super._() {
+  _$VideoAll._({this.total, this.totalHits, this.hits}) : super._() {
     if (total == null) {
       throw new BuiltValueNullFieldError('VideoAll', 'total');
     }
     if (totalHits == null) {
       throw new BuiltValueNullFieldError('VideoAll', 'totalHits');
     }
-    if (videoHits == null) {
-      throw new BuiltValueNullFieldError('VideoAll', 'videoHits');
+    if (hits == null) {
+      throw new BuiltValueNullFieldError('VideoAll', 'hits');
     }
   }
 
@@ -100,13 +100,13 @@ class _$VideoAll extends VideoAll {
     return other is VideoAll &&
         total == other.total &&
         totalHits == other.totalHits &&
-        videoHits == other.videoHits;
+        hits == other.hits;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc(0, total.hashCode), totalHits.hashCode), videoHits.hashCode));
+    return $jf(
+        $jc($jc($jc(0, total.hashCode), totalHits.hashCode), hits.hashCode));
   }
 
   @override
@@ -114,7 +114,7 @@ class _$VideoAll extends VideoAll {
     return (newBuiltValueToStringHelper('VideoAll')
           ..add('total', total)
           ..add('totalHits', totalHits)
-          ..add('videoHits', videoHits))
+          ..add('hits', hits))
         .toString();
   }
 }
@@ -130,11 +130,10 @@ class VideoAllBuilder implements Builder<VideoAll, VideoAllBuilder> {
   int get totalHits => _$this._totalHits;
   set totalHits(int totalHits) => _$this._totalHits = totalHits;
 
-  ListBuilder<VideoHits> _videoHits;
-  ListBuilder<VideoHits> get videoHits =>
-      _$this._videoHits ??= new ListBuilder<VideoHits>();
-  set videoHits(ListBuilder<VideoHits> videoHits) =>
-      _$this._videoHits = videoHits;
+  ListBuilder<VideoHits> _hits;
+  ListBuilder<VideoHits> get hits =>
+      _$this._hits ??= new ListBuilder<VideoHits>();
+  set hits(ListBuilder<VideoHits> hits) => _$this._hits = hits;
 
   VideoAllBuilder();
 
@@ -142,7 +141,7 @@ class VideoAllBuilder implements Builder<VideoAll, VideoAllBuilder> {
     if (_$v != null) {
       _total = _$v.total;
       _totalHits = _$v.totalHits;
-      _videoHits = _$v.videoHits?.toBuilder();
+      _hits = _$v.hits?.toBuilder();
       _$v = null;
     }
     return this;
@@ -167,12 +166,12 @@ class VideoAllBuilder implements Builder<VideoAll, VideoAllBuilder> {
     try {
       _$result = _$v ??
           new _$VideoAll._(
-              total: total, totalHits: totalHits, videoHits: videoHits.build());
+              total: total, totalHits: totalHits, hits: hits.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'videoHits';
-        videoHits.build();
+        _$failedField = 'hits';
+        hits.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'VideoAll', _$failedField, e.toString());

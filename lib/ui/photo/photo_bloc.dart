@@ -2,15 +2,15 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_wall/data/model/photo/photo_all.dart';
-import 'package:bloc_wall/data/repository/photo_repository.dart';
+import 'package:bloc_wall/data/repository/api_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'photo_event.dart';
 part 'photo_state.dart';
 
 class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
-  PhotoRepository _photoRepository;
-  PhotoBloc(this._photoRepository) : super();
+  ApiRepository _apiRepository;
+  PhotoBloc(this._apiRepository) : super();
   int counter = 15;
 
   @override
@@ -31,7 +31,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
       print('event query: ${event._query}');
         yield PhotoIsLoading();
         try {
-          PhotoAll photoAll = await _photoRepository.fetchPhotos(
+          PhotoAll photoAll = await _apiRepository.fetchPhotos(
             editorChoice: event._editorChoice,
               category: event._category,
               imageType: event._imageType,
@@ -45,7 +45,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     }else if(event is FetchNextResultPage){
       try {
         counter += 25;
-        final nextPageResult = await _photoRepository.fetchNextResultPage(perPage: counter, order: event.order, orientation: event.orientation, category: event.category, editorChoice: event.editorChoice, imageType: event.imageType);
+        final nextPageResult = await _apiRepository.fetchNextResultPage(perPage: counter, order: event.order, orientation: event.orientation, category: event.category, editorChoice: event.editorChoice, imageType: event.imageType);
         yield PhotoIsLoaded(nextPageResult);
       }catch(e){
         print(e);

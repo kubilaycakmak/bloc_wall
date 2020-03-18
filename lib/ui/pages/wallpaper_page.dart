@@ -77,7 +77,7 @@ class _WallpaperPageState extends State<WallpaperPage> {
                             alignment: Alignment.topLeft,
                             height: _dynamicHeight,
                             duration: Duration(milliseconds: 500),
-                            child: Text('Photo by ${widget.photoHits.user}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9)),),
+                            child: Text('by ${widget.photoHits.user}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9)),),
                           ),
                           _dynamicHeight == 60 ? Container() : 
                           Wrap(
@@ -86,17 +86,19 @@ class _WallpaperPageState extends State<WallpaperPage> {
                             
                             children: <Widget>[
                               _buildBoardInfo(),
+                              Column(
+                                children: <Widget>[
+                                  _buildSimiliarPhoto(),
+                                  Container(child: FlatButton(onPressed: () { 
+                                setState(() {
+                                  _dynamicHeight = 80;
+                                });
+                               },
+                              child: Text('see more', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9)),)),)
+                                ],
+                              ),
                             ],
                           )
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: Chip(
-                          //     avatar:
-                          //         Image.network(widget.photoHits.userImageURL),
-                          //     label: Text(widget.photoHits.user,
-                          //         style: GoogleFonts.montserrat()),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
@@ -110,6 +112,14 @@ class _WallpaperPageState extends State<WallpaperPage> {
         _buildPositionedButtons(56, 25, 'down', Icons.file_download),
         _buildPositionedButtons(106, 25, 'setting', EvaIcons.settingsOutline),
       ],
+    );
+  }
+
+  Widget _buildSimiliarPhoto(){
+    return Container(
+      child: Image(
+        image: NetworkImage(widget.photoHits.previewURL),
+      ),
     );
   }
 

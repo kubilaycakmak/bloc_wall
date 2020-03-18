@@ -1,9 +1,12 @@
+import 'package:bloc_wall/ui/pages/list_video_page.dart';
 import 'package:flutter/material.dart';
 
 import '../list_photo.page.dart';
 
 class SearchWidget extends StatefulWidget {
+  final String title;
   const SearchWidget({
+    this.title,
     Key key,
   }) : super(key: key);
 
@@ -37,6 +40,7 @@ class _SearchWidgetState extends State<SearchWidget> {
           child: TextField(
             onSubmitted: (val){
               print('val $val');
+              widget.title == 'photo' ? 
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -47,12 +51,26 @@ class _SearchWidgetState extends State<SearchWidget> {
                             order: '',
                             orientation: 'vertical',
                             query: val,
+                          )))
+                          :
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ListVideoPage(
+                            editorChoice: false,
+                            minHeight: 0,
+                            minWidth: 0,
+                            userId: '',
+                            category: '',
+                            videoType: 'all',
+                            order: '',
+                            query: val,
                           )));
             },
             focusNode: _focusNode,
             controller: _controller,
             decoration: InputDecoration(
-              hintText: 'Search Photos',
+              hintText: 'Search ${widget.title}',
               hintStyle: TextStyle(
               ),
               border: InputBorder.none,
@@ -62,9 +80,9 @@ class _SearchWidgetState extends State<SearchWidget> {
         ),
         Container(
           decoration: BoxDecoration(
-            border: Border(
+            border: widget.title == 'photo' ? Border(
               left: BorderSide(),
-            )
+            ) : Border()
           ),
           child: PopupMenuButton(
             offset: Offset(90,110),
@@ -73,7 +91,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                 orientation = value;
               });
             },
-            icon: Icon(Icons.filter_list, color: Colors.black54, size: 30,),
+            icon: widget.title == 'photo' ? Icon(Icons.filter_list, color: Colors.black54, size: 30,) : Container(),
             itemBuilder: (BuildContext context) { 
               var list = List<PopupMenuEntry<Object>>();
               list.add(PopupMenuItem(
@@ -91,7 +109,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                 child: Text('Horizontal'),
                 value: 'horizontal',
               ));
-              return list;
+              return widget.title == 'photo' ? list : null;
             },
           ),
         )

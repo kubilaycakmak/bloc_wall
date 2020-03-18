@@ -1,10 +1,9 @@
 import 'dart:ui';
 
 import 'package:bloc_wall/data/model/photo/photo_all.dart';
-import 'package:bloc_wall/data/repository/photo_repository.dart';
+import 'package:bloc_wall/data/repository/api_repository.dart';
 import 'package:bloc_wall/ui/pages/wallpaper_page.dart';
 import 'package:bloc_wall/ui/pages/widget/centered_message.dart';
-import 'package:bloc_wall/ui/pages/widget/custom_navbar.dart';
 import 'package:bloc_wall/ui/photo/photo_bloc.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -61,11 +60,8 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double iconSize = (MediaQuery.of(context).size.width +
-            MediaQuery.of(context).size.height) /
-        40;
     return BlocProvider(
-      create: (context) => PhotoBloc(PhotoRepository()),
+      create: (context) => PhotoBloc(ApiRepository()),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,

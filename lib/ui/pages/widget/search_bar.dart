@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchBar extends StatelessWidget {
+  final String title;
   const SearchBar({
+    this.title,
     Key key,
   }) : super(key: key);
 
@@ -27,7 +29,7 @@ class SearchBar extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              Text("Let's search for the dream photo for your phone!", style: GoogleFonts.montserrat(
+              Text("Let's search for the dream $title for your phone!", style: GoogleFonts.montserrat(
                 fontSize: 18
               ),),
               SizedBox(height: 10,),
@@ -36,7 +38,7 @@ class SearchBar extends StatelessWidget {
                 borderRadius: BorderRadius.circular(35),
                 border: Border.all()
                 ),
-                  child: SearchWidget(),
+                  child: SearchWidget(title: '$title'),
               ),
             ],
           ),

@@ -1,7 +1,6 @@
-import 'package:bloc_wall/data/repository/photo_repository.dart';
+import 'package:bloc_wall/data/repository/api_repository.dart';
 import 'package:bloc_wall/ui/pages/list_photo.page.dart';
 import 'package:bloc_wall/ui/pages/static_data/data_lists.dart';
-import 'package:bloc_wall/ui/pages/widget/custom_navbar.dart';
 import 'package:bloc_wall/ui/pages/widget/parallax_card.dart';
 import 'package:bloc_wall/ui/pages/widget/search_bar.dart';
 import 'package:bloc_wall/ui/photo/photo_bloc.dart';
@@ -29,17 +28,14 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double iconSize = (MediaQuery.of(context).size.width +
-            MediaQuery.of(context).size.height) /
-        40;
     return BlocProvider(
-      create: (context) => PhotoBloc(PhotoRepository()),
+      create: (context) => PhotoBloc(ApiRepository()),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
           children: <Widget>[
             _buildBlocBuilder(),
-            SafeArea(child: SearchBar()),
+            SafeArea(child: SearchBar(title: 'photo',)),
             // CustomNavbar(
             //   iconSize: iconSize,
             // ),

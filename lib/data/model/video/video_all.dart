@@ -13,7 +13,7 @@ part 'video_all.g.dart';
 abstract class VideoAll implements Built<VideoAll, VideoAllBuilder> {
   int get total;
   int get totalHits;
-  BuiltList<VideoHits> get videoHits;
+  BuiltList<VideoHits> get hits;
 
   VideoAll._();
 
