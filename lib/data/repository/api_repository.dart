@@ -11,7 +11,7 @@ class ApiRepository {
       'https://pixabay.com/api/?key=$API_KEY&safesearch=false';
 
   static const String _pixabayVideoBaseURL =
-      'https://pixabay.com/api/videos/?key=$API_KEY&safesearch=false&pretty=true';
+      'https://pixabay.com/api/videos/?key=$API_KEY&safesearch=false';
   
   void _cacheValues({String query}){
     _lastSearchQuery = query;
@@ -68,10 +68,10 @@ class ApiRepository {
 
   Future<VideoAll> fetchVideos(
     {
-      int minWidth = 0,
-      int minHeight = 0,
+      int minWidth,
+      int minHeight,
       String userId,
-      int perPage = 15,
+      int perPage,
       bool editorChoice,
       String category,
       String query,
@@ -91,6 +91,8 @@ class ApiRepository {
       '&min_width=$minHeight';
     final urlEncoded = Uri.encodeFull(urlRaw);
     final response = await http.Client().get(urlEncoded);
+    print('response body => ${response.body}');
+    print('response code : ${response.statusCode}');
     if(response.statusCode != 200) throw Exception();
     return VideoAll.fromJson(response.body);
   }

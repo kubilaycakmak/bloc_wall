@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_wall/data/model/video/video_all.dart';
-import 'package:bloc_wall/data/model/video/video_hits.dart';
 import 'package:bloc_wall/data/repository/api_repository.dart';
 import 'package:equatable/equatable.dart';
 part 'video_event.dart';
@@ -62,7 +61,7 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
         final nextResultPage = await _apiRepository.fetchNextResultPage();
         yield VideoIsLoaded(nextResultPage);
       }catch (_){
-        throw VideoCouldnotFetchNextPage();
+        throw Exception();
       }
     }
   }

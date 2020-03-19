@@ -15,5 +15,3 @@ class VideoIsLoaded extends VideoState{
   List<Object> get props => [_video];
 }
 class VideoIsNotLoaded extends VideoState{}
-class VideoCouldnotFetch extends VideoState{}
-class VideoCouldnotFetchNextPage extends VideoState{}

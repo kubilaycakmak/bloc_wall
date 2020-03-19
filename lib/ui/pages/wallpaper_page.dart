@@ -1,12 +1,11 @@
 import 'dart:ui';
-
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:bloc_wall/data/model/photo/photo_hits.dart';
-import 'package:dio/dio.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker_saver/image_picker_saver.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class WallpaperPage extends StatefulWidget {
@@ -19,20 +18,15 @@ class WallpaperPage extends StatefulWidget {
 }
 
 class _WallpaperPageState extends State<WallpaperPage> {
-  static const platform =
-      const MethodChannel('com.kubilaycakmak.bloc_wall.bloc_wall/files');
-  bool downloading = false;
-  var progressString = "";
-  String _setWallpaper = '';
   bool fullScreen = false;
+  var filePath;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: <Widget>[
           _buildPhoto(),
-          _buildLoading(),
-          _buildPositionedButtons(16, 16, 'close', EvaIcons.close),
+          _buildPositionedButtons(16, 16, 'close', EvaIcons.close, widget.photoHits.largeImageURL),
           Column(
             children: <Widget>[
               Expanded(
@@ -108,9 +102,9 @@ class _WallpaperPageState extends State<WallpaperPage> {
             ),
           ),
         ),
-        _buildPositionedButtons(6, 25, 'set', Icons.format_paint),
-        _buildPositionedButtons(56, 25, 'down', Icons.file_download),
-        _buildPositionedButtons(106, 25, 'setting', EvaIcons.settingsOutline),
+        _buildPositionedButtons(6, 25, 'set', Icons.format_paint, widget.photoHits.largeImageURL),
+        _buildPositionedButtons(56, 25, 'down', Icons.file_download, widget.photoHits.largeImageURL),
+        _buildPositionedButtons(106, 25, 'setting', EvaIcons.settingsOutline, widget.photoHits.largeImageURL),
       ],
     );
   }
@@ -154,34 +148,30 @@ class _WallpaperPageState extends State<WallpaperPage> {
     );
   }
 
-  Container _buildLoading() {
-    return Container(
-      child: Align(
-        alignment: Alignment(0.0, 0.0),
-        child: Center(
-          child: downloading
-              ? Container(
-                  height: 120.0,
-                  width: 200.0,
-                  child: Card(
-                    color: Colors.white60,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        CircularProgressIndicator(),
-                        SizedBox(height: 20.0),
-                        Text(
-                          "Downloading File : $progressString",
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              : Text("")),
-      ),
-    );
-  }
+  // Container _buildLoading() {
+  //   return Container(
+  //     child: Align(
+  //       alignment: Alignment(0.0, 0.0),
+  //       child: Center(
+  //         child: Container(
+  //                 height: 120.0,
+  //                 width: 200.0,
+  //                 child: Card(
+  //                   color: Colors.white60,
+  //                   child: Column(
+  //                     mainAxisAlignment: MainAxisAlignment.center,
+  //                     children: <Widget>[
+  //                       CircularProgressIndicator(),
+  //                       SizedBox(height: 20.0),
+                        
+  //                     ],
+  //                   ),
+  //                 ),
+  //               )
+  //             ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildBoardInfo() {
     return Container(
@@ -226,7 +216,7 @@ class _WallpaperPageState extends State<WallpaperPage> {
   }
 
   Positioned _buildPositionedButtons(
-      double right, double top, String heroTag, IconData icon) {
+      double right, double top, String heroTag, IconData icon, String url) {
     return Positioned(
       right: right,
       top: top,
@@ -243,75 +233,13 @@ class _WallpaperPageState extends State<WallpaperPage> {
           if (heroTag == 'close') {
             Navigator.of(context).pop();
           }
-          if (heroTag == 'set') {}
-          if (heroTag == 'down') {}
+          if (heroTag == 'set') {
+          }
+          if (heroTag == 'down') {
+          }
           if (heroTag == 'settings') {}
         },
       ),
     );
-  }
-
-  Future<void> downloadImage() async {
-    Dio dio = Dio();
-    try {
-      var directory = await getExternalStorageDirectory();
-      print(directory);
-
-      await dio.download(widget.photoHits.largeImageURL,
-          "${directory.path}/${DateTime.now().toUtc().toIso8601String()}.jpg",
-          onReceiveProgress: (rec, total) {
-        setState(() {
-          downloading = true;
-          progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
-        });
-      });
-    } catch (e) {
-      print(e);
-    }
-
-    setState(() {
-      downloading = false;
-      progressString = "Completed";
-    });
-  }
-
-  Future<Null> setWallpaper() async {
-    Dio dio = Dio();
-    try {
-      var dir = await getTemporaryDirectory();
-      print(dir);
-
-      await dio
-          .download(widget.photoHits.largeImageURL, "${dir.path}/myimage.jpeg",
-              onReceiveProgress: (rec, total) {
-        setState(() {
-          downloading = true;
-          progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
-          print(progressString);
-          if (progressString == "100%") {
-            _setWallpaer();
-          }
-        });
-      });
-    } catch (e) {}
-
-    setState(() {
-      downloading = false;
-      progressString = "Completed";
-    });
-  }
-
-  Future<Null> _setWallpaer() async {
-    String setWallpaper;
-    try {
-      final int result =
-          await platform.invokeMethod('setWallpaper', 'myimage.jpeg');
-      setWallpaper = 'Wallpaer Updated....';
-    } on PlatformException catch (e) {
-      setWallpaper = "Failed to Set Wallpaer: '${e.message}'.";
-    }
-    setState(() {
-      _setWallpaper = setWallpaper;
-    });
   }
 }
