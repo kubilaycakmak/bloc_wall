@@ -35,7 +35,10 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
         body: Stack(
           children: <Widget>[
             _buildBlocBuilder(),
-            SafeArea(child: SearchBar(title: 'photo',)),
+            SafeArea(
+                child: SearchBar(
+              title: 'photo',
+            )),
             // CustomNavbar(
             //   iconSize: iconSize,
             // ),
@@ -62,7 +65,7 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
         if (state is PhotoIsLoaded) {
           return Text('heyyo');
         }
-        if(state is PhotoIsNotLoaded){
+        if (state is PhotoIsNotLoaded) {
           print('not loaded');
         }
         return Center(child: Text('error'));
@@ -97,8 +100,8 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
     );
   }
 
-  Widget _buildCarouselSlider(List<ParallaxCardItem> list, double height,
-      double viewportFraction) {
+  Widget _buildCarouselSlider(
+      List<ParallaxCardItem> list, double height, double viewportFraction) {
     return Container(
       height: height,
       child: CarouselSlider.builder(
@@ -151,16 +154,16 @@ Widget _buildBanner(List<ParallaxCardItem> list, double height) {
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ListPhotoPage(
-                            editorChoice: list[index].editCho,
-                            imageType: list[index].imageType,
-                            order: 'latest',
-                            category: '',
-                            orientation: 'vertical',
-                            query: '',
-                          )));
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ListPhotoPage(
+                                editorChoice: list[index].editCho,
+                                imageType: list[index].imageType,
+                                order: 'latest',
+                                category: '',
+                                orientation: 'vertical',
+                                query: '',
+                              )));
                 },
                 child: ParallaxCards(
                   item: item,

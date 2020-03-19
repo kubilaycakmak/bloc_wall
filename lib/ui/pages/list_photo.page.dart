@@ -5,6 +5,7 @@ import 'package:bloc_wall/data/repository/api_repository.dart';
 import 'package:bloc_wall/ui/pages/wallpaper_page.dart';
 import 'package:bloc_wall/ui/pages/widget/centered_message.dart';
 import 'package:bloc_wall/ui/photo/photo_bloc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,8 +49,8 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
     print('order ' + widget.order);
     print('orientation ' + widget.orientation);
     print('----------');
-    _photoBloc.add(FetchPhoto(
-      widget.editorChoice, widget.category, widget.imageType, widget.query, widget.order, widget.orientation));
+    _photoBloc.add(FetchPhoto(widget.editorChoice, widget.category,
+        widget.imageType, widget.query, widget.order, widget.orientation));
   }
 
   @override
@@ -67,7 +68,9 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
-            widget.category == '' ? '${widget.order.toUpperCase()} ${widget.query.toUpperCase()}' : widget.category.toUpperCase(),
+            widget.category == ''
+                ? '${widget.order.toUpperCase()} ${widget.query.toUpperCase()}'
+                : widget.category.toUpperCase(),
             style: GoogleFonts.montserrat(color: Colors.black, fontSize: 20),
           ),
           elevation: 0,
@@ -118,67 +121,72 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
       child: StaggeredGridView.countBuilder(
-        controller: _scrollController,
-        shrinkWrap: true,
-        crossAxisCount: 4,
-        mainAxisSpacing: 1,
-        itemCount: photoAll.hits.length,
-        crossAxisSpacing: 1,
-        staggeredTileBuilder: (index) =>
-            StaggeredTile.count(2, index.isEven ? 2 : 3),
-        itemBuilder: (context, index) {
-          return Stack(
-            children: <Widget>[
-              GridTile(
-                footer: Container(
-                  height: 50,
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => WallpaperPage(
-                                heroId: photoAll.hits[index].id.toString(),
-                                photoHits: photoAll.hits[index],
-                              )));
-                  },
-                  child: FadeInImage(
-                    image: NetworkImage(photoAll.hits[index].webformatURL),
-                    fit: BoxFit.cover,
-                    placeholder: NetworkImage(photoAll.hits[index].previewURL),
+          controller: _scrollController,
+          shrinkWrap: true,
+          crossAxisCount: 4,
+          mainAxisSpacing: 1,
+          itemCount: photoAll.hits.length,
+          crossAxisSpacing: 1,
+          staggeredTileBuilder: (index) =>
+              StaggeredTile.count(2, index.isEven ? 2 : 3),
+          itemBuilder: (context, index) {
+            return Stack(
+              children: <Widget>[
+                GridTile(
+                  footer: Container(
+                    height: 50,
                   ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.bottomCenter,
-                child: new ClipRect(
-                  child: new BackdropFilter(
-                    filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                    child: new Container(
-                      height: 40.0,
-                      decoration: new BoxDecoration(
-                          color: Colors.grey.shade100.withOpacity(0.2)),
-                      child: new Center(
-                        child: new Text(photoAll.hits[index].user,
-                            style: GoogleFonts.montserrat(color: Colors.white)),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WallpaperPage(
+                                    heroId: photoAll.hits[index].id.toString(),
+                                    photoHits: photoAll.hits[index],
+                                  )));
+                    },
+                    child: CachedNetworkImage(
+                      fadeInCurve: Curves.decelerate,
+                      placeholder: (context, url) => CachedNetworkImage(
+                        imageUrl: photoAll.hits[index].previewURL,
+                        fit: BoxFit.cover,
                       ),
+                      imageUrl: photoAll.hits[index].webformatURL,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-              )
-            ],
-          );
-        }
-      ),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: new ClipRect(
+                    child: new BackdropFilter(
+                      filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                      child: new Container(
+                        height: 40.0,
+                        decoration: new BoxDecoration(
+                            color: Colors.grey.shade100.withOpacity(0.2)),
+                        child: new Center(
+                          child: new Text(photoAll.hits[index].user,
+                              style:
+                                  GoogleFonts.montserrat(color: Colors.white)),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            );
+          }),
     );
   }
-  
-  bool _handleScrollNotification(ScrollNotification notification){
-    if(notification is ScrollEndNotification &&
-    _scrollController.position.extentAfter == 0){
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification is ScrollEndNotification &&
+        _scrollController.position.extentAfter == 0) {
       print('object');
-      _photoBloc.fetchNextResultPage(widget.order, widget.orientation, widget.query, widget.category, widget.editorChoice, widget.imageType);
+      _photoBloc.fetchNextResultPage(widget.order, widget.orientation,
+          widget.query, widget.category, widget.editorChoice, widget.imageType);
     }
     return false;
   }

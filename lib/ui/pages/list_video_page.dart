@@ -1,14 +1,9 @@
-import 'dart:ui';
-
-import 'package:bloc_wall/data/model/video/video_all.dart';
-import 'package:bloc_wall/data/model/video/video_hits.dart';
 import 'package:bloc_wall/data/repository/api_repository.dart';
 import 'package:bloc_wall/ui/pages/video/video_bloc.dart';
 import 'package:bloc_wall/ui/pages/widget/centered_message.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
 
@@ -22,19 +17,17 @@ class ListVideoPage extends StatefulWidget {
   final int minHeight;
   final String category;
 
-  const ListVideoPage(
-      {
-        Key key,
-        this.editorChoice,
-        this.query,
-        this.order,
-        this.userId,
-        this.videoType,
-        this.minWidth,
-        this.minHeight,
-        this.category,
-      })
-      : super(key: key);
+  const ListVideoPage({
+    Key key,
+    this.editorChoice,
+    this.query,
+    this.order,
+    this.userId,
+    this.videoType,
+    this.minWidth,
+    this.minHeight,
+    this.category,
+  }) : super(key: key);
 
   @override
   _ListVideoPageState createState() => _ListVideoPageState();
@@ -56,7 +49,15 @@ class _ListVideoPageState extends State<ListVideoPage> {
     print('min ' + widget.minWidth.toString());
     print('minHeight ' + widget.minHeight.toString());
     print('----------');
-    _videoBloc.add(FetchVideo(widget.query, widget.userId, widget.videoType, widget.category, widget.minWidth, widget.minHeight, widget.editorChoice, widget.order));
+    _videoBloc.add(FetchVideo(
+        widget.query,
+        widget.userId,
+        widget.videoType,
+        widget.category,
+        widget.minWidth,
+        widget.minHeight,
+        widget.editorChoice,
+        widget.order));
   }
 
   @override
@@ -74,7 +75,9 @@ class _ListVideoPageState extends State<ListVideoPage> {
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
-            widget.category == '' ? '${widget.order.toUpperCase()} ${widget.query.toUpperCase()}' : widget.category.toUpperCase(),
+            widget.category == ''
+                ? '${widget.order.toUpperCase()} ${widget.query.toUpperCase()}'
+                : widget.category.toUpperCase(),
             style: GoogleFonts.montserrat(color: Colors.black, fontSize: 20),
           ),
           elevation: 0,
@@ -180,10 +183,10 @@ class _ListVideoPageState extends State<ListVideoPage> {
   //     ),
   //   );
   // }
-  
-  bool _handleScrollNotification(ScrollNotification notification){
-    if(notification is ScrollEndNotification &&
-    _scrollController.position.extentAfter == 0){
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification is ScrollEndNotification &&
+        _scrollController.position.extentAfter == 0) {
       print('object');
     }
     return false;

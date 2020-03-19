@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/services.dart';
 import 'package:bloc_wall/data/model/photo/photo_hits.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:photo_view/photo_view.dart';
 
 class WallpaperPage extends StatefulWidget {
   final String heroId;
@@ -18,7 +19,8 @@ class WallpaperPage extends StatefulWidget {
 }
 
 class _WallpaperPageState extends State<WallpaperPage> {
-  static const platform = const MethodChannel('com.kubilaycakmak.bloc_wall.bloc_wall/wallpaper');
+  static const platform =
+      const MethodChannel('com.kubilaycakmak.bloc_wall.bloc_wall/wallpaper');
   bool fullScreen = false;
   var filePath;
   @override
@@ -27,22 +29,26 @@ class _WallpaperPageState extends State<WallpaperPage> {
       body: Stack(
         children: <Widget>[
           _buildPhoto(),
-          _buildPositionedButtons(16, 16, 'close', EvaIcons.close, widget.photoHits.largeImageURL),
+          _buildPositionedButtons(
+              16, 16, 'close', EvaIcons.close, widget.photoHits.largeImageURL),
           Column(
             children: <Widget>[
               Expanded(
                 child: Container(),
               ),
-              !fullScreen ? Container(
-                  padding:
-                    EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                    child: _buildBottomBar(context)) : Container()
+              !fullScreen
+                  ? Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      child: _buildBottomBar(context))
+                  : Container()
             ],
           )
         ],
       ),
     );
   }
+
   double _dynamicHeight = 60;
   Widget _buildBottomBar(BuildContext context) {
     return Stack(
@@ -53,16 +59,18 @@ class _WallpaperPageState extends State<WallpaperPage> {
             child: new BackdropFilter(
               filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
                   setState(() {
                     print('object');
-                    _dynamicHeight == 60 ? _dynamicHeight = 70 : _dynamicHeight = 60;
+                    _dynamicHeight == 60
+                        ? _dynamicHeight = 70
+                        : _dynamicHeight = 60;
                   });
                 },
                 child: FittedBox(
                   child: new Container(
                     decoration: new BoxDecoration(
-                      color: Colors.grey.shade900.withOpacity(0.2)),
+                        color: Colors.grey.shade900.withOpacity(0.2)),
                     child: new Container(
                       width: MediaQuery.of(context).size.width,
                       child: Column(
@@ -72,28 +80,40 @@ class _WallpaperPageState extends State<WallpaperPage> {
                             alignment: Alignment.topLeft,
                             height: _dynamicHeight,
                             duration: Duration(milliseconds: 500),
-                            child: Text('by ${widget.photoHits.user}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9)),),
+                            child: Text(
+                              'by ${widget.photoHits.user}',
+                              style: GoogleFonts.montserrat(
+                                  color: Colors.white.withOpacity(0.9)),
+                            ),
                           ),
-                          _dynamicHeight == 60 ? Container() : 
-                          Wrap(
-                            alignment: WrapAlignment.center,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            
-                            children: <Widget>[
-                              _buildBoardInfo(),
-                              Column(
-                                children: <Widget>[
-                                  _buildSimiliarPhoto(),
-                                  Container(child: FlatButton(onPressed: () { 
-                                setState(() {
-                                  _dynamicHeight = 80;
-                                });
-                               },
-                              child: Text('see more', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9)),)),)
-                                ],
-                              ),
-                            ],
-                          )
+                          _dynamicHeight == 60
+                              ? Container()
+                              : Wrap(
+                                  alignment: WrapAlignment.center,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: <Widget>[
+                                    _buildBoardInfo(),
+                                    Column(
+                                      children: <Widget>[
+                                        _buildSimiliarPhoto(),
+                                        Container(
+                                          child: FlatButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  _dynamicHeight = 80;
+                                                });
+                                              },
+                                              child: Text(
+                                                'see more',
+                                                style: GoogleFonts.montserrat(
+                                                    color: Colors.white
+                                                        .withOpacity(0.9)),
+                                              )),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                )
                         ],
                       ),
                     ),
@@ -103,14 +123,17 @@ class _WallpaperPageState extends State<WallpaperPage> {
             ),
           ),
         ),
-        _buildPositionedButtons(6, 25, 'set', Icons.format_paint, widget.photoHits.largeImageURL),
-        _buildPositionedButtons(56, 25, 'down', Icons.file_download, widget.photoHits.largeImageURL),
-        _buildPositionedButtons(106, 25, 'setting', EvaIcons.settingsOutline, widget.photoHits.largeImageURL),
+        _buildPositionedButtons(
+            6, 25, 'set', Icons.format_paint, widget.photoHits.largeImageURL),
+        _buildPositionedButtons(56, 25, 'down', Icons.file_download,
+            widget.photoHits.largeImageURL),
+        _buildPositionedButtons(106, 25, 'setting', EvaIcons.settingsOutline,
+            widget.photoHits.largeImageURL),
       ],
     );
   }
 
-  Widget _buildSimiliarPhoto(){
+  Widget _buildSimiliarPhoto() {
     return Container(
       child: Image(
         image: NetworkImage(widget.photoHits.previewURL),
@@ -137,80 +160,81 @@ class _WallpaperPageState extends State<WallpaperPage> {
           }
         },
         child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          child: FadeInImage.memoryNetwork(
-            image: widget.photoHits.largeImageURL,
-            fit: BoxFit.cover,
-            placeholder: kTransparentImage,
-          ),
-        ),
+            width: double.infinity,
+            height: double.infinity,
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              fadeInCurve: Curves.slowMiddle,
+              imageUrl: widget.photoHits.largeImageURL,
+              placeholder: (context, url) => CachedNetworkImage(
+                imageUrl: widget.photoHits.webformatURL,
+                fit: BoxFit.cover,
+              ),
+            )),
       ),
     );
   }
-
-  // Container _buildLoading() {
-  //   return Container(
-  //     child: Align(
-  //       alignment: Alignment(0.0, 0.0),
-  //       child: Center(
-  //         child: Container(
-  //                 height: 120.0,
-  //                 width: 200.0,
-  //                 child: Card(
-  //                   color: Colors.white60,
-  //                   child: Column(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: <Widget>[
-  //                       CircularProgressIndicator(),
-  //                       SizedBox(height: 20.0),
-                        
-  //                     ],
-  //                   ),
-  //                 ),
-  //               )
-  //             ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildBoardInfo() {
     return Container(
       height: _dynamicHeight,
       child: Table(
-        border: TableBorder(
-          verticalInside: BorderSide(
-            color: Colors.white60
-          )
-        ),
+        border: TableBorder(verticalInside: BorderSide(color: Colors.white60)),
         children: [
-          TableRow(
-            decoration: BoxDecoration(
-              color: Colors.white10
+          TableRow(decoration: BoxDecoration(color: Colors.white10), children: [
+            TableCell(
+              child: Center(
+                child: Text(
+                  'Resolution : ${widget.photoHits.imageWidth} x ${widget.photoHits.imageHeight}',
+                  style: GoogleFonts.montserrat(
+                      color: Colors.white.withOpacity(0.9)),
+                ),
+              ),
             ),
-            children: [
-              TableCell(child: Center(child: Text('Resolution : ${widget.photoHits.imageWidth} x ${widget.photoHits.imageHeight}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9)),),),),
-              TableCell(child: Center(child: Text('Size : ' + (widget.photoHits.imageSize/1000000).toString().substring(0,4) + ' mb', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9)))),),
-            ]
-          ),
-          TableRow(
-            decoration: BoxDecoration(
-              color: Colors.white24
+            TableCell(
+              child: Center(
+                  child: Text(
+                      'Size : ' +
+                          (widget.photoHits.imageSize / 1000000)
+                              .toString()
+                              .substring(0, 4) +
+                          ' mb',
+                      style: GoogleFonts.montserrat(
+                          color: Colors.white.withOpacity(0.9)))),
             ),
-            children: [
-              TableCell(child: Center(child: Text('Views : ${widget.photoHits.views}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9))),),),
-              TableCell(child: Center(child: Text('Downloads : ${widget.photoHits.downloads}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9))),),),
-            ]
-          ),
-          TableRow(
-            decoration: BoxDecoration(
-              color: Colors.white10
+          ]),
+          TableRow(decoration: BoxDecoration(color: Colors.white24), children: [
+            TableCell(
+              child: Center(
+                child: Text('Views : ${widget.photoHits.views}',
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white.withOpacity(0.9))),
+              ),
             ),
-            children: [
-              TableCell(child: Center(child: Text('Favorites : ${widget.photoHits.favorites}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9))),),),
-              TableCell(child: Center(child: Text('Likes : ${widget.photoHits.likes}', style: GoogleFonts.montserrat(color: Colors.white.withOpacity(0.9))),),),
-            ]
-          )
+            TableCell(
+              child: Center(
+                child: Text('Downloads : ${widget.photoHits.downloads}',
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white.withOpacity(0.9))),
+              ),
+            ),
+          ]),
+          TableRow(decoration: BoxDecoration(color: Colors.white10), children: [
+            TableCell(
+              child: Center(
+                child: Text('Favorites : ${widget.photoHits.favorites}',
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white.withOpacity(0.9))),
+              ),
+            ),
+            TableCell(
+              child: Center(
+                child: Text('Likes : ${widget.photoHits.likes}',
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white.withOpacity(0.9))),
+              ),
+            ),
+          ])
         ],
       ),
     );
@@ -237,68 +261,86 @@ class _WallpaperPageState extends State<WallpaperPage> {
           if (heroTag == 'set') {
             setWallpaperDialog();
           }
-          if (heroTag == 'down') {
-          }
+          if (heroTag == 'down') {}
           if (heroTag == 'settings') {}
         },
       ),
     );
   }
+
   void setWallpaperDialog() {
     showDialog(
       context: context,
       builder: (context) {
-        return Dialog(
-          backgroundColor: Colors.white,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Set a wallpaper',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+        return Container(
+          color: Colors.grey.shade100.withOpacity(0.1),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(
+              child: Dialog(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        'Set as wallpaper',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text(
+                        'Home Screen',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      leading: Icon(
+                        EvaIcons.home,
+                        color: Colors.black,
+                      ),
+                      onTap: () => _setWallpaper(1),
+                    ),
+                    ListTile(
+                      title: Text(
+                        'Lock Screen',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      leading: Icon(
+                        EvaIcons.lock,
+                        color: Colors.black,
+                      ),
+                      onTap: () => _setWallpaper(2),
+                    ),
+                    ListTile(
+                      title: Text(
+                        'Both',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      leading: Icon(
+                        EvaIcons.image2,
+                        color: Colors.black,
+                      ),
+                      onTap: () => _setWallpaper(3),
+                    ),
+                    ListTile(
+                      title: Text(
+                        'Close',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      leading: Icon(
+                        EvaIcons.close,
+                        color: Colors.black,
+                      ),
+                      onTap: () => Navigator.of(context).pop(),
+                    ),
+                  ],
                 ),
               ),
-              ListTile(
-                title: Text(
-                  'Home Screen',
-                  style: TextStyle(color: Colors.black),
-                ),
-                leading: Icon(
-                  Icons.home,
-                  color: Colors.black,
-                ),
-                onTap: () => _setWallpaper(1),
-              ),
-              ListTile(
-                title: Text(
-                  'Lock Screen',
-                  style: TextStyle(color: Colors.black),
-                ),
-                leading: Icon(
-                  Icons.lock,
-                  color: Colors.black,
-                ),
-                onTap: () => _setWallpaper(2),
-              ),
-              ListTile(
-                title: Text(
-                  'Both',
-                  style: TextStyle(color: Colors.black),
-                ),
-                leading: Icon(
-                  Icons.phone_android,
-                  color: Colors.black,
-                ),
-                onTap: () => _setWallpaper(3),
-              ),
-            ],
+            ),
           ),
         );
       },
@@ -306,8 +348,8 @@ class _WallpaperPageState extends State<WallpaperPage> {
   }
 
   Future<void> _setWallpaper(int wallpaperType) async {
-    var file =
-        await DefaultCacheManager().getSingleFile(widget.photoHits.largeImageURL);
+    var file = await DefaultCacheManager()
+        .getSingleFile(widget.photoHits.largeImageURL);
     try {
       final int result = await platform
           .invokeMethod('setWallpaper', [file.path, wallpaperType]);
