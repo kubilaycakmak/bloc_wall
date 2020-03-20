@@ -1,9 +1,6 @@
-import 'dart:io';
 import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:bloc_wall/data/model/photo/photo_hits.dart';
-import 'package:dio/dio.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +18,7 @@ class WallpaperPage extends StatefulWidget {
 }
 
 class _WallpaperPageState extends State<WallpaperPage> {
+  bool editable = false;
   static const platform =
       const MethodChannel('com.kubilaycakmak.bloc_wall.bloc_wall/wallpaper');
   bool fullScreen = false;
@@ -33,6 +31,8 @@ class _WallpaperPageState extends State<WallpaperPage> {
           _buildPhoto(),
           _buildPositionedButtons(
               16, 16, 'close', EvaIcons.close, widget.photoHits.largeImageURL),
+          _buildPositionedButtons(
+              16, 66, 'fav', EvaIcons.settings, widget.photoHits.largeImageURL),
           Column(
             children: <Widget>[
               Expanded(
@@ -42,7 +42,9 @@ class _WallpaperPageState extends State<WallpaperPage> {
                   ? Container(
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                      child: _buildBottomBar(context))
+                      child: !editable
+                          ? _buildBottomBar(context)
+                          : _buildEditBottomBar())
                   : Container()
             ],
           )
@@ -50,6 +52,8 @@ class _WallpaperPageState extends State<WallpaperPage> {
       ),
     );
   }
+
+  Widget _buildEditBottomBar() {}
 
   double _dynamicHeight = 60;
   Widget _buildBottomBar(BuildContext context) {
@@ -60,64 +64,35 @@ class _WallpaperPageState extends State<WallpaperPage> {
           child: new ClipRect(
             child: new BackdropFilter(
               filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    print('object');
-                    _dynamicHeight == 60
-                        ? _dynamicHeight = 70
-                        : _dynamicHeight = 60;
-                  });
-                },
-                child: FittedBox(
+              child: FittedBox(
+                child: new Container(
+                  decoration: new BoxDecoration(
+                      color: Colors.grey.shade900.withOpacity(0.2)),
                   child: new Container(
-                    decoration: new BoxDecoration(
-                        color: Colors.grey.shade900.withOpacity(0.2)),
-                    child: new Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        children: <Widget>[
-                          AnimatedContainer(
-                            padding: EdgeInsets.only(left: 10, top: 20),
-                            alignment: Alignment.topLeft,
-                            height: _dynamicHeight,
-                            duration: Duration(milliseconds: 500),
-                            child: Text(
-                              'by ${widget.photoHits.user}',
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.white.withOpacity(0.9)),
-                            ),
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: <Widget>[
+                        AnimatedContainer(
+                          padding: EdgeInsets.only(left: 10, top: 20),
+                          alignment: Alignment.topLeft,
+                          height: _dynamicHeight,
+                          duration: Duration(milliseconds: 200),
+                          child: Text(
+                            'by ${widget.photoHits.user}',
+                            style: GoogleFonts.montserrat(
+                                color: Colors.white.withOpacity(0.9)),
                           ),
-                          _dynamicHeight == 60
-                              ? Container()
-                              : Wrap(
-                                  alignment: WrapAlignment.center,
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: <Widget>[
-                                    _buildBoardInfo(),
-                                    Column(
-                                      children: <Widget>[
-                                        _buildSimiliarPhoto(),
-                                        Container(
-                                          child: FlatButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  _dynamicHeight = 80;
-                                                });
-                                              },
-                                              child: Text(
-                                                'see more',
-                                                style: GoogleFonts.montserrat(
-                                                    color: Colors.white
-                                                        .withOpacity(0.9)),
-                                              )),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                )
-                        ],
-                      ),
+                        ),
+                        _dynamicHeight == 60
+                            ? Container()
+                            : Wrap(
+                                alignment: WrapAlignment.center,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: <Widget>[
+                                  _buildBoardInfo(),
+                                ],
+                              )
+                      ],
                     ),
                   ),
                 ),
@@ -127,18 +102,25 @@ class _WallpaperPageState extends State<WallpaperPage> {
         ),
         _buildPositionedButtons(
             6, 25, 'set', Icons.format_paint, widget.photoHits.largeImageURL),
-        _buildPositionedButtons(56, 25, 'down', Icons.file_download,
-            widget.photoHits.largeImageURL),
-        _buildPositionedButtons(106, 25, 'setting', EvaIcons.settingsOutline,
+        _buildPositionedButtons(
+            56,
+            25,
+            'setting',
+            _dynamicHeight == 60
+                ? EvaIcons.arrowUpOutline
+                : EvaIcons.arrowDownOutline,
             widget.photoHits.largeImageURL),
       ],
     );
   }
 
   Widget _buildSimiliarPhoto() {
-    return Container(
-      child: Image(
-        image: NetworkImage(widget.photoHits.previewURL),
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        child: Image(
+          image: NetworkImage(widget.photoHits.previewURL),
+        ),
       ),
     );
   }
@@ -253,13 +235,10 @@ class _WallpaperPageState extends State<WallpaperPage> {
       top: top,
       child: FloatingActionButton(
         mini: true,
-        backgroundColor: Colors.grey.shade100.withOpacity(0.6),
+        backgroundColor: Theme.of(context).primaryColor,
         heroTag: heroTag,
         tooltip: heroTag,
-        child: Icon(
-          icon,
-          color: Colors.black87,
-        ),
+        child: Icon(icon, color: Theme.of(context).textTheme.bodyText1.color),
         onPressed: () {
           if (heroTag == 'close') {
             Navigator.of(context).pop();
@@ -267,11 +246,16 @@ class _WallpaperPageState extends State<WallpaperPage> {
           if (heroTag == 'set') {
             setWallpaperDialog();
           }
-          if (heroTag == 'down') {
-            download2(widget.photoHits.largeImageURL,
-                'com.kubilaycakmak.bloc_wall.bloc_wall/Download');
+          if (heroTag == 'setting') {
+            setState(() {
+              setState(() {
+                _dynamicHeight == 60
+                    ? _dynamicHeight = 70
+                    : _dynamicHeight = 60;
+              });
+            });
           }
-          if (heroTag == 'settings') {}
+          if (heroTag == 'edit') {}
         },
       ),
     );
@@ -375,34 +359,5 @@ class _WallpaperPageState extends State<WallpaperPage> {
         textColor: Colors.black,
         fontSize: 16.0);
     Navigator.pop(context);
-  }
-
-  Future download2(String url, String savePath) async {
-    Dio dio;
-    try {
-      Response response = await dio.get(
-        url,
-        onReceiveProgress: showDownloadProgress,
-        //Received data with List<int>
-        options: Options(
-            responseType: ResponseType.bytes,
-            followRedirects: false,
-            receiveTimeout: 0),
-      );
-      print(response.headers);
-      File file = File(savePath);
-      var raf = file.openSync(mode: FileMode.write);
-      // response.data is List<int> type
-      raf.writeFromSync(response.data);
-      await raf.close();
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void showDownloadProgress(received, total) {
-    if (total != -1) {
-      print((received / total * 100).toStringAsFixed(0) + "%");
-    }
   }
 }

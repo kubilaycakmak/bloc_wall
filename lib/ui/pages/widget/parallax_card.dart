@@ -39,9 +39,6 @@ class ParallaxCards extends StatelessWidget {
         child: GradientText(
           item.body,
           shaderRect: Rect.fromLTWH(0.0, 0.0, 10.0, 10.0),
-          gradient: isThemeCurrentlyDark(context)
-              ? MyColors.github
-              : Gradients.coralCandyGradient,
           style: TextStyle(color: Colors.white, fontSize: 30),
           textAlign: TextAlign.center,
         ),

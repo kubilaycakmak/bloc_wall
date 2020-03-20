@@ -1,9 +1,7 @@
 import 'dart:ui';
-
 import 'package:bloc_wall/data/model/photo/photo_all.dart';
 import 'package:bloc_wall/data/repository/api_repository.dart';
 import 'package:bloc_wall/ui/pages/wallpaper_page.dart';
-import 'package:bloc_wall/ui/pages/widget/centered_message.dart';
 import 'package:bloc_wall/ui/photo/photo_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -68,12 +66,11 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.white,
           title: Text(
             widget.category == ''
                 ? '${widget.order.toUpperCase()} ${widget.query.toUpperCase()}'
                 : widget.category.toUpperCase(),
-            style: GoogleFonts.montserrat(color: Colors.black, fontSize: 20),
+            style: GoogleFonts.montserrat(fontSize: 20),
           ),
           elevation: 0,
           leading: IconButton(
@@ -82,11 +79,9 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
             },
             icon: Icon(
               EvaIcons.arrowBackOutline,
-              color: Colors.black,
             ),
           ),
         ),
-        backgroundColor: Colors.white,
         body: Stack(
           children: <Widget>[
             _buildBlocBuilder(),

@@ -31,7 +31,6 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
     return BlocProvider(
       create: (context) => PhotoBloc(ApiRepository()),
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: Stack(
           children: <Widget>[
             _buildBlocBuilder(),

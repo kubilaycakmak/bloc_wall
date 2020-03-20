@@ -22,33 +22,36 @@ class SearchBar extends StatelessWidget {
         )
       ]),
       child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 125,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Text("Let's search for the dream $title for your phone!", style: GoogleFonts.montserrat(
-                fontSize: 18
-              ),),
-              SizedBox(height: 10,),
-              Container(
-                decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35),
-                border: Border.all()
+          width: MediaQuery.of(context).size.width,
+          height: 125,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  "Let's search for the dream $title for your phone!",
+                  style: GoogleFonts.montserrat(fontSize: 18),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(35),
+                      border: Border.all(
+                          color: Theme.of(context).textTheme.bodyText1.color)),
                   child: SearchWidget(title: '$title'),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(35),
-          ),
-        )),
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(35),
+            ),
+          )),
     );
   }
 }
