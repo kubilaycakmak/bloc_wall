@@ -14,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
 
 class ListPhotoPage extends StatefulWidget {
+  final int page;
   final bool editorChoice;
   final String imageType;
   final String query;
@@ -23,6 +24,7 @@ class ListPhotoPage extends StatefulWidget {
 
   const ListPhotoPage(
       {Key key,
+      this.page,
       this.editorChoice,
       this.imageType,
       this.query,
@@ -99,9 +101,8 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
       bloc: _photoBloc,
       builder: (context, state) {
         if (state is PhotoIsNotList) {
-          return CenteredMessage(
-            message: 'Error while fetching photos',
-            icon: EvaIcons.doneAll,
+          return Center(
+            child: CircularProgressIndicator(),
           );
         }
         if (state is PhotoIsLoading) {
@@ -125,59 +126,69 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
           shrinkWrap: true,
           crossAxisCount: 4,
           mainAxisSpacing: 1,
-          itemCount: photoAll.hits.length,
+          itemCount: photoAll.hits.length + 1,
           crossAxisSpacing: 1,
           staggeredTileBuilder: (index) =>
               StaggeredTile.count(2, index.isEven ? 2 : 3),
           itemBuilder: (context, index) {
-            return Stack(
-              children: <Widget>[
-                GridTile(
-                  footer: Container(
-                    height: 50,
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => WallpaperPage(
-                                    heroId: photoAll.hits[index].id.toString(),
-                                    photoHits: photoAll.hits[index],
-                                  )));
-                    },
-                    child: CachedNetworkImage(
-                      fadeInCurve: Curves.decelerate,
-                      placeholder: (context, url) => CachedNetworkImage(
-                        imageUrl: photoAll.hits[index].previewURL,
-                        fit: BoxFit.cover,
-                      ),
-                      imageUrl: photoAll.hits[index].webformatURL,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: new ClipRect(
-                    child: new BackdropFilter(
-                      filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                      child: new Container(
-                        height: 40.0,
-                        decoration: new BoxDecoration(
-                            color: Colors.grey.shade100.withOpacity(0.2)),
-                        child: new Center(
-                          child: new Text(photoAll.hits[index].user,
-                              style:
-                                  GoogleFonts.montserrat(color: Colors.white)),
+            return index >= photoAll.hits.length
+                ? _buildLoaderListItem()
+                : Stack(
+                    children: <Widget>[
+                      GridTile(
+                        footer: Container(
+                          height: 50,
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WallpaperPage(
+                                          heroId: photoAll.hits[index].id
+                                              .toString(),
+                                          photoHits: photoAll.hits[index],
+                                        )));
+                          },
+                          child: CachedNetworkImage(
+                            fadeInCurve: Curves.decelerate,
+                            placeholder: (context, url) => CachedNetworkImage(
+                              imageUrl: photoAll.hits[index].previewURL,
+                              fit: BoxFit.cover,
+                            ),
+                            imageUrl: photoAll.hits[index].webformatURL,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                )
-              ],
-            );
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        child: new ClipRect(
+                          child: new BackdropFilter(
+                            filter:
+                                new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                            child: new Container(
+                              height: 40.0,
+                              decoration: new BoxDecoration(
+                                  color: Colors.grey.shade100.withOpacity(0.2)),
+                              child: new Center(
+                                child: new Text(photoAll.hits[index].user,
+                                    style: GoogleFonts.montserrat(
+                                        color: Colors.white)),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  );
           }),
+    );
+  }
+
+  Widget _buildLoaderListItem() {
+    return Center(
+      child: CircularProgressIndicator(),
     );
   }
 

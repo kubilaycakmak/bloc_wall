@@ -7,15 +7,11 @@ class PhotoState extends Equatable {
   List<Object> get props => throw [];
 }
 
-class PhotoIsNotList extends PhotoState{
-  
-}
+class PhotoIsNotList extends PhotoState {}
 
-class PhotoIsLoading extends PhotoState{
+class PhotoIsLoading extends PhotoState {}
 
-}
-
-class PhotoIsLoaded extends PhotoState{
+class PhotoIsLoaded extends PhotoState {
   final _photo;
   PhotoAll get getPhoto => _photo;
   PhotoIsLoaded(this._photo);
@@ -24,6 +20,11 @@ class PhotoIsLoaded extends PhotoState{
   List<Object> get props => [_photo];
 }
 
-class PhotoIsNotLoaded extends PhotoState{
-  
+class PhotoIsNotLoaded extends PhotoState {}
+
+class PhotoPageEnd extends PhotoState {
+  final _page;
+  PhotoPageEnd(this._page);
+  @override
+  List<Object> get props => [_page];
 }

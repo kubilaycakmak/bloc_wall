@@ -1,13 +1,15 @@
+import 'dart:io';
 import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/services.dart';
 import 'package:bloc_wall/data/model/photo/photo_hits.dart';
+import 'package:dio/dio.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:photo_view/photo_view.dart';
 
 class WallpaperPage extends StatefulWidget {
   final String heroId;
@@ -166,9 +168,13 @@ class _WallpaperPageState extends State<WallpaperPage> {
               fit: BoxFit.cover,
               fadeInCurve: Curves.slowMiddle,
               imageUrl: widget.photoHits.largeImageURL,
-              placeholder: (context, url) => CachedNetworkImage(
-                imageUrl: widget.photoHits.webformatURL,
-                fit: BoxFit.cover,
+              placeholder: (context, url) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CachedNetworkImage(
+                  imageUrl: widget.photoHits.webformatURL,
+                  colorBlendMode: BlendMode.xor,
+                  fit: BoxFit.cover,
+                ),
               ),
             )),
       ),
@@ -261,7 +267,10 @@ class _WallpaperPageState extends State<WallpaperPage> {
           if (heroTag == 'set') {
             setWallpaperDialog();
           }
-          if (heroTag == 'down') {}
+          if (heroTag == 'down') {
+            download2(widget.photoHits.largeImageURL,
+                'com.kubilaycakmak.bloc_wall.bloc_wall/Download');
+          }
           if (heroTag == 'settings') {}
         },
       ),
@@ -366,5 +375,34 @@ class _WallpaperPageState extends State<WallpaperPage> {
         textColor: Colors.black,
         fontSize: 16.0);
     Navigator.pop(context);
+  }
+
+  Future download2(String url, String savePath) async {
+    Dio dio;
+    try {
+      Response response = await dio.get(
+        url,
+        onReceiveProgress: showDownloadProgress,
+        //Received data with List<int>
+        options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            receiveTimeout: 0),
+      );
+      print(response.headers);
+      File file = File(savePath);
+      var raf = file.openSync(mode: FileMode.write);
+      // response.data is List<int> type
+      raf.writeFromSync(response.data);
+      await raf.close();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void showDownloadProgress(received, total) {
+    if (total != -1) {
+      print((received / total * 100).toStringAsFixed(0) + "%");
+    }
   }
 }

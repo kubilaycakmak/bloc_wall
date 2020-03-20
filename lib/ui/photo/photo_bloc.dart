@@ -12,42 +12,66 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
   ApiRepository _apiRepository;
   PhotoBloc(this._apiRepository) : super();
   int counter = 15;
+  int page = 1;
 
   @override
   PhotoState get initialState => PhotoIsNotList();
 
-  void fetchNextResultPage(String order, String orientation, String query, String category, bool editorChoice, String imageType){
-    add(FetchNextResultPage(order: order, orientation: orientation, query: query, category: category, editorChoice: editorChoice, imageType: imageType));
+  void fetchNextResultPage(String order, String orientation, String query,
+      String category, bool editorChoice, String imageType) {
+    add(FetchNextResultPage(
+        page: page,
+        order: order,
+        orientation: orientation,
+        query: query,
+        category: category,
+        editorChoice: editorChoice,
+        imageType: imageType));
   }
 
-  void fetchResultPage(String order, String orientation, String query, String category, bool editorChoice, String imageType){
-    add(FetchPhoto(editorChoice, category, imageType, query, order, orientation));
+  void fetchResultPage(int page, String order, String orientation, String query,
+      String category, bool editorChoice, String imageType) {
+    add(FetchPhoto(
+        editorChoice, category, imageType, query, order, orientation));
   }
+
   @override
   Stream<PhotoState> mapEventToState(
     PhotoEvent event,
   ) async* {
     if (event is FetchPhoto) {
       print('event query: ${event._query}');
-        yield PhotoIsLoading();
-        try {
-          PhotoAll photoAll = await _apiRepository.fetchPhotos(
+      yield PhotoIsLoading();
+      try {
+        PhotoAll photoAll = await _apiRepository.fetchPhotos(
             editorChoice: event._editorChoice,
-              category: event._category,
-              imageType: event._imageType,
-              query: event._query,
-              order: event._order,
-              orientation: event._orientation);
-          yield PhotoIsLoaded(photoAll);
-        } catch (_) {
-          yield PhotoIsNotLoaded();
-        }
-    }else if(event is FetchNextResultPage){
+            category: event._category,
+            imageType: event._imageType,
+            query: event._query,
+            order: event._order,
+            orientation: event._orientation);
+        yield PhotoIsLoaded(photoAll);
+      } catch (_) {
+        yield PhotoIsNotLoaded();
+      }
+    } else if (event is FetchNextResultPage) {
       try {
         counter += 25;
-        final nextPageResult = await _apiRepository.fetchNextResultPage(perPage: counter, order: event.order, orientation: event.orientation, category: event.category, editorChoice: event.editorChoice, imageType: event.imageType);
+        if (counter >= 200) {
+          counter = 15;
+          page++;
+          yield PhotoIsNotList();
+        }
+        final nextPageResult = await _apiRepository.fetchNextResultPage(
+            page: page,
+            perPage: counter,
+            order: event.order,
+            orientation: event.orientation,
+            category: event.category,
+            editorChoice: event.editorChoice,
+            imageType: event.imageType);
         yield PhotoIsLoaded(nextPageResult);
-      }catch(e){
+      } catch (e) {
         print(e);
       }
     }

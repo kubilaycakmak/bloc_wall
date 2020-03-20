@@ -4,7 +4,6 @@ import 'package:bloc_wall/data/repository/api_key.dart';
 import 'package:http/http.dart' as http;
 
 class ApiRepository {
-  
   String _lastSearchQuery;
 
   static const String _pixabayImageBaseURL =
@@ -12,13 +11,13 @@ class ApiRepository {
 
   static const String _pixabayVideoBaseURL =
       'https://pixabay.com/api/videos/?key=$API_KEY&safesearch=false';
-  
-  void _cacheValues({String query}){
+
+  void _cacheValues({String query}) {
     _lastSearchQuery = query;
   }
 
   Future<PhotoAll> fetchPhotos(
-    {
+      {int page = 1,
       int minWidth = 0,
       int minHeight = 0,
       String colors,
@@ -29,71 +28,75 @@ class ApiRepository {
       String query,
       String imageType,
       String order,
-      String orientation
-    }
-  ) async {
+      String orientation}) async {
     final urlRaw = _pixabayImageBaseURL +
-      '&image_type=$imageType'+
-      '&q=$query'+
-      '&order=$order'+
-      '&orientation=$orientation'+
-      '&category=$category'+
-      '&editors_choice=$editorChoice'+
-      '&per_page=$perPage'+
-      '&user_id=$userId'+
-      '&min_width=$minWidth'+
-      '&min_width=$minHeight'+
-      '&colors=$colors';
+        '&page=$page' +
+        '&image_type=$imageType' +
+        '&q=$query' +
+        '&order=$order' +
+        '&orientation=$orientation' +
+        '&category=$category' +
+        '&editors_choice=$editorChoice' +
+        '&per_page=$perPage' +
+        '&user_id=$userId' +
+        '&min_width=$minWidth' +
+        '&min_width=$minHeight' +
+        '&colors=$colors';
     _cacheValues(query: query);
     final urlEncoded = Uri.encodeFull(urlRaw);
     final response = await http.Client().get(urlEncoded);
-    if(response.statusCode != 200) throw Exception();
+    if (response.statusCode != 200) print('fetchError');
     return PhotoAll.fromJson(response.body);
   }
+
   Future<PhotoAll> fetchNextResultPage(
-    {
+      {int page,
       int perPage,
       bool editorChoice,
       String category,
       String query,
       String imageType,
       String order,
-      String orientation
-    }
-    ) async{
-    final nextResultPagePhoto = await fetchPhotos(query: _lastSearchQuery, order: order, orientation: orientation, perPage: perPage, category: category, editorChoice: editorChoice, imageType: imageType);
+      String orientation}) async {
+    final nextResultPagePhoto = await fetchPhotos(
+        page: page,
+        query: _lastSearchQuery,
+        order: order,
+        orientation: orientation,
+        perPage: perPage,
+        category: category,
+        editorChoice: editorChoice,
+        imageType: imageType);
     _cacheValues(query: _lastSearchQuery);
     return nextResultPagePhoto;
   }
 
-  Future<VideoAll> fetchVideos(
-    {
-      int minWidth,
-      int minHeight,
-      String userId,
-      int perPage,
-      bool editorChoice,
-      String category,
-      String query,
-      String videoType,
-      String order,
-    }
-  ) async {
+  Future<VideoAll> fetchVideos({
+    int minWidth,
+    int minHeight,
+    String userId,
+    int perPage,
+    bool editorChoice,
+    String category,
+    String query,
+    String videoType,
+    String order,
+  }) async {
     final urlRaw = _pixabayVideoBaseURL +
-      '&video_type=$videoType'+
-      '&q=$query'+
-      '&order=$order'+
-      '&category=$category'+
-      '&editors_choice=$editorChoice'+
-      '&per_page=$perPage'+
-      '&user_id=$userId'+
-      '&min_width=$minWidth'+
-      '&min_width=$minHeight';
+        '&video_type=$videoType' +
+        '&q=$query' +
+        '&order=$order' +
+        '&category=$category' +
+        '&editors_choice=$editorChoice' +
+        '&per_page=$perPage' +
+        '&user_id=$userId' +
+        '&min_width=$minWidth' +
+        '&min_width=$minHeight';
     final urlEncoded = Uri.encodeFull(urlRaw);
     final response = await http.Client().get(urlEncoded);
     print('response body => ${response.body}');
     print('response code : ${response.statusCode}');
-    if(response.statusCode != 200) throw Exception();
+    if (response.statusCode != 200) throw Exception();
     return VideoAll.fromJson(response.body);
   }
 }
