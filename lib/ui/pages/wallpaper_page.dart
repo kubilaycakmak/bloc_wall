@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'animation/fade_animation.dart';
+
 class WallpaperPage extends StatefulWidget {
   final String heroId;
   final PhotoHits photoHits;
@@ -39,12 +41,14 @@ class _WallpaperPageState extends State<WallpaperPage> {
                 child: Container(),
               ),
               !fullScreen
-                  ? Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                      child: !editable
-                          ? _buildBottomBar(context)
-                          : _buildEditBottomBar())
+                  ? FadeAnimation(
+                      0.5,
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 20),
+                          child: !editable
+                              ? _buildBottomBar(context)
+                              : _buildEditBottomBar()))
                   : Container()
             ],
           )
@@ -89,7 +93,7 @@ class _WallpaperPageState extends State<WallpaperPage> {
                                 alignment: WrapAlignment.center,
                                 crossAxisAlignment: WrapCrossAlignment.center,
                                 children: <Widget>[
-                                  _buildBoardInfo(),
+                                  FadeAnimation(0.4, _buildBoardInfo()),
                                 ],
                               )
                       ],

@@ -1,5 +1,4 @@
 import 'package:bloc_wall/data/model/photo/photo_all.dart';
-import 'package:bloc_wall/data/model/video/video_all.dart';
 import 'package:bloc_wall/data/repository/api_key.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,9 +7,6 @@ class ApiRepository {
 
   static const String _pixabayImageBaseURL =
       'https://pixabay.com/api/?key=$API_KEY&safesearch=false';
-
-  static const String _pixabayVideoBaseURL =
-      'https://pixabay.com/api/videos/?key=$API_KEY&safesearch=false';
 
   void _cacheValues({String query}) {
     _lastSearchQuery = query;
@@ -69,34 +65,5 @@ class ApiRepository {
         imageType: imageType);
     _cacheValues(query: _lastSearchQuery);
     return nextResultPagePhoto;
-  }
-
-  Future<VideoAll> fetchVideos({
-    int minWidth,
-    int minHeight,
-    String userId,
-    int perPage,
-    bool editorChoice,
-    String category,
-    String query,
-    String videoType,
-    String order,
-  }) async {
-    final urlRaw = _pixabayVideoBaseURL +
-        '&video_type=$videoType' +
-        '&q=$query' +
-        '&order=$order' +
-        '&category=$category' +
-        '&editors_choice=$editorChoice' +
-        '&per_page=$perPage' +
-        '&user_id=$userId' +
-        '&min_width=$minWidth' +
-        '&min_width=$minHeight';
-    final urlEncoded = Uri.encodeFull(urlRaw);
-    final response = await http.Client().get(urlEncoded);
-    print('response body => ${response.body}');
-    print('response code : ${response.statusCode}');
-    if (response.statusCode != 200) throw Exception();
-    return VideoAll.fromJson(response.body);
   }
 }

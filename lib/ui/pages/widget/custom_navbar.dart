@@ -1,3 +1,5 @@
+import 'package:bloc_wall/ui/pages/animation/fade_animation.dart';
+import 'package:bloc_wall/ui/pages/auth/sign_in_out_page.dart';
 import 'package:bloc_wall/ui/pages/favorite_page.dart';
 import 'package:bloc_wall/ui/pages/home_photo_page.dart';
 import 'package:bloc_wall/ui/pages/settings_page.dart';
@@ -30,32 +32,34 @@ class _CustomNavbarState extends State<CustomNavbar> {
               fit: StackFit.loose,
               overflow: Overflow.clip,
               children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.width / 5.2,
-                  width: MediaQuery.of(context).size.width / 1.2,
-                  padding: EdgeInsets.only(bottom: 20.0),
-                  child: FloatingActionButton.extended(
-                    elevation: 15,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    onPressed: null,
-                    label: ButtonBar(
-                      children: <Widget>[
-                        _buildCircleAvatar(
-                            EvaIcons.image2, EvaIcons.imageOutline, 25, 0),
-                        SizedBox(
-                          width: 30,
+                FadeAnimation(
+                    1.3,
+                    Container(
+                      height: MediaQuery.of(context).size.width / 5.2,
+                      width: MediaQuery.of(context).size.width / 1.2,
+                      padding: EdgeInsets.only(bottom: 20.0),
+                      child: FloatingActionButton.extended(
+                        elevation: 15,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        onPressed: null,
+                        label: ButtonBar(
+                          children: <Widget>[
+                            _buildCircleAvatar(
+                                EvaIcons.image2, EvaIcons.imageOutline, 25, 0),
+                            SizedBox(
+                              width: 30,
+                            ),
+                            _buildCircleAvatar(
+                                EvaIcons.heart, EvaIcons.heartOutline, 30, 1),
+                            SizedBox(
+                              width: 30,
+                            ),
+                            _buildCircleAvatar(EvaIcons.colorPalette,
+                                EvaIcons.colorPaletteOutline, 25, 2),
+                          ],
                         ),
-                        _buildCircleAvatar(
-                            EvaIcons.heart, EvaIcons.heartOutline, 30, 1),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        _buildCircleAvatar(EvaIcons.colorPalette,
-                            EvaIcons.colorPaletteOutline, 25, 2),
-                      ],
-                    ),
-                  ),
-                ),
+                      ),
+                    )),
               ],
             ),
           ),

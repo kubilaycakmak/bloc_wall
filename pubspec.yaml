@@ -41,6 +41,7 @@ dependencies:
   dio: ^3.0.9
   splashscreen:
   device_info: ^0.4.1+4
+  simple_animations: ^1.3.11
 
 dev_dependencies:
   flutter_test:
@@ -101,6 +102,8 @@ flutter:
     - assets/vector.png
     - assets/photo.jpg
     - assets/illustration.jpg
+    - assets/auth/background.png
+    - assets/login.jpg
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

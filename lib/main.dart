@@ -1,8 +1,7 @@
 import 'dart:ui';
-
 import 'package:bloc_wall/data/injection_container.dart';
 import 'package:bloc_wall/ui/global/theme/bloc/theme_bloc.dart';
-import 'package:bloc_wall/ui/pages/widget/custom_navbar.dart';
+import 'package:bloc_wall/ui/pages/auth/sign_in_out_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,6 +32,6 @@ class MyApp extends StatelessWidget {
 Widget _buildWithTheme(BuildContext context, ThemeState state) {
   return MaterialApp(
     theme: state.themeData,
-    home: CustomNavbar(),
+    home: SignInOutPage(),
   );
 }

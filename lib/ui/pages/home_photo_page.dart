@@ -11,6 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
 
+import 'animation/fade_animation.dart';
+
 class HomePhotoPage extends StatefulWidget {
   @override
   _HomePhotoPageState createState() => _HomePhotoPageState();
@@ -33,14 +35,13 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
       child: Scaffold(
         body: Stack(
           children: <Widget>[
-            _buildBlocBuilder(),
-            SafeArea(
-                child: SearchBar(
-              title: 'photo',
-            )),
-            // CustomNavbar(
-            //   iconSize: iconSize,
-            // ),
+            FadeAnimation(0.3, _buildBlocBuilder()),
+            FadeAnimation(
+                0.5,
+                SafeArea(
+                    child: SearchBar(
+                  title: 'photo',
+                ))),
           ],
         ),
       ),

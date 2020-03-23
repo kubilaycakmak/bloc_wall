@@ -11,6 +11,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
 
+import 'animation/fade_animation.dart';
+
 class ListPhotoPage extends StatefulWidget {
   final int page;
   final bool editorChoice;
@@ -84,7 +86,7 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
         ),
         body: Stack(
           children: <Widget>[
-            _buildBlocBuilder(),
+            FadeAnimation(0.7, _buildBlocBuilder()),
           ],
         ),
       ),
@@ -145,15 +147,18 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
                                           photoHits: photoAll.hits[index],
                                         )));
                           },
-                          child: CachedNetworkImage(
-                            fadeInCurve: Curves.decelerate,
-                            placeholder: (context, url) => CachedNetworkImage(
-                              imageUrl: photoAll.hits[index].previewURL,
-                              fit: BoxFit.cover,
-                            ),
-                            imageUrl: photoAll.hits[index].webformatURL,
-                            fit: BoxFit.cover,
-                          ),
+                          child: FadeAnimation(
+                              0.4,
+                              CachedNetworkImage(
+                                fadeInCurve: Curves.decelerate,
+                                placeholder: (context, url) =>
+                                    CachedNetworkImage(
+                                  imageUrl: photoAll.hits[index].previewURL,
+                                  fit: BoxFit.cover,
+                                ),
+                                imageUrl: photoAll.hits[index].webformatURL,
+                                fit: BoxFit.cover,
+                              )),
                         ),
                       ),
                       Container(
