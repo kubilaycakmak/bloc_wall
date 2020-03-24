@@ -39,8 +39,7 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
             FadeAnimation(
                 0.5,
                 SafeArea(
-                    child: SearchBar(
-                  title: 'photo',
+                  child: SearchBar(
                 ))),
           ],
         ),

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import '../list_photo.page.dart';
 
 class SearchWidget extends StatefulWidget {
-  final String title;
   const SearchWidget({
-    this.title,
     Key key,
   }) : super(key: key);
 
@@ -53,7 +51,7 @@ class _SearchWidgetState extends State<SearchWidget> {
               focusNode: _focusNode,
               controller: _controller,
               decoration: InputDecoration(
-                hintText: 'Search ${widget.title}',
+                hintText: 'Search photo',
                 hintStyle: TextStyle(),
                 border: InputBorder.none,
                 prefixIcon: IconButton(
@@ -64,11 +62,10 @@ class _SearchWidgetState extends State<SearchWidget> {
             )),
         Container(
           decoration: BoxDecoration(
-              border: widget.title == 'photo'
-                  ? Border(
+              border: Border(
                       left: BorderSide(),
                     )
-                  : Border()),
+                  ),
           child: PopupMenuButton(
             offset: Offset(90, 110),
             onSelected: (value) {
@@ -76,12 +73,10 @@ class _SearchWidgetState extends State<SearchWidget> {
                 orientation = value;
               });
             },
-            icon: widget.title == 'photo'
-                ? Icon(
+            icon: Icon(
                     Icons.filter_list,
                     size: 30,
-                  )
-                : Container(),
+                  ),
             itemBuilder: (BuildContext context) {
               var list = List<PopupMenuEntry<Object>>();
               list.add(PopupMenuItem(
@@ -99,7 +94,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                 child: Text('Horizontal'),
                 value: 'horizontal',
               ));
-              return widget.title == 'photo' ? list : null;
+              return list;
             },
           ),
         )

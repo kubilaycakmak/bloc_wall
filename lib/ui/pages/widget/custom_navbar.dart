@@ -1,5 +1,4 @@
 import 'package:bloc_wall/ui/pages/animation/fade_animation.dart';
-import 'package:bloc_wall/ui/pages/auth/sign_in_out_page.dart';
 import 'package:bloc_wall/ui/pages/favorite_page.dart';
 import 'package:bloc_wall/ui/pages/home_photo_page.dart';
 import 'package:bloc_wall/ui/pages/settings_page.dart';

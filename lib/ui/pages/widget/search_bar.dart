@@ -2,10 +2,10 @@ import 'package:bloc_wall/ui/pages/widget/search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../app_localizations.dart';
+
 class SearchBar extends StatelessWidget {
-  final String title;
   const SearchBar({
-    this.title,
     Key key,
   }) : super(key: key);
 
@@ -30,7 +30,7 @@ class SearchBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Text(
-                  "Let's search for the dream $title for your phone!",
+                  AppLocalizations.of(context).translate('homepage-appbar-text'),
                   style: GoogleFonts.montserrat(fontSize: 18),
                 ),
                 SizedBox(
@@ -41,7 +41,7 @@ class SearchBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(35),
                       border: Border.all(
                           color: Theme.of(context).textTheme.bodyText1.color)),
-                  child: SearchWidget(title: '$title'),
+                  child: SearchWidget(),
                 ),
               ],
             ),
