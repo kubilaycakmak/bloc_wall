@@ -109,6 +109,7 @@ flutter:
     - assets/login.jpg
     - assets/lang/en.json
     - assets/lang/tr.json
+    - assets/transparent.jpg
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

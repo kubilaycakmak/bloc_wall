@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../app_localizations.dart';
 import '../list_photo.page.dart';
 
 class SearchWidget extends StatefulWidget {
@@ -50,12 +51,19 @@ class _SearchWidgetState extends State<SearchWidget> {
               },
               focusNode: _focusNode,
               controller: _controller,
+              cursorColor: Theme.of(context).textTheme.bodyText1.color,
               decoration: InputDecoration(
-                hintText: 'Search photo',
-                hintStyle: TextStyle(),
+                alignLabelWithHint: true,
+                hintText: 'Search Photo',
+                // hintText: AppLocalizations.of(context)
+                //     .translate('homepage-searchbar-text'),
+                hintStyle: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 border: InputBorder.none,
                 prefixIcon: IconButton(
-                  icon: Icon(Icons.search),
+                  icon: Icon(Icons.search,
+                      color: Theme.of(context).textTheme.bodyText1.color),
                   onPressed: () {},
                 ),
               ),
@@ -63,9 +71,9 @@ class _SearchWidgetState extends State<SearchWidget> {
         Container(
           decoration: BoxDecoration(
               border: Border(
-                      left: BorderSide(),
-                    )
-                  ),
+            left:
+                BorderSide(color: Theme.of(context).textTheme.bodyText1.color),
+          )),
           child: PopupMenuButton(
             offset: Offset(90, 110),
             onSelected: (value) {
@@ -74,14 +82,17 @@ class _SearchWidgetState extends State<SearchWidget> {
               });
             },
             icon: Icon(
-                    Icons.filter_list,
-                    size: 30,
-                  ),
+              Icons.filter_list,
+              size: 30,
+            ),
             itemBuilder: (BuildContext context) {
               var list = List<PopupMenuEntry<Object>>();
               list.add(PopupMenuItem(
                 height: 2,
-                child: Text('Vertical'),
+                child: Text(
+                  AppLocalizations.of(context)
+                      .translate('homepage_searchbar-filter-1'),
+                ),
                 value: 'vertical',
               ));
               list.add(
@@ -91,7 +102,10 @@ class _SearchWidgetState extends State<SearchWidget> {
               );
               list.add(PopupMenuItem(
                 height: 2,
-                child: Text('Horizontal'),
+                child: Text(
+                  AppLocalizations.of(context)
+                      .translate('homepage_searchbar-filter-2'),
+                ),
                 value: 'horizontal',
               ));
               return list;

@@ -1,9 +1,41 @@
 import 'package:bloc_wall/ui/pages/widget/parallax_card.dart';
+import 'package:flutter/material.dart';
+
+final byColor = <ParallaxCardItem>[
+  parallaxCardItem('grayscale', Colors.grey),
+  parallaxCardItem('transparent', Colors.white.withOpacity(0)),
+  parallaxCardItem('red', Colors.red),
+  parallaxCardItem('orange', Colors.orange),
+  parallaxCardItem('yellow', Colors.yellow),
+  parallaxCardItem('green', Colors.green),
+  parallaxCardItem('turquoise', Colors.blueAccent),
+  parallaxCardItem('blue', Colors.blue),
+  parallaxCardItem('lilac', Colors.lightBlueAccent),
+  parallaxCardItem('pink', Colors.pink),
+  parallaxCardItem('white', Colors.white),
+  parallaxCardItem('gray', Colors.grey[100]),
+  parallaxCardItem('black', Colors.black),
+  parallaxCardItem('brown', Colors.brown),
+];
+
+ParallaxCardItem parallaxCardItem(
+  String type,
+  Color colors,
+) {
+  return ParallaxCardItem(
+    title: type,
+    body: '',
+    content: '',
+    imagePath: 'assets/transparent.jpg',
+    colors: colors,
+  );
+}
 
 final bannerCategories = <ParallaxCardItem>[
   ParallaxCardItem(
+    title: '',
     body: '',
-    title: 'backgrounds',
+    content: 'backgrounds',
     imagePath: 'assets/background.jpg',
   ),
   ParallaxCardItem(

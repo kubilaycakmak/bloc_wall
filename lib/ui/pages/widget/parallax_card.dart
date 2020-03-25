@@ -132,11 +132,15 @@ class ParallaxCardItem {
   ParallaxCardItem({
     this.imageType,
     this.title,
+    this.colors,
+    this.content,
     this.body,
     this.editCho,
     this.imagePath,
   });
   final String imageType;
+  final Color colors;
+  final String content;
   final bool editCho;
   final String title;
   final String body;

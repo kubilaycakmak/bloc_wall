@@ -30,8 +30,9 @@ class SearchBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Text(
-                  AppLocalizations.of(context).translate('homepage-appbar-text'),
-                  style: GoogleFonts.montserrat(fontSize: 18),
+                  "LET'S FIND THE PERFECT PHOTO FOR YOU",
+                  // AppLocalizations.of(context).translate('homepage-appbar-text'),
+                  style: GoogleFonts.montserrat(fontSize: 17),
                 ),
                 SizedBox(
                   height: 10,
