@@ -1,4 +1,5 @@
 import 'package:bloc_wall/ui/pages/widget/parallax_card.dart';
+import 'package:bloc_wall/ui/pages/widget/slide_card.dart';
 import 'package:flutter/material.dart';
 
 final byColor = <ParallaxCardItem>[
@@ -31,7 +32,27 @@ ParallaxCardItem parallaxCardItem(
   );
 }
 
-final bannerCategories = <ParallaxCardItem>[
+  final bannerA = <SlidingCard>[
+    _slidingCard('Latest', 'latest.jpg'),
+    _slidingCard('Popular', 'popular.jpg'),
+    _slidingCard("Editor's Choice", 'editorChoice.jpg'),
+  ];
+
+  SlidingCard _slidingCard(String name, String path) {
+    return SlidingCard(
+      name: name,
+      assetName: path,
+      offset: 1,
+    );
+  }
+  SlidingCard _slidingCard2(String name, String path) {
+    return SlidingCard(
+      name: name,
+      assetName: path,
+      offset: 1,
+    );
+  }
+  final bannerCategories1 = <ParallaxCardItem>[
   ParallaxCardItem(
     title: '',
     body: '',
@@ -135,26 +156,30 @@ final bannerCategories = <ParallaxCardItem>[
   ),
 ];
 
-final bannerA = <ParallaxCardItem>[
-  ParallaxCardItem(
-    body: 'latest',
-    title: '',
-    editCho: false,
-    imagePath: 'assets/latest.jpg',
-  ),
-  ParallaxCardItem(
-    body: 'popular',
-    title: '',
-    editCho: false,
-    imagePath: 'assets/popular.jpg',
-  ),
-  ParallaxCardItem(
-    body: "Editor's Choice",
-    title: '',
-    editCho: true,
-    imagePath: 'assets/random.jpg',
-  ),
+
+final bannerCategories = <SlidingCard>[
+  _slidingCard2('Backgrounds', 'background.jpg'),
+  _slidingCard2('Fashion', 'fashion.jpg'),
+  _slidingCard2('Nature', 'nature.jpg'),
+  _slidingCard2('Science', 'science.jpg'),
+  _slidingCard2('Education', 'education.jpg'),
+  _slidingCard2('Feelings', 'feel.jpg'),
+  _slidingCard2('Health', 'health.jpg'),
+  _slidingCard2('People', 'people.jpg'),
+  _slidingCard2('Religion', 'regions.jpg'),
+  _slidingCard2('Places', 'places.jpg'),
+  _slidingCard2('Animal', 'animal.jpg'),
+  _slidingCard2('Factory', 'factory.jpg'),
+  _slidingCard2('Computer', 'computer.jpg'),
+  _slidingCard2('Food', 'food.jpg'),
+  _slidingCard2('Sports', 'sports.jpg'),
+  _slidingCard2('Transportation', 'transportation.jpg'),
+  _slidingCard2('Travel', 'travel.jpg'),
+  _slidingCard2('Buildings', 'buildings.jpg'),
+  _slidingCard2('Business', 'business.jpg'),
+  _slidingCard2('Music', 'music.jpg'),
 ];
+
 
 final bannerPhoto = <ParallaxCardItem>[
   ParallaxCardItem(

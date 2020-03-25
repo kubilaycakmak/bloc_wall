@@ -1,14 +1,10 @@
 import 'dart:ui';
 import 'package:bloc_wall/data/injection_container.dart';
 import 'package:bloc_wall/ui/global/theme/bloc/theme_bloc.dart';
-import 'package:bloc_wall/ui/pages/auth/onboard_page.dart';
 import 'package:bloc_wall/ui/pages/widget/custom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'app_localizations.dart';
 
 void main() {
   initKiwi();

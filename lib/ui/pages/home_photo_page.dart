@@ -1,9 +1,9 @@
 import 'package:bloc_wall/data/repository/api_repository.dart';
-import 'package:bloc_wall/ui/global/theme/app_themes.dart';
 import 'package:bloc_wall/ui/pages/list_photo.page.dart';
 import 'package:bloc_wall/ui/pages/static_data/data_lists.dart';
 import 'package:bloc_wall/ui/pages/widget/parallax_card.dart';
 import 'package:bloc_wall/ui/pages/widget/search_bar.dart';
+import 'package:bloc_wall/ui/pages/widget/slide_card.dart';
 import 'package:bloc_wall/ui/photo/photo_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
-import '../../app_localizations.dart';
 import 'animation/fade_animation.dart';
 
 class HomePhotoPage extends StatefulWidget {
@@ -23,6 +22,13 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
   final _photoBloc = kiwi.Container().resolve<PhotoBloc>();
   String globalSearchQuery = '';
   bool filtered = true;
+  PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(viewportFraction: 0.90);
+  }
 
   @override
   void dispose() {
@@ -37,6 +43,13 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
       child: Scaffold(
         body: Stack(
           children: <Widget>[
+            FadeAnimation(0.9, VerticalDivider(
+              indent: 100,
+              endIndent: 0,
+              color: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5),
+              width: 50,
+              thickness: 4,
+            )),
             FadeAnimation(0.3, _buildBlocBuilder()),
             FadeAnimation(0.5, SafeArea(child: SearchBar())),
           ],
@@ -70,6 +83,7 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
     );
   }
 
+
   Widget _buildListBody() {
     return Padding(
       padding: const EdgeInsets.only(top: 150.0),
@@ -80,24 +94,31 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
         children: <Widget>[
           filtered ? _filterMenu() : Container(),
           Padding(
-            padding: EdgeInsets.only(left: 10),
+            padding: EdgeInsets.only(left: 25, bottom: 10),
             child: Text(
-              'Daily Hots',
+              ' # Daily Hots',
               style: GoogleFonts.montserrat(
-                  fontSize: 13, fontWeight: FontWeight.bold),
+                    color: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5),
+                      fontSize: 17, fontWeight: FontWeight.bold,),
             ),
           ),
-          _buildCarouselSlider(bannerA, 200, 0.90),
+          SlidingCardsView(
+            list: bannerA,
+            fontSize: 50,
+            height: 150,
+            viewportFraction: 0.89,
+          ),
           Padding(
-            padding: EdgeInsets.only(left: 10),
+            padding: EdgeInsets.only(left: 25),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'Categories',
+                  ' # Categories',
                   style: GoogleFonts.montserrat(
-                      fontSize: 13, fontWeight: FontWeight.bold),
+                    color: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5),
+                      fontSize: 17, fontWeight: FontWeight.bold,),
                 ),
                 FlatButton(
                   onPressed: () {},
@@ -111,17 +132,37 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
               ],
             ),
           ),
-          _buildCarouselSlider(bannerCategories, 150, 0.46),
+          SlidingCardsView(
+            list: bannerCategories,
+            fontSize: 30,
+            height: 100,
+            viewportFraction: 0.89,
+          ),
+          // Container(
+          //   height: 140,
+          //   child: PageView.builder(
+          //     controller: pageController,
+          //     allowImplicitScrolling: true,
+          //     itemCount: bannerCategories1.length,
+          //     itemBuilder: (context, index){
+          //       return ParallaxCards(
+          //         item: bannerCategories1[index],
+          //         pageVisibility: PageVisibility(pagePosition: 0, visibleFraction: 0.8),
+          //       );
+          //     },
+          //   ),
+          // ),
           Padding(
-            padding: EdgeInsets.only(left: 10),
+            padding: EdgeInsets.only(left: 25),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'By Colors',
+                  ' # By Colors',
                   style: GoogleFonts.montserrat(
-                      fontSize: 13, fontWeight: FontWeight.bold),
+                    color: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5),
+                      fontSize: 17, fontWeight: FontWeight.bold,),
                 ),
                 FlatButton(
                   onPressed: () {},
@@ -140,11 +181,12 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
             height: 20,
           ),
           Padding(
-            padding: EdgeInsets.only(left: 10),
+            padding: EdgeInsets.only(left: 25),
             child: Text(
-              'Explore Others',
+              ' # Explore Others',
               style: GoogleFonts.montserrat(
-                  fontSize: 13, fontWeight: FontWeight.bold),
+                    color: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5),
+                      fontSize: 17, fontWeight: FontWeight.bold,),
             ),
           ),
           SizedBox(
@@ -164,25 +206,28 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
     return AnimatedContainer(
       duration: Duration(milliseconds: 50),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         child: ListView(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(left: 10),
+              padding: EdgeInsets.only(left: 5),
               child: Text(
-                'Filter Menu',
+                ' # Filter Menu',
                 style: GoogleFonts.montserrat(
-                    fontSize: 13, fontWeight: FontWeight.bold),
+                    color: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5),
+                      fontSize: 17, fontWeight: FontWeight.bold,),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text('Direction:'),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Text('Direction:',style: GoogleFonts.montserrat(
+                    color: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5),
+                      fontSize: 17, fontWeight: FontWeight.bold,),),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Wrap(
                 children: <Widget>[
                   Chip(label: Text('Vertical')),
@@ -291,6 +336,7 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
 
 Widget _buildBanner(List<ParallaxCardItem> list, double height) {
   return Container(
+      padding: EdgeInsets.only(left: 24),
       height: height,
       child: PageTransformer(pageViewBuilder: (context, visibilityResolver) {
         return PageView.builder(
