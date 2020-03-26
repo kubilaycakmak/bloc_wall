@@ -1,25 +1,38 @@
 import 'package:bloc_wall/ui/pages/widget/parallax_card.dart';
-import 'package:bloc_wall/ui/pages/widget/slide_card.dart';
 import 'package:flutter/material.dart';
 
 final byColor = <ParallaxCardItem>[
-  parallaxCardItem('grayscale', Colors.grey),
-  parallaxCardItem('transparent', Colors.white.withOpacity(0)),
-  parallaxCardItem('red', Colors.red),
-  parallaxCardItem('orange', Colors.orange),
-  parallaxCardItem('yellow', Colors.yellow),
-  parallaxCardItem('green', Colors.green),
-  parallaxCardItem('turquoise', Colors.blueAccent),
-  parallaxCardItem('blue', Colors.blue),
-  parallaxCardItem('lilac', Colors.lightBlueAccent),
-  parallaxCardItem('pink', Colors.pink),
-  parallaxCardItem('white', Colors.white),
-  parallaxCardItem('gray', Colors.grey[100]),
-  parallaxCardItem('black', Colors.black),
-  parallaxCardItem('brown', Colors.brown),
+  parallaxCardItem('grayscale', Colors.grey, ''),
+  parallaxCardItem('transparent', Colors.white.withOpacity(0), 'transparent'),
+  parallaxCardItem('red', Colors.red, ''),
+  parallaxCardItem('orange', Colors.orange, ''),
+  parallaxCardItem('yellow', Colors.yellow, ''),
+  parallaxCardItem('green', Colors.green, ''),
+  parallaxCardItem('turquoise', Colors.blueAccent, ''),
+  parallaxCardItem('blue', Colors.blue, ''),
+  parallaxCardItem('lilac', Colors.lightBlueAccent, ''),
+  parallaxCardItem('pink', Colors.pink, ''),
+  parallaxCardItem('white', Colors.white, ''),
+  parallaxCardItem('gray', Colors.grey[100], ''),
+  parallaxCardItem('black', Colors.black, ''),
+  parallaxCardItem('brown', Colors.brown, ''),
 ];
 
 ParallaxCardItem parallaxCardItem(
+  String type,
+  Color colors,
+  String path,
+) {
+  return ParallaxCardItem(
+    title: type,
+    body: '',
+    content: '',
+    imagePath: 'assets/$path.jpg',
+    colors: colors,
+  );
+}
+
+ParallaxCardItem parallaxCardItemColors(
   String type,
   Color colors,
 ) {
@@ -27,36 +40,41 @@ ParallaxCardItem parallaxCardItem(
     title: type,
     body: '',
     content: '',
-    imagePath: 'assets/transparent.jpg',
+    imagePath: '',
     colors: colors,
   );
 }
+final bannerA = <ParallaxCardItem>[
+  parallaxCardItem('Latest', Colors.transparent, 'latest'),
+  parallaxCardItem('Popular', Colors.transparent, 'popular'),
+  parallaxCardItem("Editor's Choice", Colors.transparent, 'editorChoice'),
+];
 
-  final bannerA = <SlidingCard>[
-    _slidingCard('Latest', 'latest.jpg'),
-    _slidingCard('Popular', 'popular.jpg'),
-    _slidingCard("Editor's Choice", 'editorChoice.jpg'),
-  ];
+  // final bannerA = <SlidingCard>[
+  //   _slidingCard('Latest', 'latest.jpg'),
+  //   _slidingCard('Popular', 'popular.jpg'),
+  //   _slidingCard("Editor's Choice", 'editorChoice.jpg'),
+  // ];
 
-  SlidingCard _slidingCard(String name, String path) {
-    return SlidingCard(
-      name: name,
-      assetName: path,
-      offset: 1,
-    );
-  }
-  SlidingCard _slidingCard2(String name, String path) {
-    return SlidingCard(
-      name: name,
-      assetName: path,
-      offset: 1,
-    );
-  }
+  // SlidingCard _slidingCard(String name, String path) {
+  //   return SlidingCard(
+  //     name: name,
+  //     assetName: path,
+  //     offset: 1,
+  //   );
+  // }
+  // SlidingCard _slidingCard2(String name, String path) {
+  //   return SlidingCard(
+  //     name: name,
+  //     assetName: path,
+  //     offset: 1,
+  //   );
+  // }
   final bannerCategories1 = <ParallaxCardItem>[
   ParallaxCardItem(
-    title: '',
+    title: 'backgrounds',
     body: '',
-    content: 'backgrounds',
+    content: '',
     imagePath: 'assets/background.jpg',
   ),
   ParallaxCardItem(
@@ -157,28 +175,28 @@ ParallaxCardItem parallaxCardItem(
 ];
 
 
-final bannerCategories = <SlidingCard>[
-  _slidingCard2('Backgrounds', 'background.jpg'),
-  _slidingCard2('Fashion', 'fashion.jpg'),
-  _slidingCard2('Nature', 'nature.jpg'),
-  _slidingCard2('Science', 'science.jpg'),
-  _slidingCard2('Education', 'education.jpg'),
-  _slidingCard2('Feelings', 'feel.jpg'),
-  _slidingCard2('Health', 'health.jpg'),
-  _slidingCard2('People', 'people.jpg'),
-  _slidingCard2('Religion', 'regions.jpg'),
-  _slidingCard2('Places', 'places.jpg'),
-  _slidingCard2('Animal', 'animal.jpg'),
-  _slidingCard2('Factory', 'factory.jpg'),
-  _slidingCard2('Computer', 'computer.jpg'),
-  _slidingCard2('Food', 'food.jpg'),
-  _slidingCard2('Sports', 'sports.jpg'),
-  _slidingCard2('Transportation', 'transportation.jpg'),
-  _slidingCard2('Travel', 'travel.jpg'),
-  _slidingCard2('Buildings', 'buildings.jpg'),
-  _slidingCard2('Business', 'business.jpg'),
-  _slidingCard2('Music', 'music.jpg'),
-];
+// final bannerCategories = <SlidingCard>[
+//   _slidingCard2('Backgrounds', 'background.jpg'),
+//   _slidingCard2('Fashion', 'fashion.jpg'),
+//   _slidingCard2('Nature', 'nature.jpg'),
+//   _slidingCard2('Science', 'science.jpg'),
+//   _slidingCard2('Education', 'education.jpg'),
+//   _slidingCard2('Feelings', 'feel.jpg'),
+//   _slidingCard2('Health', 'health.jpg'),
+//   _slidingCard2('People', 'people.jpg'),
+//   _slidingCard2('Religion', 'regions.jpg'),
+//   _slidingCard2('Places', 'places.jpg'),
+//   _slidingCard2('Animal', 'animal.jpg'),
+//   _slidingCard2('Factory', 'factory.jpg'),
+//   _slidingCard2('Computer', 'computer.jpg'),
+//   _slidingCard2('Food', 'food.jpg'),
+//   _slidingCard2('Sports', 'sports.jpg'),
+//   _slidingCard2('Transportation', 'transportation.jpg'),
+//   _slidingCard2('Travel', 'travel.jpg'),
+//   _slidingCard2('Buildings', 'buildings.jpg'),
+//   _slidingCard2('Business', 'business.jpg'),
+//   _slidingCard2('Music', 'music.jpg'),
+// ];
 
 
 final bannerPhoto = <ParallaxCardItem>[

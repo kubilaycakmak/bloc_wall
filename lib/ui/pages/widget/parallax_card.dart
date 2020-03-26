@@ -23,7 +23,7 @@ class ParallaxCards extends StatelessWidget {
         alignment: FractionalOffset.topLeft,
         transform: Matrix4.translationValues(
           xTranslation,
-          10.0,
+          5.0,
           0.0,
         ),
         child: child,
@@ -60,7 +60,7 @@ class ParallaxCards extends StatelessWidget {
     );
 
     return Positioned(
-      bottom: 30.0,
+      bottom: 50.0,
       left: 10.0,
       right: 10.0,
       child: Column(
@@ -76,12 +76,15 @@ class ParallaxCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var image = Image.asset(
-      item.imagePath,
-      fit: BoxFit.cover,
-      alignment: FractionalOffset(
-        0.5 + (pageVisibility.pagePosition / 3),
-        0.5,
+    var image = Container(
+      color: item.colors,
+      child: Image.asset(
+        item.imagePath,
+        fit: BoxFit.cover,
+        alignment: FractionalOffset(
+          0.5 + (pageVisibility.pagePosition / 3),
+          0.5,
+        ),
       ),
     );
 
@@ -100,11 +103,11 @@ class ParallaxCards extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: 10.0,
-        horizontal: 35.0,
+        vertical: 0.0,
+        horizontal: 10.0,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(8.0),
         child: Material(
           child: Stack(
             fit: StackFit.expand,

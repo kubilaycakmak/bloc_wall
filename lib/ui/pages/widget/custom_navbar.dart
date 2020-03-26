@@ -27,21 +27,20 @@ class _CustomNavbarState extends State<CustomNavbar> {
           Container(
             alignment: Alignment.bottomCenter,
             child: Stack(
-              alignment: Alignment.center,
-              fit: StackFit.loose,
               overflow: Overflow.clip,
               children: <Widget>[
                 FadeAnimation(
                     1.3,
                     Container(
-                      height: MediaQuery.of(context).size.width / 5.2,
-                      width: MediaQuery.of(context).size.width / 1.2,
-                      padding: EdgeInsets.only(bottom: 20.0),
+                      height: 70,
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      padding: EdgeInsets.only(bottom: 25.0),
                       child: FloatingActionButton.extended(
                         elevation: 15,
                         backgroundColor: Theme.of(context).primaryColor,
                         onPressed: null,
                         label: ButtonBar(
+                          alignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             _buildCircleAvatar(
                                 EvaIcons.image2, EvaIcons.imageOutline, 25, 0),
