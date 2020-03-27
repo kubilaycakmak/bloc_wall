@@ -98,6 +98,8 @@ flutter:
     - assets/people.jpg
     - assets/places.jpg
     - assets/editorChoice.jpg
+    - assets/palette.png
+    - assets/palette1.png
     - assets/regions.jpg
     - assets/science.jpg
     - assets/sports.jpg

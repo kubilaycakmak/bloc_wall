@@ -2,201 +2,72 @@ import 'package:bloc_wall/ui/pages/widget/parallax_card.dart';
 import 'package:flutter/material.dart';
 
 final byColor = <ParallaxCardItem>[
-  parallaxCardItem('grayscale', Colors.grey, ''),
-  parallaxCardItem('transparent', Colors.white.withOpacity(0), 'transparent'),
-  parallaxCardItem('red', Colors.red, ''),
-  parallaxCardItem('orange', Colors.orange, ''),
-  parallaxCardItem('yellow', Colors.yellow, ''),
-  parallaxCardItem('green', Colors.green, ''),
-  parallaxCardItem('turquoise', Colors.blueAccent, ''),
-  parallaxCardItem('blue', Colors.blue, ''),
-  parallaxCardItem('lilac', Colors.lightBlueAccent, ''),
-  parallaxCardItem('pink', Colors.pink, ''),
-  parallaxCardItem('white', Colors.white, ''),
-  parallaxCardItem('gray', Colors.grey[100], ''),
-  parallaxCardItem('black', Colors.black, ''),
-  parallaxCardItem('brown', Colors.brown, ''),
+  parallaxCardItem(type: 'Grayscale', content: 'latest', colors: Colors.grey[300], path: 'palette1', categories: '', color: 'grayscale'),
+  parallaxCardItem(type: 'Transparent', content: 'latest', colors: Colors.white.withOpacity(0), path: 'palette1', categories: '', color: 'transparent'),
+  parallaxCardItem(type: 'Red', content: 'latest', colors: Colors.red, path: 'palette1', categories: '', color: 'red'),
+  parallaxCardItem(type: 'Orange', content: 'latest', colors: Colors.orange, path: 'palette1', categories: '', color: 'orange'),
+  parallaxCardItem(type: 'Yellow', content: 'latest', colors: Colors.yellow, path: 'palette1', categories: '', color: 'yellow'),
+  parallaxCardItem(type: 'Green', content: 'latest', colors: Colors.green, path: 'palette1', categories: '', color: 'green'),
+  parallaxCardItem(type: 'Turquoise', content: 'latest', colors: Colors.lightBlueAccent, path: 'palette1', categories: '', color: 'turqouise'),
+  parallaxCardItem(type: 'Blue', content: 'latest', colors: Colors.blue, path: 'palette1', categories: '', color: 'blue'),
+  parallaxCardItem(type: 'Lilac', content: 'latest', colors: Colors.blueAccent, path: 'palette1', categories: '', color: 'lilac'),
+  parallaxCardItem(type: 'Pink', content: 'latest', colors: Colors.pink, path: 'palette1', categories: '', color: 'pink'),
+  parallaxCardItem(type: 'White', content: 'latest', colors: Colors.white, path: 'palette1', categories: '', color: 'white'),
+  parallaxCardItem(type: 'Gray', content: 'latest', colors: Colors.grey[900], path: 'palette1', categories: '', color: 'gray'),
+  parallaxCardItem(type: 'Black', content: 'latest', colors: Colors.black, path: 'palette1', categories: '', color: 'black'),
+  parallaxCardItem(type: 'Brown', content: 'latest', colors: Colors.brown, path: 'palette1', categories: '', color: 'brown'),
 ];
 
 ParallaxCardItem parallaxCardItem(
-  String type,
+  {String type,
+  bool editorChoice,
   Color colors,
+  String color,
   String path,
+  String content,
+  String categories,}
 ) {
   return ParallaxCardItem(
     title: type,
     body: '',
-    content: '',
-    imagePath: 'assets/$path.jpg',
+    content: content,
+    imagePath: path == 'palette1' ? 'assets/$path.png' :'assets/$path.jpg',
     colors: colors,
+    imageType: 'all',
+    categories: categories,
+    editCho: editorChoice,
+    color: color,
   );
 }
 
-ParallaxCardItem parallaxCardItemColors(
-  String type,
-  Color colors,
-) {
-  return ParallaxCardItem(
-    title: type,
-    body: '',
-    content: '',
-    imagePath: '',
-    colors: colors,
-  );
-}
 final bannerA = <ParallaxCardItem>[
-  parallaxCardItem('Latest', Colors.transparent, 'latest'),
-  parallaxCardItem('Popular', Colors.transparent, 'popular'),
-  parallaxCardItem("Editor's Choice", Colors.transparent, 'editorChoice'),
+  parallaxCardItem(type: 'Latest', content: 'latest', colors: Colors.transparent, path: 'latest', categories: '', editorChoice: false),
+  parallaxCardItem(type: 'Popular', content: 'popular' ,colors: Colors.transparent, path: 'popular', categories: '', editorChoice: false),
+  parallaxCardItem(type: "Editor's Choice", content: 'latest', colors: Colors.transparent, path: 'editorChoice', categories: '', editorChoice: true),
 ];
 
-  // final bannerA = <SlidingCard>[
-  //   _slidingCard('Latest', 'latest.jpg'),
-  //   _slidingCard('Popular', 'popular.jpg'),
-  //   _slidingCard("Editor's Choice", 'editorChoice.jpg'),
-  // ];
-
-  // SlidingCard _slidingCard(String name, String path) {
-  //   return SlidingCard(
-  //     name: name,
-  //     assetName: path,
-  //     offset: 1,
-  //   );
-  // }
-  // SlidingCard _slidingCard2(String name, String path) {
-  //   return SlidingCard(
-  //     name: name,
-  //     assetName: path,
-  //     offset: 1,
-  //   );
-  // }
   final bannerCategories1 = <ParallaxCardItem>[
-  ParallaxCardItem(
-    title: 'backgrounds',
-    body: '',
-    content: '',
-    imagePath: 'assets/background.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'fashion',
-    body: '',
-    imagePath: 'assets/fashion.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'nature',
-    body: '',
-    imagePath: 'assets/nature.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'science',
-    body: '',
-    imagePath: 'assets/science.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'education',
-    body: '',
-    imagePath: 'assets/education.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'feelings',
-    body: '',
-    imagePath: 'assets/feel.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'health',
-    body: '',
-    imagePath: 'assets/health.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'people',
-    body: '',
-    imagePath: 'assets/people.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'religion',
-    body: '',
-    imagePath: 'assets/regions.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'places',
-    body: '',
-    imagePath: 'assets/places.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'animals',
-    body: '',
-    imagePath: 'assets/animal.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'industry',
-    body: '',
-    imagePath: 'assets/factory.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'computer',
-    body: '',
-    imagePath: 'assets/computer.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'food',
-    body: '',
-    imagePath: 'assets/food.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'sports',
-    body: '',
-    imagePath: 'assets/sports.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'transportation',
-    body: '',
-    imagePath: 'assets/transportation.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'travel',
-    body: '',
-    imagePath: 'assets/travel.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'buildings',
-    body: '',
-    imagePath: 'assets/buildings.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'business',
-    body: '',
-    imagePath: 'assets/business.jpg',
-  ),
-  ParallaxCardItem(
-    title: 'music',
-    body: '',
-    imagePath: 'assets/music.jpg',
-  ),
+    parallaxCardItem(type: 'Backgrounds', colors: Colors.transparent, categories:'background', path: 'background', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Fashion', colors: Colors.transparent, categories:'fashion', path: 'fashion', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Nature', colors: Colors.transparent, categories:'nature', path: 'nature', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Science', colors: Colors.transparent, categories:'science', path: 'science', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Education', colors: Colors.transparent, categories:'education', path: 'education', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Feel', colors: Colors.transparent, categories:'feel', path: 'feel', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Health', colors: Colors.transparent, categories:'health', path: 'health', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'People', colors: Colors.transparent, categories:'people', path: 'people', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Religions', colors: Colors.transparent, categories:'religions', path: 'regions', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Places', colors: Colors.transparent, categories:'places', path: 'places', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Animal', colors: Colors.transparent, categories:'animal', path: 'animal', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Factory', colors: Colors.transparent, categories:'factory', path: 'factory', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Computer', colors: Colors.transparent, categories:'computer', path: 'computer', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Food', colors: Colors.transparent, categories:'food', path: 'food', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Sports', colors: Colors.transparent, categories:'sports', path: 'sports', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Transportation', colors: Colors.transparent, categories:'transportation', path: 'transportation', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Travel', colors: Colors.transparent, categories:'travel', path: 'travel', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Buildings', colors: Colors.transparent, categories:'buildings', path: 'buildings', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Business', colors: Colors.transparent, categories:'business', path: 'business', content: 'latest', editorChoice: true),
+    parallaxCardItem(type: 'Music', colors: Colors.transparent, categories:'music', path: 'music', content: 'latest', editorChoice: true),
 ];
-
-
-// final bannerCategories = <SlidingCard>[
-//   _slidingCard2('Backgrounds', 'background.jpg'),
-//   _slidingCard2('Fashion', 'fashion.jpg'),
-//   _slidingCard2('Nature', 'nature.jpg'),
-//   _slidingCard2('Science', 'science.jpg'),
-//   _slidingCard2('Education', 'education.jpg'),
-//   _slidingCard2('Feelings', 'feel.jpg'),
-//   _slidingCard2('Health', 'health.jpg'),
-//   _slidingCard2('People', 'people.jpg'),
-//   _slidingCard2('Religion', 'regions.jpg'),
-//   _slidingCard2('Places', 'places.jpg'),
-//   _slidingCard2('Animal', 'animal.jpg'),
-//   _slidingCard2('Factory', 'factory.jpg'),
-//   _slidingCard2('Computer', 'computer.jpg'),
-//   _slidingCard2('Food', 'food.jpg'),
-//   _slidingCard2('Sports', 'sports.jpg'),
-//   _slidingCard2('Transportation', 'transportation.jpg'),
-//   _slidingCard2('Travel', 'travel.jpg'),
-//   _slidingCard2('Buildings', 'buildings.jpg'),
-//   _slidingCard2('Business', 'business.jpg'),
-//   _slidingCard2('Music', 'music.jpg'),
-// ];
 
 
 final bannerPhoto = <ParallaxCardItem>[

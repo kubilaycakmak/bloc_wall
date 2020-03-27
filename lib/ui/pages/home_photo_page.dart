@@ -44,9 +44,8 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
             FadeAnimation(0.3, _buildBlocBuilder()),
             FadeAnimation(
                 0.5,
-                SafeArea(
-                  child: SearchBar(),
-                )),
+                SearchBar(),
+            )
           ],
         ),
       ),
@@ -80,9 +79,9 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
 
   Widget _buildListBody() {
     return Padding(
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(0.0),
       child: ListView(
-        padding: EdgeInsets.only(top: 150),
+        padding: EdgeInsets.only(top: 165),
         shrinkWrap: true,
         children: <Widget>[
           Padding(
@@ -185,61 +184,6 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
     );
   }
 
-  Widget _buildCarouselSliderbyColor(
-      List<ParallaxCardItem> list, double height, double viewportFraction) {
-    return Container(
-      height: height,
-      child: CarouselSlider.builder(
-        initialPage: 0,
-        viewportFraction: viewportFraction,
-        autoPlay: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: list.length,
-        itemBuilder: (context, index) {
-          final item = list[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ListPhotoPage(
-                            editorChoice: list[index].editCho,
-                            category: list[index].title,
-                            imageType: 'photo',
-                            order: list[index].body,
-                            orientation: 'vertical',
-                            query: '',
-                          )));
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
-              child: Container(
-                width: 200,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        offset: Offset(1, 2), blurRadius: 4, color: item.colors)
-                  ],
-                  border: Border.all(width: 0.1),
-                  borderRadius: BorderRadius.circular(10),
-                  color: item.colors,
-                ),
-                child: Center(
-                  child: Text(
-                    item.title,
-                    style: GoogleFonts.montserrat(
-                        fontSize: 15,
-                        color: Theme.of(context).textTheme.bodyText1.color),
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
   Widget _buildCarouselSlider(List<ParallaxCardItem> list, double height,
       double viewportFraction, int initPage) {
     return Container(
@@ -264,17 +208,21 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
               final item = list[index];
               return GestureDetector(
                 onTap: () {
+                  print('object');
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => ListPhotoPage(
-                                editorChoice: list[index].editCho,
-                                category: list[index].title,
-                                imageType: 'photo',
-                                order: list[index].body,
-                                orientation: 'vertical',
-                                query: '',
-                              )));
+                            color: list[index].color,
+                            order: list[index].content,
+                            category: list[index].categories,
+                            editorChoice: list[index].editCho,
+                            imageType: list[index].imageType,
+                            orientation: 'vertical',
+                            query: '',
+                            page: 0,
+                            title: list[index].title,
+                          )));
                 },
                 child: Container(
                   decoration: BoxDecoration(

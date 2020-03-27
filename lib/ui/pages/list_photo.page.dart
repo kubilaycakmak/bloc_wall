@@ -14,22 +14,26 @@ import 'package:kiwi/kiwi.dart' as kiwi;
 import 'animation/fade_animation.dart';
 
 class ListPhotoPage extends StatefulWidget {
+  final String color;
   final int page;
   final bool editorChoice;
   final String imageType;
   final String query;
   final String order;
   final String orientation;
+  final String title;
   final String category;
 
   const ListPhotoPage(
       {Key key,
+      this.color,
       this.page,
       this.editorChoice,
       this.imageType,
       this.query,
       this.order,
       this.orientation,
+      this.title,
       this.category})
       : super(key: key);
 
@@ -44,6 +48,7 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
   @override
   void initState() {
     super.initState();
+    print('color : ${widget.color}');
     print('edit choice ' + widget.editorChoice.toString());
     print('category ' + widget.category);
     print('imageType ' + widget.imageType);
@@ -69,9 +74,9 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            widget.category == ''
+            widget.title == ''
                 ? '${widget.order.toUpperCase()} ${widget.query.toUpperCase()}'
-                : widget.category.toUpperCase(),
+                : widget.title.toUpperCase(),
             style: GoogleFonts.montserrat(fontSize: 20),
           ),
           elevation: 0,

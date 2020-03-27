@@ -38,7 +38,7 @@ class _SearchBarState extends State<SearchBar> {
   Widget build(BuildContext context) {
     return FittedBox(
       child: Container(
-        height: 125,
+        height: 145,
         child: AnimatedContainer(
           alignment: Alignment.topCenter,
           decoration: BoxDecoration(boxShadow: <BoxShadow>[
@@ -51,7 +51,7 @@ class _SearchBarState extends State<SearchBar> {
           duration: Duration(milliseconds: 400),
           child: AnimatedContainer(
             width: MediaQuery.of(context).size.width,
-            height: 125,
+            height: 145,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
               child: FittedBox(
