@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:bloc_wall/data/injection_container.dart';
+import 'package:bloc_wall/ui/global/theme/app_themes.dart';
 import 'package:bloc_wall/ui/global/theme/bloc/theme_bloc.dart';
 import 'package:bloc_wall/ui/pages/widget/custom_navbar.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() {
   initKiwi();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-      statusBarColor: Colors.transparent,
       statusBarBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark));
   runApp(MyApp());

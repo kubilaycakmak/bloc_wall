@@ -21,7 +21,7 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
   final _photoBloc = kiwi.Container().resolve<PhotoBloc>();
   String globalSearchQuery = '';
   PageController pageController;
-  int _current = 0;
+  // int _current = 0;
 
   @override
   void initState() {
@@ -42,9 +42,11 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
         body: Stack(
           children: <Widget>[
             FadeAnimation(0.3, _buildBlocBuilder()),
-            FadeAnimation(0.5, SafeArea(
-                child:SearchBar(),
-            )),
+            FadeAnimation(
+                0.5,
+                SafeArea(
+                  child: SearchBar(),
+                )),
           ],
         ),
       ),
@@ -76,7 +78,6 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
     );
   }
 
-
   Widget _buildListBody() {
     return Padding(
       padding: EdgeInsets.all(10.0),
@@ -89,9 +90,14 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
             child: Text(
               '- Daily Hots',
               style: GoogleFonts.montserrat(
-                  color: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5),
-                  fontWeight: FontWeight.w600,
-                    fontSize: 17,),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .color
+                    .withOpacity(0.5),
+                fontWeight: FontWeight.w600,
+                fontSize: 17,
+              ),
             ),
           ),
           _buildCarouselSlider(bannerA, 400, .85, 0),
@@ -103,19 +109,31 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
                 Text(
                   '- Categories',
                   style: GoogleFonts.montserrat(
-                      color: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5),
-                      fontWeight: FontWeight.w600,
-                        fontSize: 17,),
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .color
+                        .withOpacity(0.5),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 17,
+                  ),
                 ),
                 FlatButton(
                   splashColor: Colors.transparent,
                   hoverColor: Colors.transparent,
-                  child: Text('View All > ',
-                  style: GoogleFonts.montserrat(
-                      color: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5),
+                  child: Text(
+                    'View All > ',
+                    style: GoogleFonts.montserrat(
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          .color
+                          .withOpacity(0.5),
                       fontWeight: FontWeight.w300,
-                        fontSize: 17,),),
-                        onPressed: (){},
+                      fontSize: 17,
+                    ),
+                  ),
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -129,19 +147,31 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
                 Text(
                   '- Colors',
                   style: GoogleFonts.montserrat(
-                      color: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5),
-                      fontWeight: FontWeight.w600,
-                        fontSize: 17,),
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .color
+                        .withOpacity(0.5),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 17,
+                  ),
                 ),
                 FlatButton(
                   splashColor: Colors.transparent,
                   hoverColor: Colors.transparent,
-                  child: Text('View All > ',
-                  style: GoogleFonts.montserrat(
-                      color: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5),
+                  child: Text(
+                    'View All > ',
+                    style: GoogleFonts.montserrat(
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          .color
+                          .withOpacity(0.5),
                       fontWeight: FontWeight.w300,
-                        fontSize: 17,),),
-                        onPressed: (){},
+                      fontSize: 17,
+                    ),
+                  ),
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -154,8 +184,6 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
       ),
     );
   }
-
-  
 
   Widget _buildCarouselSliderbyColor(
       List<ParallaxCardItem> list, double height, double viewportFraction) {
@@ -212,8 +240,8 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
     );
   }
 
-  Widget _buildCarouselSlider(
-      List<ParallaxCardItem> list, double height, double viewportFraction, int initPage) {
+  Widget _buildCarouselSlider(List<ParallaxCardItem> list, double height,
+      double viewportFraction, int initPage) {
     return Container(
       height: height,
       child: Stack(
@@ -227,9 +255,9 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
             enableInfiniteScroll: false,
             scrollDirection: Axis.horizontal,
             itemCount: list.length,
-            onPageChanged: (val){
+            onPageChanged: (val) {
               setState(() {
-                _current = val;
+                // _current = val;
               });
             },
             itemBuilder: (context, index) {
@@ -237,29 +265,24 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
-                    context,MaterialPageRoute(
-                      builder: (context) => ListPhotoPage(
-                        editorChoice: list[index].editCho,
-                        category: list[index].title,
-                        imageType: 'photo',
-                        order: list[index].body,
-                        orientation: 'vertical',
-                        query: '',
-                      )
-                    )
-                  );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ListPhotoPage(
+                                editorChoice: list[index].editCho,
+                                category: list[index].title,
+                                imageType: 'photo',
+                                order: list[index].body,
+                                orientation: 'vertical',
+                                query: '',
+                              )));
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 0.03
-                    )
-                  ),
+                      border: Border.all(color: Colors.black, width: 0.03)),
                   child: ParallaxCards(
                     item: item,
-                    pageVisibility:
-                        PageVisibility(pagePosition: 0, visibleFraction: viewportFraction),
+                    pageVisibility: PageVisibility(
+                        pagePosition: 0, visibleFraction: viewportFraction),
                   ),
                 ),
               );
