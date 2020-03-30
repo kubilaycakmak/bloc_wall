@@ -8,6 +8,7 @@ class PhotoEvent extends Equatable {
 }
 
 class FetchPhoto extends PhotoEvent {
+  final _color;
   final _editorChoice;
   final _category;
   final _imageType;
@@ -15,15 +16,23 @@ class FetchPhoto extends PhotoEvent {
   final _order;
   final _orientation;
 
-  FetchPhoto(this._editorChoice, this._category, this._imageType, this._query,
-      this._order, this._orientation);
+  FetchPhoto(this._color, this._editorChoice, this._category, this._imageType,
+      this._query, this._order, this._orientation);
 
   @override
-  List<Object> get props =>
-      [_editorChoice, _category, _imageType, _query, _order, _orientation];
+  List<Object> get props => [
+        _color,
+        _editorChoice,
+        _category,
+        _imageType,
+        _query,
+        _order,
+        _orientation
+      ];
 }
 
 class FetchNextResultPage extends PhotoEvent {
+  final color;
   final page;
   final editorChoice;
   final category;
@@ -33,7 +42,8 @@ class FetchNextResultPage extends PhotoEvent {
   final orientation;
 
   FetchNextResultPage(
-      {this.page,
+      {this.color,
+      this.page,
       this.editorChoice,
       this.category,
       this.imageType,
@@ -42,6 +52,14 @@ class FetchNextResultPage extends PhotoEvent {
       this.orientation});
 
   @override
-  List<Object> get props =>
-      [page, editorChoice, category, imageType, query, order, orientation];
+  List<Object> get props => [
+        color,
+        page,
+        editorChoice,
+        category,
+        imageType,
+        query,
+        order,
+        orientation
+      ];
 }

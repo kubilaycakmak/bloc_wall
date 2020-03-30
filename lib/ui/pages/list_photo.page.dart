@@ -56,8 +56,14 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
     print('order ' + widget.order);
     print('orientation ' + widget.orientation);
     print('----------');
-    _photoBloc.add(FetchPhoto(widget.editorChoice, widget.category,
-        widget.imageType, widget.query, widget.order, widget.orientation));
+    _photoBloc.fetchResultPage(
+        colors: widget.color,
+        category: widget.category,
+        editorChoice: widget.editorChoice,
+        imageType: widget.imageType,
+        order: widget.order,
+        orientation: widget.orientation,
+        query: widget.query);
   }
 
   @override
@@ -201,8 +207,14 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
     if (notification is ScrollEndNotification &&
         _scrollController.position.extentAfter == 0) {
       print('object');
-      _photoBloc.fetchNextResultPage(widget.order, widget.orientation,
-          widget.query, widget.category, widget.editorChoice, widget.imageType);
+      _photoBloc.fetchNextResultPage(
+          color: widget.color,
+          category: widget.category,
+          editorChoice: widget.editorChoice,
+          imageType: widget.imageType,
+          order: widget.order,
+          orientation: widget.orientation,
+          query: widget.query);
     }
     return false;
   }

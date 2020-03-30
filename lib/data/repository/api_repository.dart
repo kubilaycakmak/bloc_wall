@@ -41,6 +41,7 @@ class ApiRepository {
     _cacheValues(query: query);
     final urlEncoded = Uri.encodeFull(urlRaw);
     final response = await http.Client().get(urlEncoded);
+    print(urlRaw);
     if (response.statusCode != 200) print('fetchError');
     return PhotoAll.fromJson(response.body);
   }
@@ -51,6 +52,7 @@ class ApiRepository {
       bool editorChoice,
       String category,
       String query,
+      String colors,
       String imageType,
       String order,
       String orientation}) async {
@@ -60,6 +62,7 @@ class ApiRepository {
         order: order,
         orientation: orientation,
         perPage: perPage,
+        colors: colors,
         category: category,
         editorChoice: editorChoice,
         imageType: imageType);

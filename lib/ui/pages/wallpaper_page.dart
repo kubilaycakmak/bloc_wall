@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../app_localizations.dart';
 import 'animation/fade_animation.dart';
 
 class WallpaperPage extends StatefulWidget {
@@ -118,16 +119,16 @@ class _WallpaperPageState extends State<WallpaperPage> {
     );
   }
 
-  Widget _buildSimiliarPhoto() {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        child: Image(
-          image: NetworkImage(widget.photoHits.previewURL),
-        ),
-      ),
-    );
-  }
+  // Widget _buildSimiliarPhoto() {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(20.0),
+  //     child: Container(
+  //       child: Image(
+  //         image: NetworkImage(widget.photoHits.previewURL),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Hero _buildPhoto() {
     return Hero(
@@ -177,7 +178,9 @@ class _WallpaperPageState extends State<WallpaperPage> {
             TableCell(
               child: Center(
                 child: Text(
-                  'Resolution : ${widget.photoHits.imageWidth} x ${widget.photoHits.imageHeight}',
+                  AppLocalizations.of(context)
+                          .translate('wallpaper_page_info-1') +
+                      ': ${widget.photoHits.imageWidth} x ${widget.photoHits.imageHeight}',
                   style: GoogleFonts.montserrat(
                       color: Colors.white.withOpacity(0.9)),
                 ),
@@ -186,7 +189,9 @@ class _WallpaperPageState extends State<WallpaperPage> {
             TableCell(
               child: Center(
                   child: Text(
-                      'Size : ' +
+                      AppLocalizations.of(context)
+                              .translate('wallpaper_page_info-2') +
+                          ': ' +
                           (widget.photoHits.imageSize / 1000000)
                               .toString()
                               .substring(0, 4) +
@@ -198,14 +203,20 @@ class _WallpaperPageState extends State<WallpaperPage> {
           TableRow(decoration: BoxDecoration(color: Colors.white24), children: [
             TableCell(
               child: Center(
-                child: Text('Views : ${widget.photoHits.views}',
+                child: Text(
+                    AppLocalizations.of(context)
+                            .translate('wallpaper_page_info-3') +
+                        ': ${widget.photoHits.views}',
                     style: GoogleFonts.montserrat(
                         color: Colors.white.withOpacity(0.9))),
               ),
             ),
             TableCell(
               child: Center(
-                child: Text('Downloads : ${widget.photoHits.downloads}',
+                child: Text(
+                    AppLocalizations.of(context)
+                            .translate('wallpaper_page_info-4') +
+                        ': ${widget.photoHits.downloads}',
                     style: GoogleFonts.montserrat(
                         color: Colors.white.withOpacity(0.9))),
               ),
@@ -214,14 +225,20 @@ class _WallpaperPageState extends State<WallpaperPage> {
           TableRow(decoration: BoxDecoration(color: Colors.white10), children: [
             TableCell(
               child: Center(
-                child: Text('Favorites : ${widget.photoHits.favorites}',
+                child: Text(
+                    AppLocalizations.of(context)
+                            .translate('wallpaper_page_info-5') +
+                        ': ${widget.photoHits.favorites}',
                     style: GoogleFonts.montserrat(
                         color: Colors.white.withOpacity(0.9))),
               ),
             ),
             TableCell(
               child: Center(
-                child: Text('Likes : ${widget.photoHits.likes}',
+                child: Text(
+                    AppLocalizations.of(context)
+                            .translate('wallpaper_page_info-6') +
+                        ': ${widget.photoHits.likes}',
                     style: GoogleFonts.montserrat(
                         color: Colors.white.withOpacity(0.9))),
               ),

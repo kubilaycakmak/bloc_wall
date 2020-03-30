@@ -1,5 +1,3 @@
-import 'package:bloc_wall/ui/pages/animation/fade_animation.dart';
-import 'package:bloc_wall/ui/pages/widget/search_field.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -59,8 +57,8 @@ class _SearchBarState extends State<SearchBar> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      "LET'S FIND THE PERFECT PHOTO FOR YOU",
-                      // AppLocalizations.of(context).translate('homepage-appbar-text'),
+                      AppLocalizations.of(context)
+                          .translate('homepage-appbar-text'),
                       style: GoogleFonts.montserrat(fontSize: 20),
                     ),
                     SizedBox(

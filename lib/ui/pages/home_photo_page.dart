@@ -1,4 +1,5 @@
 import 'package:bloc_wall/data/repository/api_repository.dart';
+import 'package:bloc_wall/ui/pages/by_colors.dart';
 import 'package:bloc_wall/ui/pages/list_photo.page.dart';
 import 'package:bloc_wall/ui/pages/static_data/data_lists.dart';
 import 'package:bloc_wall/ui/pages/widget/parallax_card.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
+import '../../app_localizations.dart';
 import 'animation/fade_animation.dart';
 
 class HomePhotoPage extends StatefulWidget {
@@ -43,8 +45,8 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
           children: <Widget>[
             FadeAnimation(0.3, _buildBlocBuilder()),
             FadeAnimation(
-                0.5,
-                SearchBar(),
+              0.5,
+              SearchBar(),
             )
           ],
         ),
@@ -57,20 +59,20 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
       bloc: _photoBloc,
       builder: (context, state) {
         if (state is PhotoIsNotList) {
-          print('notlist');
+          print('PhotoIsNotList');
           return _buildListBody();
         }
         if (state is PhotoIsLoading) {
-          print('loading');
+          print('PhotoIsLoading');
           return Center(
             child: CircularProgressIndicator(),
           );
         }
         if (state is PhotoIsLoaded) {
-          return Text('heyyo');
+          return Text('PhotoIsLoaded');
         }
         if (state is PhotoIsNotLoaded) {
-          print('not loaded');
+          print('PhotoIsNotLoaded');
         }
         return Center(child: Text('error'));
       },
@@ -87,7 +89,8 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
           Padding(
             padding: EdgeInsets.only(left: 20, bottom: 10),
             child: Text(
-              '- Daily Hots',
+              AppLocalizations.of(context)
+                  .translate('homepage-category-title1'),
               style: GoogleFonts.montserrat(
                 color: Theme.of(context)
                     .textTheme
@@ -106,7 +109,8 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  '- Categories',
+                  AppLocalizations.of(context)
+                      .translate('homepage-category-title2'),
                   style: GoogleFonts.montserrat(
                     color: Theme.of(context)
                         .textTheme
@@ -121,7 +125,8 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
                   splashColor: Colors.transparent,
                   hoverColor: Colors.transparent,
                   child: Text(
-                    'View All > ',
+                    AppLocalizations.of(context)
+                        .translate('homepage-category-viewAll'),
                     style: GoogleFonts.montserrat(
                       color: Theme.of(context)
                           .textTheme
@@ -132,7 +137,16 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
                       fontSize: 17,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewAll(
+                            list: bannerCategories1,
+                            title: 'By Categories',
+                          ),
+                        ));
+                  },
                 ),
               ],
             ),
@@ -144,7 +158,8 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  '- Colors',
+                  AppLocalizations.of(context)
+                      .translate('homepage-category-title3'),
                   style: GoogleFonts.montserrat(
                     color: Theme.of(context)
                         .textTheme
@@ -159,7 +174,8 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
                   splashColor: Colors.transparent,
                   hoverColor: Colors.transparent,
                   child: Text(
-                    'View All > ',
+                    AppLocalizations.of(context)
+                        .translate('homepage-category-viewAll'),
                     style: GoogleFonts.montserrat(
                       color: Theme.of(context)
                           .textTheme
@@ -170,15 +186,45 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
                       fontSize: 17,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewAll(
+                            list: byColor,
+                            title: 'By Color',
+                          ),
+                        ));
+                  },
                 ),
               ],
             ),
           ),
           _buildCarouselSlider(byColor, 100, .4, 7),
+          Padding(
+            padding: EdgeInsets.only(left: 20, bottom: 20, top: 20),
+            child: Text(
+              AppLocalizations.of(context)
+                  .translate('homepage-category-title4'),
+              style: GoogleFonts.montserrat(
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .color
+                    .withOpacity(0.5),
+                fontWeight: FontWeight.w600,
+                fontSize: 17,
+              ),
+            ),
+          ),
+          _buildBanner(bannerVector, 150),
           SizedBox(
-            height: 100,
-          )
+            height: 20,
+          ),
+          _buildBanner(bannerIllistration, 150),
+          SizedBox(
+            height: 50,
+          ),
         ],
       ),
     );
@@ -195,34 +241,31 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
             initialPage: initPage,
             enlargeCenterPage: true,
             viewportFraction: viewportFraction,
-            aspectRatio: 2,
+            aspectRatio: 16 / 9,
             enableInfiniteScroll: false,
             scrollDirection: Axis.horizontal,
             itemCount: list.length,
-            onPageChanged: (val) {
-              setState(() {
-                // _current = val;
-              });
-            },
+            onPageChanged: (val) {},
             itemBuilder: (context, index) {
               final item = list[index];
               return GestureDetector(
                 onTap: () {
-                  print('object');
+                  print('Card a basildi.');
+                  print(list[index]);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => ListPhotoPage(
-                            color: list[index].color,
-                            order: list[index].content,
-                            category: list[index].categories,
-                            editorChoice: list[index].editCho,
-                            imageType: list[index].imageType,
-                            orientation: 'vertical',
-                            query: '',
-                            page: 0,
-                            title: list[index].title,
-                          )));
+                                color: list[index].color,
+                                order: list[index].content,
+                                category: list[index].categories,
+                                editorChoice: list[index].editCho,
+                                imageType: list[index].imageType,
+                                orientation: 'vertical',
+                                query: '',
+                                page: 0,
+                                title: list[index].title,
+                              )));
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -236,24 +279,6 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
               );
             },
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   crossAxisAlignment: CrossAxisAlignment.end,
-          //   children: map<Widget>(list, (index, url) {
-          //     return Align(
-          //       alignment: Alignment.bottomCenter,
-          //       child: Container(
-          //         width: 8.0,
-          //         height: 10,
-          //         margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.5),
-          //         decoration: BoxDecoration(
-          //           shape: BoxShape.circle,
-          //           color: _current == index ? Theme.of(context).primaryColor.withOpacity(0.4) : Theme.of(context).textTheme.bodyText1.color.withOpacity(0.5)
-          //         ),
-          //       ),
-          //     );
-          //   }),
-          // ),
         ],
       ),
     );
@@ -270,7 +295,7 @@ List<T> map<T>(List list, Function handler) {
 
 Widget _buildBanner(List<ParallaxCardItem> list, double height) {
   return Container(
-      padding: EdgeInsets.only(left: 24),
+      padding: EdgeInsets.symmetric(horizontal: 15),
       height: height,
       child: PageTransformer(pageViewBuilder: (context, visibilityResolver) {
         return PageView.builder(
