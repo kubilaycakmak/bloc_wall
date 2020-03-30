@@ -1,5 +1,5 @@
 import 'package:bloc_wall/data/repository/api_repository.dart';
-import 'package:bloc_wall/ui/pages/by_colors.dart';
+import 'package:bloc_wall/ui/pages/view_all.dart';
 import 'package:bloc_wall/ui/pages/list_photo.page.dart';
 import 'package:bloc_wall/ui/pages/static_data/data_lists.dart';
 import 'package:bloc_wall/ui/pages/widget/parallax_card.dart';
@@ -192,7 +192,7 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
                         MaterialPageRoute(
                           builder: (context) => ViewAll(
                             list: byColor,
-                            title: 'By Color',
+                            title: 'By Colors',
                           ),
                         ));
                   },
@@ -260,7 +260,7 @@ class _HomePhotoPageState extends State<HomePhotoPage> {
                                 order: list[index].content,
                                 category: list[index].categories,
                                 editorChoice: list[index].editCho,
-                                imageType: list[index].imageType,
+                                imageType: 'photo',
                                 orientation: 'vertical',
                                 query: '',
                                 page: 0,

@@ -1,4 +1,3 @@
-import 'package:bloc_wall/ui/pages/static_data/data_lists.dart';
 import 'package:bloc_wall/ui/pages/widget/parallax_card.dart';
 import 'package:flutter/material.dart';
 

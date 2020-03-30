@@ -137,13 +137,13 @@ final bannerA = <ParallaxCardItem>[
       path: 'popular',
       categories: '',
       editorChoice: false),
-  parallaxCardItem(
-      type: "Editor's Choice",
-      content: 'latest',
-      colors: Colors.transparent,
-      path: 'editorChoice',
-      categories: '',
-      editorChoice: true),
+  // parallaxCardItem(
+  //     type: "Editor's Choice",
+  //     content: 'latest',
+  //     colors: Colors.transparent,
+  //     path: 'editorChoice',
+  //     categories: '',
+  //     editorChoice: true),
 ];
 
 final bannerCategories1 = <ParallaxCardItem>[
