@@ -98,11 +98,10 @@ flutter:
     - assets/people.jpg
     - assets/places.jpg
     - assets/editorChoice.jpg
-    - assets/palette.png
-    - assets/palette1.png
     - assets/regions.jpg
     - assets/science.jpg
     - assets/sports.jpg
+    - assets/transparent.png
     - assets/transportation.jpg
     - assets/travel.jpg
     - assets/vector.png
@@ -112,7 +111,6 @@ flutter:
     - assets/login.jpg
     - assets/lang/en.json
     - assets/lang/tr.json
-    - assets/transparent.jpg
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

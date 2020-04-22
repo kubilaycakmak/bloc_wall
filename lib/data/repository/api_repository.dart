@@ -6,7 +6,7 @@ class ApiRepository {
   String _lastSearchQuery;
 
   static const String _pixabayImageBaseURL =
-      'https://pixabay.com/api/?key=$API_KEY&safesearch=false';
+      'https://pixabay.com/api/?key=$API_KEY&safesearch=true&editors_choice=true';
 
   void _cacheValues({String query}) {
     _lastSearchQuery = query;
@@ -19,7 +19,7 @@ class ApiRepository {
       String colors,
       int userId,
       int perPage = 15,
-      bool editorChoice,
+      bool editorChoice = true,
       String category,
       String query,
       String imageType,
@@ -41,6 +41,7 @@ class ApiRepository {
     _cacheValues(query: query);
     final urlEncoded = Uri.encodeFull(urlRaw);
     final response = await http.Client().get(urlEncoded);
+    print(urlRaw);
     if (response.statusCode != 200) print('fetchError');
     return PhotoAll.fromJson(response.body);
   }
@@ -48,9 +49,10 @@ class ApiRepository {
   Future<PhotoAll> fetchNextResultPage(
       {int page,
       int perPage,
-      bool editorChoice,
+      bool editorChoice = true,
       String category,
       String query,
+      String colors,
       String imageType,
       String order,
       String orientation}) async {
@@ -60,6 +62,7 @@ class ApiRepository {
         order: order,
         orientation: orientation,
         perPage: perPage,
+        colors: colors,
         category: category,
         editorChoice: editorChoice,
         imageType: imageType);

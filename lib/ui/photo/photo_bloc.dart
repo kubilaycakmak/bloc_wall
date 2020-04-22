@@ -17,9 +17,16 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
   @override
   PhotoState get initialState => PhotoIsNotList();
 
-  void fetchNextResultPage(String order, String orientation, String query,
-      String category, bool editorChoice, String imageType) {
+  void fetchNextResultPage(
+      {String color,
+      String order,
+      String orientation,
+      String query,
+      String category,
+      bool editorChoice,
+      String imageType}) {
     add(FetchNextResultPage(
+        color: color,
         page: page,
         order: order,
         orientation: orientation,
@@ -29,10 +36,17 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
         imageType: imageType));
   }
 
-  void fetchResultPage(int page, String order, String orientation, String query,
-      String category, bool editorChoice, String imageType) {
+  void fetchResultPage(
+      {String colors,
+      int page,
+      String order,
+      String orientation,
+      String query,
+      String category,
+      bool editorChoice,
+      String imageType}) {
     add(FetchPhoto(
-        editorChoice, category, imageType, query, order, orientation));
+        colors, editorChoice, category, imageType, query, order, orientation));
   }
 
   @override
@@ -44,6 +58,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
       yield PhotoIsLoading();
       try {
         PhotoAll photoAll = await _apiRepository.fetchPhotos(
+            colors: event._color,
             editorChoice: event._editorChoice,
             category: event._category,
             imageType: event._imageType,
@@ -63,6 +78,8 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
           yield PhotoIsNotList();
         }
         final nextPageResult = await _apiRepository.fetchNextResultPage(
+            colors: event.color,
+            query: event.query,
             page: page,
             perPage: counter,
             order: event.order,

@@ -11,4 +11,4 @@ PRODUCT_NAME = bloc_wall
 PRODUCT_BUNDLE_IDENTIFIER = com.kubilaycakmak.blocwall.blocWall
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2020 com.kubilaycakmak.bloc_wall. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2020 com.kubilaycakmak.blocwall. All rights reserved.
