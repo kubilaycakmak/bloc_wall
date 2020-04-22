@@ -48,7 +48,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
                               width: 30,
                             ),
                             _buildCircleAvatar(
-                                EvaIcons.heart, EvaIcons.heartOutline, 30, 1),
+                                Icons.blur_circular, Icons.blur_on, 30, 1),
                             SizedBox(
                               width: 30,
                             ),
