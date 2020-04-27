@@ -1,15 +1,16 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomCard extends StatefulWidget {
   CustomCard({
     @required this.url,
     @required this.title,
-    @required this.description,
   });
   final String url;
   final String title;
-  final String description;
 
   @override
   _CustomCardState createState() => _CustomCardState();
@@ -34,44 +35,27 @@ class _CustomCardState extends State<CustomCard> {
             height: double.infinity,
           ),
           Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: Container(
-              height: 200.0,
-              decoration: _whiteGradientDecoration(),
-            ),
-          ),
-          Positioned(
-            left: 0.0,
-            right: 0.0,
-            bottom: 0.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  (widget.title != null) ? widget.title : '',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    (widget.description != null) ? widget.description : '',
-                    maxLines: 1,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.white,
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                child: new ClipRect(
+                  child: new BackdropFilter(
+                    filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                    child: new Container(
+                      height: 40.0,
+                      decoration: new BoxDecoration(
+                          color: Colors.grey.shade100.withOpacity(0.2)),
+                      child: new Center(
+                        child: new Text(
+                            (widget.title != null) ? widget.title : '',
+                            style: GoogleFonts.montserrat(color: Colors.white)),
+                      ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          )
+              )),
         ],
       ),
     );

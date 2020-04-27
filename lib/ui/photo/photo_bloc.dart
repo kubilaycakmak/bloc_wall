@@ -37,7 +37,8 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
   }
 
   void fetchResultPage(
-      {String colors,
+      {int perPage,
+      String colors,
       int page,
       String order,
       String orientation,
@@ -45,8 +46,8 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
       String category,
       bool editorChoice,
       String imageType}) {
-    add(FetchPhoto(
-        colors, editorChoice, category, imageType, query, order, orientation));
+    add(FetchPhoto(perPage, colors, editorChoice, category, imageType, query,
+        order, orientation));
   }
 
   @override
@@ -58,6 +59,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
       yield PhotoIsLoading();
       try {
         PhotoAll photoAll = await _apiRepository.fetchPhotos(
+            perPage: event._perPage,
             colors: event._color,
             editorChoice: event._editorChoice,
             category: event._category,

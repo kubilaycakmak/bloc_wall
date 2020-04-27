@@ -8,6 +8,7 @@ class PhotoEvent extends Equatable {
 }
 
 class FetchPhoto extends PhotoEvent {
+  final _perPage;
   final _color;
   final _editorChoice;
   final _category;
@@ -16,11 +17,12 @@ class FetchPhoto extends PhotoEvent {
   final _order;
   final _orientation;
 
-  FetchPhoto(this._color, this._editorChoice, this._category, this._imageType,
-      this._query, this._order, this._orientation);
+  FetchPhoto(this._perPage, this._color, this._editorChoice, this._category,
+      this._imageType, this._query, this._order, this._orientation);
 
   @override
   List<Object> get props => [
+        _perPage,
         _color,
         _editorChoice,
         _category,

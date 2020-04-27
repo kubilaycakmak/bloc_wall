@@ -2,8 +2,8 @@ import 'dart:ui';
 import 'package:bloc_wall/data/model/photo/photo_all.dart';
 import 'package:bloc_wall/data/repository/api_repository.dart';
 import 'package:bloc_wall/ui/pages/wallpaper_page.dart';
+import 'package:bloc_wall/ui/pages/widget/custom_card.dart';
 import 'package:bloc_wall/ui/photo/photo_bloc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -141,57 +141,20 @@ class _ListPhotoPageState extends State<ListPhotoPage> {
           itemBuilder: (context, index) {
             return index >= photoAll.hits.length
                 ? _buildLoaderListItem()
-                : Stack(
-                    children: <Widget>[
-                      GridTile(
-                        footer: Container(
-                          height: 50,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => WallpaperPage(
-                                          heroId: photoAll.hits[index].id
-                                              .toString(),
-                                          photoHits: photoAll.hits[index],
-                                        )));
-                          },
-                          child: FadeAnimation(
-                              0.4,
-                              CachedNetworkImage(
-                                fadeInCurve: Curves.decelerate,
-                                placeholder: (context, url) =>
-                                    CachedNetworkImage(
-                                  imageUrl: photoAll.hits[index].previewURL,
-                                  fit: BoxFit.cover,
-                                ),
-                                imageUrl: photoAll.hits[index].webformatURL,
-                                fit: BoxFit.cover,
-                              )),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        child: new ClipRect(
-                          child: new BackdropFilter(
-                            filter:
-                                new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                            child: new Container(
-                              height: 40.0,
-                              decoration: new BoxDecoration(
-                                  color: Colors.grey.shade100.withOpacity(0.2)),
-                              child: new Center(
-                                child: new Text(photoAll.hits[index].user,
-                                    style: GoogleFonts.montserrat(
-                                        color: Colors.white)),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
+                : GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WallpaperPage(
+                                    heroId: photoAll.hits[index].id.toString(),
+                                    photoHits: photoAll.hits[index],
+                                  )));
+                    },
+                    child: CustomCard(
+                      url: photoAll.hits[index].webformatURL,
+                      title: photoAll.hits[index].user,
+                    ),
                   );
           }),
     );

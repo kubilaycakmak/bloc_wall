@@ -13,12 +13,12 @@ class ApiRepository {
   }
 
   Future<PhotoAll> fetchPhotos(
-      {int page = 1,
+      {int page,
       int minWidth = 0,
       int minHeight = 0,
       String colors,
       int userId,
-      int perPage = 15,
+      int perPage,
       bool editorChoice = true,
       String category,
       String query,

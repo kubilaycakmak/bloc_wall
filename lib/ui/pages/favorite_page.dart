@@ -1,5 +1,4 @@
 import 'package:bloc_wall/data/model/photo/photo_all.dart';
-import 'package:bloc_wall/data/model/photo/photo_hits.dart';
 import 'package:bloc_wall/data/repository/api_repository.dart';
 import 'package:bloc_wall/ui/pages/animation/fade_animation.dart';
 import 'package:bloc_wall/ui/pages/wallpaper_page.dart';
@@ -52,8 +51,8 @@ class _FavoritePageState extends State<FavoritePage> {
       builder: (context, state) {
         if (state is PhotoIsNotList) {
           print('PhotoIsNotList');
-          _photoBloc.add(
-              FetchPhoto('', false, '', 'photo', '', 'latest', 'horizontal'));
+          _photoBloc.add(FetchPhoto(
+              25, '', false, '', 'photo', '', 'latest', 'horizontal'));
         }
         if (state is PhotoIsLoading) {
           print('PhotoIsLoading');
@@ -76,7 +75,7 @@ class _FavoritePageState extends State<FavoritePage> {
     for (int i = 0; i < 5; i++) {
       if (i != index) {
         controllers[i].animateToPage(page,
-            duration: Duration(milliseconds: 300), curve: Curves.ease);
+            duration: Duration(milliseconds: 250), curve: Curves.linear);
       }
     }
   }
@@ -98,7 +97,7 @@ class _FavoritePageState extends State<FavoritePage> {
               _animatePage(page, mainIndex);
             },
             itemBuilder: (context, index) {
-              var hitIndex = (mainIndex * 3 - 1) + index;
+              var hitIndex = (mainIndex * 5) + index;
               var hit;
               if (photoAll != null) {
                 hit = photoAll.hits[hitIndex];
@@ -119,7 +118,6 @@ class _FavoritePageState extends State<FavoritePage> {
                 },
                 child: CustomCard(
                   title: hit?.user,
-                  description: hit?.tags,
                   url: hit?.webformatURL,
                 ),
               );

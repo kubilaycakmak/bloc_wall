@@ -79,6 +79,7 @@ class _SearchBarState extends State<SearchBar> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => ListPhotoPage(
+                                              title: _controller.text,
                                               editorChoice: false,
                                               category: '',
                                               imageType: 'photo',
